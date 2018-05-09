@@ -1,8 +1,8 @@
-package it.uniroma2.ticketingsystem.rest;
+package isssr.ticketsystem.rest;
 
-import it.uniroma2.ticketingsystem.controller.PersonaController;
-import it.uniroma2.ticketingsystem.entity.Persona;
-import it.uniroma2.ticketingsystem.exception.EntitaNonTrovataException;
+import isssr.ticketsystem.controller.PersonaController;
+import isssr.ticketsystem.entity.Persona;
+import isssr.ticketsystem.exception.EntitaNonTrovataException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

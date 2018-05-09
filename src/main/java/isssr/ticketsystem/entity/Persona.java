@@ -1,4 +1,4 @@
-package it.uniroma2.ticketingsystem.entity;
+package isssr.ticketsystem.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -24,11 +24,13 @@ public class Persona {
 
 
     public Persona(String nome, String cognome) {
+
         this.nome = nome;
         this.cognome = cognome;
     }
 
     public void aggiorna(@NotNull Persona datiAggiornati) {
+
         this.nome = datiAggiornati.nome;
         this.cognome = datiAggiornati.cognome;
     }

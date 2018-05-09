@@ -1,6 +1,6 @@
-package it.uniroma2.ticketingsystem.dao;
+package isssr.ticketsystem.dao;
 
-import it.uniroma2.ticketingsystem.entity.Persona;
+import isssr.ticketsystem.entity.Persona;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PersonaDao extends JpaRepository<Persona,Long> {

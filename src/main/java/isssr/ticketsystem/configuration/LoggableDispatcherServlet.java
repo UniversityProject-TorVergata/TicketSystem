@@ -1,4 +1,4 @@
-package it.uniroma2.ticketingsystem.configuration;
+package isssr.ticketsystem.configuration;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

@@ -1,4 +1,4 @@
-package it.uniroma2.ticketingsystem.configuration;
+package isssr.ticketsystem.configuration;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
