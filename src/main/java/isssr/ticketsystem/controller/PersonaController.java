@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 // @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
@@ -20,6 +21,7 @@ public class PersonaController {
     @Transactional
     public @NotNull Persona insertPersona(@NotNull Persona persona) {
 
+        persona.setCreated_at(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()));
         Persona createdPersona = personaDao.save(persona);
         return createdPersona;
     }

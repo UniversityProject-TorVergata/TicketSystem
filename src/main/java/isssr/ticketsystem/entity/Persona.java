@@ -1,10 +1,9 @@
 package isssr.ticketsystem.entity;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.validator.constraints.UniqueElements;
 
+import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -42,20 +41,19 @@ public class Persona {
     @NotNull
     private String password;
 
-    @NotNull
     private String created_at;
 
     public Persona() {
     }
 
-    public Persona(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull String created_at) {
+    public Persona(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password) {
         this.fiscal_code = fiscal_code;
         this.name = name;
         this.surname = surname;
         this.email = email;
         this.username = username;
         this.password = password;
-        this.created_at = created_at;
+        this.created_at = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
     }
 
     /*
