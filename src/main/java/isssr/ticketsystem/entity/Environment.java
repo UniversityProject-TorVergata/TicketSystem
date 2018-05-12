@@ -1,6 +1,6 @@
 package isssr.ticketsystem.entity;
 
-public enum ENVIRONMENT {
+public enum Environment {
     TEST,
     PRODUCTION
 }
