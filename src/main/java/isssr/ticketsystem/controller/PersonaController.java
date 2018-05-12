@@ -2,7 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.PersonaDao;
 import isssr.ticketsystem.entity.Persona;
-import isssr.ticketsystem.exception.EntitaNonTrovataException;
+import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,45 +18,40 @@ public class PersonaController {
     private PersonaDao personaDao;
 
     @Transactional
-    public @NotNull Persona creaPersona(@NotNull Persona persona) {
+    public @NotNull Persona insertPersona(@NotNull Persona persona) {
 
-        Persona personaSalvata = personaDao.save(persona);
-        return personaSalvata;
+        Persona createdPersona = personaDao.save(persona);
+        return createdPersona;
     }
 
     @Transactional
-    public @NotNull Persona aggiornaPersona(@NotNull Long id, @NotNull Persona datiAggiornati) throws EntitaNonTrovataException {
+    public @NotNull Persona updatePersona(@NotNull Long id, @NotNull Persona updatedData) throws NotFoundEntityException {
 
-        Persona personaDaAggiornare = personaDao.getOne(id);
+        Persona toBeUpdatedPersona = personaDao.getOne(id);
 
-        if (personaDaAggiornare == null)
-            throw new EntitaNonTrovataException();
+        if (toBeUpdatedPersona == null)
+            throw new NotFoundEntityException();
 
-        personaDaAggiornare.aggiorna(datiAggiornati);
-        Persona personaAggiornata = personaDao.save(personaDaAggiornare);
+        toBeUpdatedPersona.update(updatedData);
+        Persona updatedPersona = personaDao.save(toBeUpdatedPersona);
 
-        return personaAggiornata;
+        return updatedPersona;
     }
 
-    public Persona cercaPersonaPerId(@NotNull Long id) {
-
-        Persona personaTrovata = personaDao.getOne(id);
-
-        return personaTrovata;
+    public Persona findPersonaById(@NotNull Long id) {
+        Persona foundPersona = personaDao.getOne(id);
+        return foundPersona;
     }
 
-    public boolean eliminaPersona(@NotNull Long id) {
-
+    public boolean deletePersona(@NotNull Long id) {
         if (!personaDao.existsById(id)) {
             return false;
         }
-
         personaDao.deleteById(id);
-
         return true;
     }
 
-    public List<Persona> prelevaPersone() {
+    public List<Persona> getPersonas() {
 
         return personaDao.findAll();
     }

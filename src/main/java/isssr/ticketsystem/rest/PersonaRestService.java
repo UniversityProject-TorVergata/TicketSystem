@@ -2,7 +2,7 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.PersonaController;
 import isssr.ticketsystem.entity.Persona;
-import isssr.ticketsystem.exception.EntitaNonTrovataException;
+import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,37 +28,37 @@ public class PersonaRestService {
     private PersonaController personaController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Persona> creaPersona(@RequestBody Persona persona) {
-        Persona personaCreata = personaController.creaPersona(persona);
-        return new ResponseEntity<>(personaCreata, HttpStatus.CREATED);
+    public ResponseEntity<Persona> insertPersona(@RequestBody Persona persona) {
+        Persona createdPersona = personaController.insertPersona(persona);
+        return new ResponseEntity<>(createdPersona, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Persona> aggiornaPersona(@PathVariable Long id, @RequestBody Persona persona) {
-        Persona personaAggiornata;
+    public ResponseEntity<Persona> updatePersona(@PathVariable Long id, @RequestBody Persona persona) {
+        Persona updatedPersona;
         try {
-            personaAggiornata = personaController.aggiornaPersona(id, persona);
-        } catch (EntitaNonTrovataException e) {
+            updatedPersona = personaController.updatePersona(id, persona);
+        } catch (NotFoundEntityException e) {
             return new ResponseEntity<>(persona, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(personaAggiornata, HttpStatus.OK);
+        return new ResponseEntity<>(updatedPersona, HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Persona> cercaPersona(@PathVariable Long id) {
-        Persona personaTrovata = personaController.cercaPersonaPerId(id);
+    public ResponseEntity<Persona> findPersona(@PathVariable Long id) {
+        Persona personaTrovata = personaController.findPersonaById(id);
         return new ResponseEntity<>(personaTrovata, personaTrovata == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> eliminaPersona(@PathVariable Long id) {
-        boolean eliminata = personaController.eliminaPersona(id);
-        return new ResponseEntity<>(eliminata, eliminata ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public ResponseEntity<Boolean> deletePersona(@PathVariable Long id) {
+        boolean deletedPersona = personaController.deletePersona(id);
+        return new ResponseEntity<>(deletedPersona, deletedPersona ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Persona>> prelevaPersone() {
-        List<Persona> persone = personaController.prelevaPersone();
-        return new ResponseEntity<>(persone, HttpStatus.OK);
+    public ResponseEntity<List<Persona>> getPersonas() {
+        List<Persona> personas = personaController.getPersonas();
+        return new ResponseEntity<>(personas, HttpStatus.OK);
     }
 }
