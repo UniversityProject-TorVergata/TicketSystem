@@ -5,57 +5,60 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
 @Getter
 @Setter
-public abstract class Company extends RegisteredUser {
+public class Company {
 
     @Id
     @GeneratedValue // Autoincrement
-    private Long id;
+    private Long idCompany;
 
-    private Long id_registered_user;
+    @Transient
+    private List<RegisteredUser> registeredUserList;
 
+    @NotNull
     private String companyName;
+
+    @NotNull
+    @Column(unique = true)
+    private String fiscal_code;
 
     public Company() {
     }
 
-    public Company(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull String companyName) {
-        super(fiscal_code, name, surname, email, username, password);
-        this.id_registered_user = super.getId();
+    public Company(@NotNull String companyName, @NotNull String fiscal_code) {
+        this.companyName = companyName;
+        this.fiscal_code = fiscal_code;
+    }
+
+    public void addRegisteredUser(RegisteredUser registeredUser) {
+        this.registeredUserList.add(registeredUser);
+    }
+
+
+    public List<RegisteredUser> getRegisteredUserList() {
+        return registeredUserList;
+    }
+
+    public void setRegisteredUserList(List<RegisteredUser> registeredUserList) {
+        this.registeredUserList = registeredUserList;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
         this.companyName = companyName;
     }
 
-    @Override
-    public Long getId() {
-        return id;
-    }
+    public void updateCompany(@NotNull Company updatedData) {
 
-    @Override
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getId_registered_user() {
-        return id_registered_user;
-    }
-
-    public void setId_registered_user(Long id_registered_user) {
-        this.id_registered_user = id_registered_user;
-    }
-
-    public void updateCompany(@NotNull RegisteredUser updatedData, @NotNull Company company) {
-
-        this.fiscal_code = updatedData.getFiscal_code();
-        this.name = updatedData.getName();
-        this.surname = updatedData.getSurname();
-        this.email = updatedData.getEmail();
-        this.username = updatedData.getUsername();
-        this.password = updatedData.getPassword();
-        this.companyName = company.companyName;
-
+        this.fiscal_code = updatedData.fiscal_code;
+        this.companyName = updatedData.companyName;
     }
 }

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "ticket")
@@ -18,45 +19,82 @@ public class Ticket {
     @GeneratedValue // Autoincrement
     private Long id;
 
-    /*@NotNull
-    private Product product_name;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private TicketType tycket_type;
-
-    @NotNull
-    @Enumerated(EnumType.STRING)
-    private ActivityType activity_type;
-
-    @Enumerated(EnumType.STRING)
-    private ThirdParty third_party;
+    private String title;
 
     private String description;
 
-    @NotNull
-    @Enumerated(EnumType.ORDINAL)
-    private Priority priority;
+    private String byteStream;
 
-    //TODO File come stringa di byte
-    //TODO Tipo di file (image, pdf, ...) o non riesco a ritornare il file dalla stringa
+    private String byteStreamType;
 
-    //private Ticket attached_ticket;
-
-
-    @NotNull
-    @Column(unique = true)
-    private String email;
-
-    @NotNull
-    @Column(unique = true)
-    private String username;
-
-    @NotNull
-    private String password;
-
-    private String created_at;*/
+    @Transient
+    private CompanyUser companyUser;
 
     public Ticket() {
+    }
+
+    public Ticket(String title, String description, String byteStream, String byteStreamType, CompanyUser companyUser) {
+        this.title = title;
+        this.description = description;
+        this.byteStream = byteStream;
+        this.byteStreamType = byteStreamType;
+        this.companyUser = companyUser;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getByteStream() {
+        return byteStream;
+    }
+
+    public void setByteStream(String byteStream) {
+        this.byteStream = byteStream;
+    }
+
+    public String getByteStreamType() {
+        return byteStreamType;
+    }
+
+    public void setByteStreamType(String byteStreamType) {
+        this.byteStreamType = byteStreamType;
+    }
+
+    public CompanyUser getCompanyUser() {
+        return companyUser;
+    }
+
+    public void setCompanyUser(CompanyUser companyUser) {
+        this.companyUser = companyUser;
+    }
+
+    public void updateTicket(@NotNull Ticket updatedData) {
+
+        this.title = updatedData.title;
+        this.description = updatedData.description;
+        this.byteStream = updatedData.byteStream;
+        this.byteStreamType = updatedData.byteStreamType;
+        this.companyUser = updatedData.companyUser;
     }
 }

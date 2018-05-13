@@ -18,13 +18,9 @@ public class CompanyController {
 
     @Autowired
     private CompanyDao companyDao;
-    private RegisteredUserDao registeredUserDao;
 
     @Transactional
     public @NotNull Company insertCompany(@NotNull Company company) {
-        RegisteredUser registeredUser = registeredUserDao.save(new RegisteredUser(
-                company.getFiscal_code(), company.getName(), company.getSurname(),
-                company.getEmail(), company.getUsername(), company.getPassword()));
         Company createdCompany = companyDao.save(company);
         return createdCompany;
     }
@@ -37,7 +33,7 @@ public class CompanyController {
         if (toBeUpdatedCompany == null)
             throw new NotFoundEntityException();
 
-        //toBeUpdatedCompany.updateCompany(, updatedData);
+        toBeUpdatedCompany.updateCompany(updatedData);
         Company updatedCompany = companyDao.save(toBeUpdatedCompany);
 
         return updatedCompany;
@@ -56,7 +52,7 @@ public class CompanyController {
         return true;
     }
 
-    public List<Company> getCompanys() {
+    public List<Company> getCompanies() {
 
         return companyDao.findAll();
     }

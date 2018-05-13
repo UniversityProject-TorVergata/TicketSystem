@@ -3,12 +3,10 @@ package isssr.ticketsystem.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.List;
 
-// TODO change name
 @Entity
 @Table(name = "product")
 @Getter
@@ -19,19 +17,21 @@ public class Product {
     @GeneratedValue // Autoincrement
     private Long id;
 
+    private String name;
     private String description;
 
-    private Environment environment;
+    @Transient
+    private ThirdPartyCustomer thirdPartyCustomer;
 
-    //private Company company;
+    @Transient
+    private List<Ticket> ticketList;
 
     public Product() {
     }
 
-    public Product(String description, Environment environment, Company company) {
+    public Product(String description, String name) {
         this.description = description;
-        this.environment = environment;
-        //this.company = company;
+        this.name = name;
     }
 
     public Long getId() {
@@ -50,19 +50,41 @@ public class Product {
         this.description = description;
     }
 
-    public Environment getEnvironment() {
-        return environment;
+    public ThirdPartyCustomer getThirdPartyCustomer() {
+        return thirdPartyCustomer;
     }
 
-    public void setEnvironment(Environment environment) {
-        this.environment = environment;
+    public void setThirdPartyCustomer(ThirdPartyCustomer thirdPartyCustomer) {
+        this.thirdPartyCustomer = thirdPartyCustomer;
     }
 
-    /*public Company getCompany() {
-        return company;
+    public List<Ticket> getTicketList() {
+        return ticketList;
     }
 
-    public void setCompany(Company icompany) {
-        this.company = company;
-    }*/
+    public void setTicketList(List<Ticket> ticketList) {
+        this.ticketList = ticketList;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void addTicket(Ticket ticket) {
+        this.ticketList.add(ticket);
+    }
+
+    public void removeTicket(Ticket ticket) {
+        this.ticketList.add(ticket);
+    }
+
+    public void updateProduct(@NotNull Product updatedData) {
+
+        this.name = updatedData.name;
+        this.description = updatedData.description;
+    }
 }

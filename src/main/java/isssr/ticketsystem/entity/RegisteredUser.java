@@ -7,19 +7,19 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 
-@Entity
 @Table(name = "registered_user")
 @Getter
 @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
-public class RegisteredUser {
+@MappedSuperclass
+public abstract class RegisteredUser {
 
     /**
      * Attributes defined as database's columns.
      */
+
     @Id
     @GeneratedValue // Autoincrement
-    protected Long id;
+    private Long id;
 
     @NotNull
     @Column(unique = true)
@@ -44,10 +44,23 @@ public class RegisteredUser {
 
     protected String created_at;
 
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Transient
+    protected Company company;
+
     public RegisteredUser() {
     }
 
-    public RegisteredUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password) {
+    public RegisteredUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname,
+                          @NotNull String email, @NotNull String username, @NotNull String password,
+                          @NotNull Company company) {
         this.fiscal_code = fiscal_code;
         this.name = name;
         this.surname = surname;
@@ -55,18 +68,12 @@ public class RegisteredUser {
         this.username = username;
         this.password = password;
         this.created_at = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
+        this.company = company;
     }
 
     /*
         Get and Set functions
      */
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFiscal_code() {
         return fiscal_code;
