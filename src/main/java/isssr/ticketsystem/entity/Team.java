@@ -26,7 +26,7 @@ public class Team {
     @OneToMany
     private Collection<Assistant> assistantList;
     //Aggiunto da AlessioDL
-    @ManyToOne
+    @OneToOne
     private TeamManager teamManager;
 
     //Aggiunto da AlessioDL

@@ -17,25 +17,25 @@ public class TeamManager extends Assistant {
     private Long id;
 
     @Transient
-    private List<Team> managedTeamList;
+    private Team managedTeam;
 
-    public TeamManager(Long id, List<Team> teamList) {
+    public TeamManager() { }
+
+    public TeamManager(Long id, Team team) {
         this.id = id;
-        this.managedTeamList = teamList;
+        this.managedTeam = team;
     }
 
-    public List<Team> getTeamList() {
-        return managedTeamList;
+    public Team getTeam() {
+        return this.managedTeam;
     }
 
-    public void setTeamList(List<Team> teamList) {
-        this.managedTeamList = teamList;
-    }
-
-    public TeamManager() {
+    public void setTeam(Team team) {
+        this.managedTeam = team;
     }
 
     public void updateTeamManager(@NotNull TeamManager updatedData) {
-        // TODO che ci va qui? Ohibò
+
+        this.managedTeam = updatedData.managedTeam; // TeamManager riassegnato ad un altro Team.
     }
 }
