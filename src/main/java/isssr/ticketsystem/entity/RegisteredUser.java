@@ -7,10 +7,11 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 
+//@MappedSuperclass
 @Table(name = "registered_user")
 @Getter
 @Setter
-@MappedSuperclass
+@Entity
 public abstract class RegisteredUser {
 
     /**
@@ -20,6 +21,10 @@ public abstract class RegisteredUser {
     @Id
     @GeneratedValue // Autoincrement
     private Long id;
+
+    //@Transient
+    @ManyToOne
+    protected Company company;
 
     @NotNull
     @Column(unique = true)
@@ -52,8 +57,7 @@ public abstract class RegisteredUser {
         this.company = company;
     }
 
-    @Transient
-    protected Company company;
+
 
     public RegisteredUser() {
     }
@@ -139,5 +143,7 @@ public abstract class RegisteredUser {
         this.email = updatedData.email;
         this.username = updatedData.username;
         this.password = updatedData.password;
+        //Aggiunto da AlessioDL
+        this.company = updatedData.company;
     }
 }

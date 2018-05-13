@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -18,7 +19,11 @@ public class Company {
     private Long idCompany;
 
     @Transient
-    private List<RegisteredUser> registeredUserList;
+    private Collection<RegisteredUser> registeredUserList;
+
+    //Aggiunto da AlessioDL
+    @Transient
+    private List<Product> companyProductList;
 
     @NotNull
     private String companyName;
@@ -40,7 +45,7 @@ public class Company {
     }
 
 
-    public List<RegisteredUser> getRegisteredUserList() {
+    public Collection<RegisteredUser> getRegisteredUserList() {
         return registeredUserList;
     }
 
@@ -60,5 +65,7 @@ public class Company {
 
         this.fiscal_code = updatedData.fiscal_code;
         this.companyName = updatedData.companyName;
+
+
     }
 }

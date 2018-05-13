@@ -6,15 +6,20 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-@MappedSuperclass
+//@MappedSuperclass
+@Entity
 @Table(name = "company_user")
 @Getter
 @Setter
-public class CompanyUser extends RegisteredUser {
+public abstract class CompanyUser extends RegisteredUser {
 
     private Long idCompanyUser;
 
+
+    /*
+    @Transient
     private Long idCompany;
+    */
 
     public CompanyUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull Company company) {
         super(fiscal_code, name, surname, email, username, password, company);
@@ -31,13 +36,14 @@ public class CompanyUser extends RegisteredUser {
         this.idCompanyUser = idCompanyUser;
     }
 
+    /*
     public Long getIdCompany() {
         return idCompany;
     }
 
     public void setIdCompany(Long idCompany) {
         this.idCompany = idCompany;
-    }
+    }*/
 
     public void updateCompanyUser(@NotNull CompanyUser updatedData) {
 

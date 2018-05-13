@@ -5,10 +5,11 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
-@Table(name = "entity")
+@Table(name = "team")
 @Getter
 @Setter
 public class Team {
@@ -21,8 +22,20 @@ public class Team {
 
     private String description;
 
-    @Transient
-    private List<Assistant> assistantList;
+    //@Transient
+    @OneToMany
+    private Collection<Assistant> assistantList;
+    //Aggiunto da AlessioDL
+    @ManyToOne
+    private TeamManager teamManager;
+
+    //Aggiunto da AlessioDL
+    public Team(String name, String description, Collection<Assistant> assistantList, TeamManager teamManager) {
+        this.name = name;
+        this.description = description;
+        this.assistantList = assistantList;
+        this.teamManager = teamManager;
+    }
 
     public Team(String name, String description) {
         this.name = name;
@@ -33,6 +46,9 @@ public class Team {
 
         this.description = updatedData.description;
         this.name = updatedData.name;
+        //Aggiunto da AlessioDL
+        this.assistantList = updatedData.assistantList;
+        this.teamManager = updatedData.teamManager;
     }
 
     public Long getId() {

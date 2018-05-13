@@ -27,18 +27,37 @@ public class Ticket {
 
     private String byteStreamType;
 
-    @Transient
-    private CompanyUser companyUser;
+    //@Transient
+    @ManyToOne
+    private CompanyUser resolverUser; //companyUser
+
+    //Aggiunto da AlessioDL
+    @ManyToOne
+    private RegisteredUser openerUser;
+    //Aggiunto da AlessioDL
+    @ManyToOne
+    private Product product;
 
     public Ticket() {
     }
 
-    public Ticket(String title, String description, String byteStream, String byteStreamType, CompanyUser companyUser) {
+    //Aggiunto da AlessioDL
+    public Ticket(String title, String description, String byteStream, String byteStreamType, CompanyUser resolverUser, RegisteredUser openerUser, Product product) {
         this.title = title;
         this.description = description;
         this.byteStream = byteStream;
         this.byteStreamType = byteStreamType;
-        this.companyUser = companyUser;
+        this.resolverUser = resolverUser;
+        this.openerUser = openerUser;
+        this.product = product;
+    }
+
+    public Ticket(String title, String description, String byteStream, String byteStreamType, CompanyUser resolverUser) {
+        this.title = title;
+        this.description = description;
+        this.byteStream = byteStream;
+        this.byteStreamType = byteStreamType;
+        this.resolverUser = resolverUser;
     }
 
     public Long getId() {
@@ -82,11 +101,11 @@ public class Ticket {
     }
 
     public CompanyUser getCompanyUser() {
-        return companyUser;
+        return resolverUser;
     }
 
     public void setCompanyUser(CompanyUser companyUser) {
-        this.companyUser = companyUser;
+        this.resolverUser = companyUser;
     }
 
     public void updateTicket(@NotNull Ticket updatedData) {
@@ -95,6 +114,9 @@ public class Ticket {
         this.description = updatedData.description;
         this.byteStream = updatedData.byteStream;
         this.byteStreamType = updatedData.byteStreamType;
-        this.companyUser = updatedData.companyUser;
+        this.resolverUser = updatedData.resolverUser; //companyUser
+        //Aggiunti da Alessio DL
+        this.product = updatedData.product;
+        this.openerUser = updatedData.openerUser;
     }
 }

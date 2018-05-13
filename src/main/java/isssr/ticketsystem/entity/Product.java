@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
 import java.util.List;
 
 @Entity
@@ -20,13 +21,27 @@ public class Product {
     private String name;
     private String description;
 
+    //Aggiunto da AlessioDL
+    @ManyToOne
+    private Company company;
+
+
     @Transient
-    private ThirdPartyCustomer thirdPartyCustomer;
+    private Collection<ThirdPartyCustomer> thirdPartyCustomer;
 
     @Transient
     private List<Ticket> ticketList;
 
     public Product() {
+    }
+
+    //Aggiunto da AlessioDL
+    public Product(String name, String description, Company company, Collection<ThirdPartyCustomer> thirdPartyCustomer, List<Ticket> ticketList) {
+        this.name = name;
+        this.description = description;
+        this.company = company;
+        this.thirdPartyCustomer = thirdPartyCustomer;
+        this.ticketList = ticketList;
     }
 
     public Product(String description, String name) {
@@ -50,11 +65,11 @@ public class Product {
         this.description = description;
     }
 
-    public ThirdPartyCustomer getThirdPartyCustomer() {
+    public Collection<ThirdPartyCustomer> getThirdPartyCustomer() {
         return thirdPartyCustomer;
     }
 
-    public void setThirdPartyCustomer(ThirdPartyCustomer thirdPartyCustomer) {
+    public void setThirdPartyCustomer(Collection<ThirdPartyCustomer> thirdPartyCustomer) {
         this.thirdPartyCustomer = thirdPartyCustomer;
     }
 
@@ -86,5 +101,7 @@ public class Product {
 
         this.name = updatedData.name;
         this.description = updatedData.description;
+        //Aggiunto da AlessioDL
+        this.company = updatedData.company;
     }
 }
