@@ -3,50 +3,51 @@ package isssr.ticketsystem.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.text.SimpleDateFormat;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.text.SimpleDateFormat;
 
 @Entity
-@Table(name = "persona")
+@Table(name = "registered_user")
 @Getter
 @Setter
-public class Persona {
+@Inheritance(strategy = InheritanceType.JOINED)
+public class RegisteredUser {
 
     /**
      * Attributes defined as database's columns.
      */
     @Id
     @GeneratedValue // Autoincrement
-    private Long id;
+    protected Long id;
 
     @NotNull
     @Column(unique = true)
-    private String fiscal_code;
+    protected String fiscal_code;
 
     @NotNull
-    private String name;
+    protected String name;
 
     @NotNull
-    private String surname;
-
-    @NotNull
-    @Column(unique = true)
-    private String email;
+    protected String surname;
 
     @NotNull
     @Column(unique = true)
-    private String username;
+    protected String email;
 
     @NotNull
-    private String password;
+    @Column(unique = true)
+    protected String username;
 
-    private String created_at;
+    @NotNull
+    protected String password;
 
-    public Persona() {
+    protected String created_at;
+
+    public RegisteredUser() {
     }
 
-    public Persona(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password) {
+    public RegisteredUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password) {
         this.fiscal_code = fiscal_code;
         this.name = name;
         this.surname = surname;
@@ -123,7 +124,7 @@ public class Persona {
         this.created_at = created_at;
     }
 
-    public void update(@NotNull Persona updatedData) {
+    public void updateRegisteredUser(@NotNull RegisteredUser updatedData) {
 
         this.fiscal_code = updatedData.fiscal_code;
         this.name = updatedData.name;
