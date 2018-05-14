@@ -14,30 +14,24 @@ import java.util.List;
 public class Assistant extends CompanyUser {
 
     @Transient
-    private List<Team> belongedTeam;
+    protected Team managedteam;
 
-    public Assistant() {
+    public Assistant() { }
+
+    public Assistant(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
+                     @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Company company, @NotNull Team team) {
+        super(fiscal_code, name, surname, email, username, password, company, address);
+        this.managedteam = team;
     }
 
-    public Assistant(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull Company company) {
-        super(fiscal_code, name, surname, email, username, password, company);
+    public void setTeam(Team team) {
+
+        this.managedteam = team;
     }
 
-    public void addTeam(Team team) {
-        this.belongedTeam.add(team);
-    }
+    public Team getTeam() {
 
-    public void removeTeam(Team team) {
-        if (this.belongedTeam.contains(team))
-            this.belongedTeam.remove(team);
-    }
-
-    public List<Team> getBelongedTeam() {
-        return belongedTeam;
-    }
-
-    public void setBelongedTeam(List<Team> belongedTeam) {
-        this.belongedTeam = belongedTeam;
+        return this.managedteam;
     }
 
     public void updateAssistant(@NotNull Assistant updatedData) {
@@ -48,5 +42,7 @@ public class Assistant extends CompanyUser {
         this.username = updatedData.username;
         this.email = updatedData.email;
         this.password = updatedData.password;
+        this.managedteam = updatedData.managedteam; // Assistente riassegnato ad un altro Team.
+        this.address = updatedData.address;
     }
 }

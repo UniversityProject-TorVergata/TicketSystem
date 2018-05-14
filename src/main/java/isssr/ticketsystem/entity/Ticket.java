@@ -21,7 +21,7 @@ public class Ticket {
 
     private String title;
 
-    private String description;
+    private String description; // Oppure Enumerazione ?
 
     private String byteStream;
 

@@ -16,26 +16,22 @@ public class TeamManager extends Assistant {
 
     private Long id;
 
-    @Transient
-    private Team managedTeam;
-
     public TeamManager() { }
 
-    public TeamManager(Long id, Team team) {
-        this.id = id;
-        this.managedTeam = team;
-    }
-
-    public Team getTeam() {
-        return this.managedTeam;
-    }
-
-    public void setTeam(Team team) {
-        this.managedTeam = team;
+    public TeamManager(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
+                     @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Company company, @NotNull Team team) {
+        super(fiscal_code, name, surname, email, username, password, address, company, team);
     }
 
     public void updateTeamManager(@NotNull TeamManager updatedData) {
 
-        this.managedTeam = updatedData.managedTeam; // TeamManager riassegnato ad un altro Team.
+        this.fiscal_code = updatedData.fiscal_code;
+        this.name = updatedData.name;
+        this.surname = updatedData.surname;
+        this.username = updatedData.username;
+        this.email = updatedData.email;
+        this.password = updatedData.password;
+        this.managedteam = updatedData.managedteam; // TeamManager riassegnato ad un altro Team.
+        this.address = updatedData.address;
     }
 }

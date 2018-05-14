@@ -21,26 +21,18 @@ public class Product {
     private String name;
     private String description;
 
-    //Aggiunto da AlessioDL
     @ManyToOne
     private Company company;
-
-
-    @Transient
-    private Collection<ThirdPartyCustomer> thirdPartyCustomer;
 
     @Transient
     private List<Ticket> ticketList;
 
-    public Product() {
-    }
+    public Product() { }
 
-    //Aggiunto da AlessioDL
     public Product(String name, String description, Company company, Collection<ThirdPartyCustomer> thirdPartyCustomer, List<Ticket> ticketList) {
         this.name = name;
         this.description = description;
         this.company = company;
-        this.thirdPartyCustomer = thirdPartyCustomer;
         this.ticketList = ticketList;
     }
 
@@ -65,14 +57,6 @@ public class Product {
         this.description = description;
     }
 
-    public Collection<ThirdPartyCustomer> getThirdPartyCustomer() {
-        return thirdPartyCustomer;
-    }
-
-    public void setThirdPartyCustomer(Collection<ThirdPartyCustomer> thirdPartyCustomer) {
-        this.thirdPartyCustomer = thirdPartyCustomer;
-    }
-
     public List<Ticket> getTicketList() {
         return ticketList;
     }
@@ -94,14 +78,13 @@ public class Product {
     }
 
     public void removeTicket(Ticket ticket) {
-        this.ticketList.add(ticket);
+        this.ticketList.remove(ticket);
     }
 
     public void updateProduct(@NotNull Product updatedData) {
 
         this.name = updatedData.name;
         this.description = updatedData.description;
-        //Aggiunto da AlessioDL
         this.company = updatedData.company;
     }
 }

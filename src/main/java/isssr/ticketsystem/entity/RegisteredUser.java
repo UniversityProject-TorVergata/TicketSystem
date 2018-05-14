@@ -22,10 +22,6 @@ public abstract class RegisteredUser {
     @GeneratedValue // Autoincrement
     private Long id;
 
-    //@Transient
-    @ManyToOne
-    protected Company company;
-
     @NotNull
     @Column(unique = true)
     protected String fiscal_code;
@@ -47,24 +43,15 @@ public abstract class RegisteredUser {
     @NotNull
     protected String password;
 
-    protected String created_at;
+    @NotNull
+    protected String address;
 
-    public Company getCompany() {
-        return company;
-    }
+    protected String created_at; // Data di creazione dell'utente.
 
-    public void setCompany(Company company) {
-        this.company = company;
-    }
-
-
-
-    public RegisteredUser() {
-    }
+    public RegisteredUser() { }
 
     public RegisteredUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname,
-                          @NotNull String email, @NotNull String username, @NotNull String password,
-                          @NotNull Company company) {
+                          @NotNull String email, @NotNull String username, @NotNull String password, @NotNull String address) {
         this.fiscal_code = fiscal_code;
         this.name = name;
         this.surname = surname;
@@ -72,12 +59,8 @@ public abstract class RegisteredUser {
         this.username = username;
         this.password = password;
         this.created_at = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-        this.company = company;
+        this.address = address;
     }
-
-    /*
-        Get and Set functions
-     */
 
     public String getFiscal_code() {
         return fiscal_code;
@@ -127,6 +110,14 @@ public abstract class RegisteredUser {
         this.password = password;
     }
 
+    public String getAddress() {
+        return this.address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
     public String getCreated_at() {
         return created_at;
     }
@@ -143,7 +134,6 @@ public abstract class RegisteredUser {
         this.email = updatedData.email;
         this.username = updatedData.username;
         this.password = updatedData.password;
-        //Aggiunto da AlessioDL
-        this.company = updatedData.company;
+        this.address = updatedData.address;
     }
 }

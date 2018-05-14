@@ -18,15 +18,18 @@ public class Company {
     @GeneratedValue // Autoincrement
     private Long idCompany;
 
-    @Transient
-    private Collection<RegisteredUser> registeredUserList;
+    //@Transient
+    @OneToMany
+    private Collection<CompanyUser> CompanyUserList;
 
-    //Aggiunto da AlessioDL
     @Transient
     private List<Product> companyProductList;
 
     @NotNull
     private String companyName;
+
+    @NotNull
+    private String companyAddress;
 
     @NotNull
     @Column(unique = true)
@@ -40,17 +43,17 @@ public class Company {
         this.fiscal_code = fiscal_code;
     }
 
-    public void addRegisteredUser(RegisteredUser registeredUser) {
-        this.registeredUserList.add(registeredUser);
+    public void addRegisteredCompanyUser(CompanyUser CompanyUser) {
+        this.CompanyUserList.add(CompanyUser);
     }
 
 
-    public Collection<RegisteredUser> getRegisteredUserList() {
-        return registeredUserList;
+    public Collection<CompanyUser> getCompanyUserList() {
+        return CompanyUserList;
     }
 
-    public void setRegisteredUserList(List<RegisteredUser> registeredUserList) {
-        this.registeredUserList = registeredUserList;
+    public void setCompanyUserList(List<CompanyUser> CompanyUserList) {
+        this.CompanyUserList = CompanyUserList;
     }
 
     public String getCompanyName() {
@@ -61,11 +64,19 @@ public class Company {
         this.companyName = companyName;
     }
 
+    public String getCompanyAddress() {
+        return this.companyAddress;
+    }
+
+    public void setCompanyAddress(String companyAddress) {
+        this.companyAddress = companyAddress;
+    }
+
     public void updateCompany(@NotNull Company updatedData) {
 
         this.fiscal_code = updatedData.fiscal_code;
         this.companyName = updatedData.companyName;
-
-
+        this.companyAddress = updatedData.companyAddress;
     }
+
 }

@@ -1,6 +1,5 @@
 package isssr.ticketsystem.dao;
 
-import isssr.ticketsystem.entity.AdminUser;
 import isssr.ticketsystem.entity.Assistant;
 import org.springframework.data.jpa.repository.JpaRepository;
 

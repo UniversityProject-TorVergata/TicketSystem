@@ -25,11 +25,10 @@ public class Team {
     //@Transient
     @OneToMany
     private Collection<Assistant> assistantList;
-    //Aggiunto da AlessioDL
+
     @OneToOne
     private TeamManager teamManager;
 
-    //Aggiunto da AlessioDL
     public Team(String name, String description, Collection<Assistant> assistantList, TeamManager teamManager) {
         this.name = name;
         this.description = description;
@@ -40,15 +39,6 @@ public class Team {
     public Team(String name, String description) {
         this.name = name;
         this.description = description;
-    }
-
-    public void updateTeam(@NotNull Team updatedData) {
-
-        this.description = updatedData.description;
-        this.name = updatedData.name;
-        //Aggiunto da AlessioDL
-        this.assistantList = updatedData.assistantList;
-        this.teamManager = updatedData.teamManager;
     }
 
     public Long getId() {
@@ -77,5 +67,18 @@ public class Team {
 
     public void addAssistant(Assistant assistant) {
         this.assistantList.add(assistant);
+    }
+
+    public void removeAssistent(Assistant assistant) {
+
+        this.assistantList.remove(assistant);
+    }
+
+    public void updateTeam(@NotNull Team updatedData) {
+
+        this.description = updatedData.description;
+        this.name = updatedData.name;
+        this.assistantList = updatedData.assistantList;
+        this.teamManager = updatedData.teamManager;
     }
 }

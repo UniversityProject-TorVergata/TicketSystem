@@ -3,12 +3,8 @@ package isssr.ticketsystem.entity;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.util.Collection;
 
 @Entity
 @Table(name = "product_manager")
@@ -16,17 +12,15 @@ import java.util.Collection;
 @Setter
 public class ProductManager extends CompanyUser {
 
-    //Aggiunto da AlessioDL
-    @OneToMany
-    private Collection<Product> managerdProductList;
-    //Aggiunto da AlessioDL
-    public ProductManager(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull Company company, Collection<Product> managerdProductList) {
-        super(fiscal_code, name, surname, email, username, password, company);
-        this.managerdProductList = managerdProductList;
-    }
+    @OneToOne
+    private Product managedProduct;
 
-    public ProductManager(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull Company company) {
-        super(fiscal_code, name, surname, email, username, password, company);
+    public ProductManager() { }
+
+    public ProductManager(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
+                          @NotNull String username, @NotNull String password, @NotNull Company company, Product managerdProduct, @NotNull String address) {
+        super(fiscal_code, name, surname, email, username, password, company, address);
+        this.managedProduct = managerdProduct;
     }
 
     public void updateProductManager(@NotNull ProductManager updatedData) {
@@ -37,7 +31,7 @@ public class ProductManager extends CompanyUser {
         this.username = updatedData.username;
         this.email = updatedData.email;
         this.password = updatedData.password;
-        //Aggiunto da AlessioDL
-        this.managerdProductList = updatedData.managerdProductList;
+        this.managedProduct = updatedData.managedProduct;
+        this.address = updatedData.address;
     }
 }

@@ -15,17 +15,14 @@ public abstract class CompanyUser extends RegisteredUser {
 
     private Long idCompanyUser;
 
+    private Company company;
 
-    /*
-    @Transient
-    private Long idCompany;
-    */
+    public CompanyUser() { }
 
-    public CompanyUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email, @NotNull String username, @NotNull String password, @NotNull Company company) {
-        super(fiscal_code, name, surname, email, username, password, company);
-    }
-
-    public CompanyUser() {
+    public CompanyUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
+                       @NotNull String username, @NotNull String password, @NotNull Company company, @NotNull String address) {
+        super(fiscal_code, name, surname, email, username, password, address);
+        this.company = company;
     }
 
     public Long getIdCompanyUser() {
@@ -36,15 +33,6 @@ public abstract class CompanyUser extends RegisteredUser {
         this.idCompanyUser = idCompanyUser;
     }
 
-    /*
-    public Long getIdCompany() {
-        return idCompany;
-    }
-
-    public void setIdCompany(Long idCompany) {
-        this.idCompany = idCompany;
-    }*/
-
     public void updateCompanyUser(@NotNull CompanyUser updatedData) {
 
         this.fiscal_code = updatedData.fiscal_code;
@@ -53,5 +41,7 @@ public abstract class CompanyUser extends RegisteredUser {
         this.username = updatedData.username;
         this.email = updatedData.email;
         this.password = updatedData.password;
+        this.company = updatedData.company;
+        this.address = updatedData.address;
     }
 }
