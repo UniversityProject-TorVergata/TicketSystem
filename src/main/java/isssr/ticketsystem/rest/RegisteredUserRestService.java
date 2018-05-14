@@ -1,6 +1,7 @@
 package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.RegisteredUserController;
+import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.RegisteredUser;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;

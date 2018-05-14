@@ -1,6 +1,8 @@
 package isssr.ticketsystem.rest;
 
-import isssr.ticketsystem.controller.RegisteredUserController;
+import isssr.ticketsystem.controller.CompanyController;
+import isssr.ticketsystem.controller.TicketController;
+import isssr.ticketsystem.entity.Company;
 import isssr.ticketsystem.entity.RegisteredUser;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,40 +27,40 @@ import java.util.List;
 public class CompanyRestService {
 
     @Autowired
-    private RegisteredUserController registeredUserController;
+    private CompanyController companyController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<RegisteredUser> insertRegisteredUser(@RequestBody RegisteredUser registeredUser) {
-        RegisteredUser createdRegisteredUser = registeredUserController.insertRegisteredUser(registeredUser);
-        return new ResponseEntity<>(createdRegisteredUser, HttpStatus.CREATED);
+    public ResponseEntity<Company> insertCompany(@RequestBody Company company) {
+        Company createdCompany = companyController.insertCompany(company);
+        return new ResponseEntity<>(createdCompany, HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
-    public ResponseEntity<RegisteredUser> updateRegisteredUser(@PathVariable Long id, @RequestBody RegisteredUser registeredUser) {
-        RegisteredUser updatedRegisteredUser;
+    public ResponseEntity<Company> updateCompany(@PathVariable Long id, @RequestBody Company company) {
+        Company updatedCompany;
         try {
-            updatedRegisteredUser = registeredUserController.updateRegisteredUser(id, registeredUser);
+            updatedCompany =  companyController.updateCompany(id,company);
         } catch (NotFoundEntityException e) {
-            return new ResponseEntity<>(registeredUser, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(company, HttpStatus.NOT_FOUND);
         }
-        return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.OK);
+        return new ResponseEntity<>(updatedCompany, HttpStatus.OK);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<RegisteredUser> findRegisteredUser(@PathVariable Long id) {
-        RegisteredUser registeredUserTrovata = registeredUserController.findRegisteredUserById(id);
-        return new ResponseEntity<>(registeredUserTrovata, registeredUserTrovata == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+    public ResponseEntity<Company> findCompany(@PathVariable Long id) {
+        Company companyFound = companyController.findCompanyById(id);
+        return new ResponseEntity<>(companyFound, companyFound == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteRegisteredUser(@PathVariable Long id) {
-        boolean deletedRegisteredUser = registeredUserController.deleteRegisteredUser(id);
-        return new ResponseEntity<>(deletedRegisteredUser, deletedRegisteredUser ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public ResponseEntity<Boolean> deleteCompany(@PathVariable Long id) {
+        boolean deletedCompany = companyController.deleteCompany(id);
+        return new ResponseEntity<>(deletedCompany, deletedCompany ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<RegisteredUser>> getRegisteredUsers() {
-        List<RegisteredUser> registeredUsers = registeredUserController.getRegisteredUsers();
-        return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
+    public ResponseEntity<List<Company>> getCompanies() {
+        List<Company> companies = companyController.getCompanies();
+        return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 }

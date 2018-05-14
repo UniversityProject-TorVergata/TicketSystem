@@ -30,7 +30,7 @@ public class Company {
 
     @NotNull
     @Column(unique = true)
-    private String fiscal_code;
+    private String fiscal_code; //cambiare in partita iva?
 
     public Company() {
     }
