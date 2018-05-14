@@ -18,13 +18,13 @@ public class TicketController {
     private TicketDao ticketDao;
 
     @Transactional
-    public @NotNull Ticket insertCompany(@NotNull Ticket company) {
-        Ticket createdTicket = ticketDao.save(company);
+    public @NotNull Ticket insertTicket(@NotNull Ticket ticket) {
+        Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
 
     @Transactional
-    public @NotNull Ticket updateCompany(@NotNull Long id, @NotNull Ticket updatedData) throws NotFoundEntityException {
+    public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket updatedData) throws NotFoundEntityException {
 
         Ticket toBeUpdatedTicket = ticketDao.getOne(id);
 
@@ -34,15 +34,15 @@ public class TicketController {
         toBeUpdatedTicket.updateTicket(updatedData);
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
 
-        return toBeUpdatedTicket;
+        return updatedTicket;
     }
 
-    public Ticket findCompanyById(@NotNull Long id) {
+    public Ticket findTicketById(@NotNull Long id) {
         Ticket foundTicket = ticketDao.getOne(id);
         return foundTicket;
     }
 
-    public boolean deleteCompany(@NotNull Long id) {
+    public boolean deleteTicket(@NotNull Long id) {
         if (!ticketDao.existsById(id)) {
             return false;
         }
@@ -50,7 +50,7 @@ public class TicketController {
         return true;
     }
 
-    public List<Ticket> getTicket() {
+    public List<Ticket> getTickets() {
 
         return ticketDao.findAll();
     }
