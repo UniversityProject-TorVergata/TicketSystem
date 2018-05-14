@@ -15,6 +15,7 @@ public abstract class CompanyUser extends RegisteredUser {
 
     private Long idCompanyUser;
 
+    @ManyToOne
     private Company company;
 
     public CompanyUser() { }
