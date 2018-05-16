@@ -19,13 +19,13 @@ public class ProductController {
     private ProductDao productDao;
 
     @Transactional
-    public @NotNull Product insertCompany(@NotNull Product company) {
-        Product createdProduct = productDao.save(company);
+    public @NotNull Product insertProduct(@NotNull Product product) {
+        Product createdProduct = productDao.save(product);
         return createdProduct;
     }
 
     @Transactional
-    public @NotNull Product updateCompany(@NotNull Long id, @NotNull Product updatedData) throws NotFoundEntityException {
+    public @NotNull Product updateProduct(@NotNull Long id, @NotNull Product updatedData) throws NotFoundEntityException {
 
         Product toBeUpdatedProduct = productDao.getOne(id);
 
@@ -38,12 +38,12 @@ public class ProductController {
         return toBeUpdatedProduct;
     }
 
-    public Product findCompanyById(@NotNull Long id) {
+    public Product findProductById(@NotNull Long id) {
         Product foundProduct = productDao.getOne(id);
         return foundProduct;
     }
 
-    public boolean deleteCompany(@NotNull Long id) {
+    public boolean deleteProduct(@NotNull Long id) {
         if (!productDao.existsById(id)) {
             return false;
         }
