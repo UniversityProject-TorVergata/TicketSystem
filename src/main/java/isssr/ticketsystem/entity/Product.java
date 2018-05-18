@@ -1,5 +1,7 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,25 +22,21 @@ public class Product {
 
     private String name;
     private String description;
+    private double version;
 
     @ManyToOne
     private Company company;
 
-    @Transient
+    @JsonIgnore
+    @OneToMany(mappedBy = "target")
     private List<Ticket> ticketList;
 
     public Product() { }
 
-    public Product(String name, String description, Company company, Collection<ThirdPartyCustomer> thirdPartyCustomer, List<Ticket> ticketList) {
+    public Product(String name, String description, double version) {
         this.name = name;
         this.description = description;
-        this.company = company;
-        this.ticketList = ticketList;
-    }
-
-    public Product(String description, String name) {
-        this.description = description;
-        this.name = name;
+        this.version = version;
     }
 
     public Long getId() {
@@ -49,18 +47,14 @@ public class Product {
         this.id = id;
     }
 
-    public String getDescription() {
-        return description;
-    }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
+    @JsonIgnore
     public List<Ticket> getTicketList() {
         return ticketList;
     }
 
+    @JsonProperty
     public void setTicketList(List<Ticket> ticketList) {
         this.ticketList = ticketList;
     }
@@ -84,7 +78,7 @@ public class Product {
     public void updateProduct(@NotNull Product updatedData) {
 
         this.name = updatedData.name;
-        this.description = updatedData.description;
         this.company = updatedData.company;
     }
+
 }

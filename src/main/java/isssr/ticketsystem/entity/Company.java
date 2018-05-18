@@ -1,6 +1,9 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,11 +21,12 @@ public class Company {
     @GeneratedValue // Autoincrement
     private Long idCompany;
 
-    //@Transient
-    @OneToMany
+    @JsonIgnore
+    @OneToMany(mappedBy = "company")
     private Collection<CompanyUser> CompanyUserList;
 
-    @Transient
+    @JsonIgnore
+    @OneToMany(mappedBy =  "company")
     private List<Product> companyProductList;
 
     @NotNull
@@ -43,17 +47,36 @@ public class Company {
         this.fiscal_code = fiscal_code;
     }
 
+    public Company(@NotNull String companyName, @NotNull String companyAddress, @NotNull String fiscal_code) {
+        this.companyName = companyName;
+        this.fiscal_code = fiscal_code;
+        this.companyAddress = companyAddress;
+    }
+
+
+
+
     public void addRegisteredCompanyUser(CompanyUser CompanyUser) {
         this.CompanyUserList.add(CompanyUser);
     }
 
-
+    @JsonIgnore
     public Collection<CompanyUser> getCompanyUserList() {
         return CompanyUserList;
     }
+    @JsonProperty
+    public void setCompanyUserList(Collection<CompanyUser> companyUserList) {
+        CompanyUserList = companyUserList;
+    }
 
-    public void setCompanyUserList(List<CompanyUser> CompanyUserList) {
-        this.CompanyUserList = CompanyUserList;
+    @JsonIgnore
+    public List<Product> getCompanyProductList() {
+        return companyProductList;
+    }
+
+    @JsonProperty
+    public void setCompanyProductList(List<Product> companyProductList) {
+        this.companyProductList = companyProductList;
     }
 
     public String getCompanyName() {
@@ -78,5 +101,6 @@ public class Company {
         this.companyName = updatedData.companyName;
         this.companyAddress = updatedData.companyAddress;
     }
+
 
 }

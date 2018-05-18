@@ -3,6 +3,8 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.Ticket;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +12,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class TicketController {
 
@@ -53,5 +54,15 @@ public class TicketController {
     public List<Ticket> getTickets() {
 
         return ticketDao.findAll();
+    }
+
+    public List<Ticket> getTicketByOpenerUser(String username){
+
+        return ticketDao.getTicketByOpenerUser(username);
+    }
+
+    public List<Ticket> getTicketByResolverUser(String username){
+
+        return ticketDao.getTicketByResolverUser(username);
     }
 }

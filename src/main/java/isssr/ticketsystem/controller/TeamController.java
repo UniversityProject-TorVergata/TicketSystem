@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class TeamController {
 
@@ -18,13 +17,13 @@ public class TeamController {
     private TeamDao teamDao;
 
     @Transactional
-    public @NotNull Team insertCompany(@NotNull Team companyUser) {
-        Team createdCompany = teamDao.save(companyUser);
-        return createdCompany;
+    public @NotNull Team insertTeam(@NotNull Team team) {
+        Team createdTeam = teamDao.save(team);
+        return createdTeam;
     }
 
     @Transactional
-    public @NotNull Team updateCompany(@NotNull Long id, @NotNull Team updatedData) throws NotFoundEntityException {
+    public @NotNull Team updateTeam(@NotNull Long id, @NotNull Team updatedData) throws NotFoundEntityException {
 
         Team toBeUpdatedTeam = teamDao.getOne(id);
 
@@ -37,7 +36,7 @@ public class TeamController {
         return updatedCompany;
     }
 
-    public Team findCompanyById(@NotNull Long id) {
+    public Team findTeamById(@NotNull Long id) {
         Team foundTeam = teamDao.getOne(id);
         return foundTeam;
     }
@@ -50,7 +49,7 @@ public class TeamController {
         return true;
     }
 
-    public List<Team> getCompanies() {
+    public List<Team> getTeams() {
 
         return teamDao.findAll();
     }

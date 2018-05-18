@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class CompanyAdminController {
 
@@ -18,13 +17,13 @@ public class CompanyAdminController {
     private CompanyAdminDao companyAdminDao;
 
     @Transactional
-    public @NotNull CompanyAdmin insertCompany(@NotNull CompanyAdmin companyUser) {
-        CompanyAdmin createdCompany = companyAdminDao.save(companyUser);
-        return createdCompany;
+    public @NotNull CompanyAdmin insertCompanyAdmin(@NotNull CompanyAdmin companyAdmin) {
+        CompanyAdmin createdCompanyAdmin = companyAdminDao.save(companyAdmin);
+        return createdCompanyAdmin;
     }
 
     @Transactional
-    public @NotNull CompanyAdmin updateCompany(@NotNull Long id, @NotNull CompanyAdmin updatedData) throws NotFoundEntityException {
+    public @NotNull CompanyAdmin updateCompanyAdmin(@NotNull Long id, @NotNull CompanyAdmin updatedData) throws NotFoundEntityException {
 
         CompanyAdmin toBeUpdatedCompanyAdmin = companyAdminDao.getOne(id);
 
@@ -32,12 +31,12 @@ public class CompanyAdminController {
             throw new NotFoundEntityException();
 
         toBeUpdatedCompanyAdmin.updateCompanyAdmin(updatedData);
-        CompanyAdmin updatedCompany = companyAdminDao.save(toBeUpdatedCompanyAdmin);
+        CompanyAdmin updatedCompanyAdmin = companyAdminDao.save(toBeUpdatedCompanyAdmin);
 
-        return updatedCompany;
+        return updatedCompanyAdmin;
     }
 
-    public CompanyAdmin findCompanyById(@NotNull Long id) {
+    public CompanyAdmin findCompanyAdmminById(@NotNull Long id) {
         CompanyAdmin foundCompanyAdmin = companyAdminDao.getOne(id);
         return foundCompanyAdmin;
     }
@@ -50,7 +49,7 @@ public class CompanyAdminController {
         return true;
     }
 
-    public List<CompanyAdmin> getCompanies() {
+    public List<CompanyAdmin> getCompanyAdmins() {
 
         return companyAdminDao.findAll();
     }

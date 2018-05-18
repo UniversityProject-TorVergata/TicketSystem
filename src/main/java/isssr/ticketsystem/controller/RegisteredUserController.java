@@ -10,8 +10,8 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Optional;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class RegisteredUserController {
 
@@ -29,7 +29,8 @@ public class RegisteredUserController {
     @Transactional
     public @NotNull RegisteredUser updateRegisteredUser(@NotNull Long id, @NotNull RegisteredUser updatedData) throws NotFoundEntityException {
 
-        RegisteredUser toBeUpdatedRegisteredUser = registeredUserDao.getOne(id);
+        Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
+        RegisteredUser toBeUpdatedRegisteredUser = foundRegisteredUser.get();
 
         if (toBeUpdatedRegisteredUser == null)
             throw new NotFoundEntityException();
@@ -41,8 +42,10 @@ public class RegisteredUserController {
     }
 
     public RegisteredUser findRegisteredUserById(@NotNull Long id) {
-        RegisteredUser foundRegisteredUser = registeredUserDao.getOne(id);
-        return foundRegisteredUser;
+        // RegisteredUser foundRegisteredUser = registeredUserDao.getOne(id);
+        Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
+        RegisteredUser resultRegisteredUser = foundRegisteredUser.get();
+        return resultRegisteredUser;
     }
 
     public boolean deleteRegisteredUser(@NotNull Long id) {
@@ -56,5 +59,12 @@ public class RegisteredUserController {
     public List<RegisteredUser> getRegisteredUsers() {
 
         return registeredUserDao.findAll();
+    }
+
+    public RegisteredUser getRegisteredUserByLogin(String username,String password){
+
+        RegisteredUser foundRegisteredUser = registeredUserDao.getUserByLogin(username,password);
+        return foundRegisteredUser;
+
     }
 }

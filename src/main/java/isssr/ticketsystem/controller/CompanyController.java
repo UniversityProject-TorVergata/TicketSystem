@@ -12,7 +12,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class CompanyController {
 

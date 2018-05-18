@@ -1,5 +1,8 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,6 +14,13 @@ import javax.validation.constraints.NotNull;
 @Table(name = "company_user")
 @Getter
 @Setter
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CompanyAdmin.class, name = "CompanyAdmin"),
+        @JsonSubTypes.Type(value = Assistant.class, name = "Assistant") ,
+        @JsonSubTypes.Type(value = ProductManager.class, name = "ProductManager") }
+)
 public abstract class CompanyUser extends RegisteredUser {
 
     private Long idCompanyUser;

@@ -1,5 +1,8 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,6 +15,13 @@ import java.text.SimpleDateFormat;
 @Getter
 @Setter
 @Entity
+@JsonIgnoreProperties(ignoreUnknown = true)
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value =ThirdPartyCustomer.class, name = "ThirdPartyCustomer"),
+
+        @JsonSubTypes.Type(value = CompanyUser.class, name = "CompanyUser") }
+)
 public abstract class RegisteredUser {
 
     /**

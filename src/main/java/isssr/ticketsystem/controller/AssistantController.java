@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class AssistantController {
 
@@ -18,13 +17,13 @@ public class AssistantController {
     private AssistantDao assistantDao;
 
     @Transactional
-    public @NotNull Assistant insertCompany(@NotNull Assistant companyUser) {
-        Assistant createdCompany = assistantDao.save(companyUser);
-        return createdCompany;
+    public @NotNull Assistant insertAssistant(@NotNull Assistant assistant) {
+        Assistant createdAssistant = assistantDao.save(assistant);
+        return createdAssistant;
     }
 
     @Transactional
-    public @NotNull Assistant updateCompany(@NotNull Long id, @NotNull Assistant updatedData) throws NotFoundEntityException {
+    public @NotNull Assistant updateAssistant(@NotNull Long id, @NotNull Assistant updatedData) throws NotFoundEntityException {
 
         Assistant toBeUpdatedAssistant = assistantDao.getOne(id);
 
@@ -32,9 +31,9 @@ public class AssistantController {
             throw new NotFoundEntityException();
 
         toBeUpdatedAssistant.updateAssistant(updatedData);
-        Assistant updatedCompany = assistantDao.save(toBeUpdatedAssistant);
+        Assistant updatedAssistant = assistantDao.save(toBeUpdatedAssistant);
 
-        return updatedCompany;
+        return updatedAssistant;
     }
 
     public Assistant findCompanyById(@NotNull Long id) {
@@ -50,7 +49,7 @@ public class AssistantController {
         return true;
     }
 
-    public List<Assistant> getCompanies() {
+    public List<Assistant> getAssitants() {
 
         return assistantDao.findAll();
     }

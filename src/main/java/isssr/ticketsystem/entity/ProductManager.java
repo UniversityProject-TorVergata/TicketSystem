@@ -34,4 +34,5 @@ public class ProductManager extends CompanyUser {
         this.managedProduct = updatedData.managedProduct;
         this.address = updatedData.address;
     }
+
 }

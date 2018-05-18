@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -15,6 +16,9 @@ import java.util.List;
 public class TeamManager extends Assistant {
 
     private Long id;
+
+    @OneToOne
+    private Team managedTeam = this.team;
 
     public TeamManager() { }
 
@@ -31,7 +35,9 @@ public class TeamManager extends Assistant {
         this.username = updatedData.username;
         this.email = updatedData.email;
         this.password = updatedData.password;
-        this.managedteam = updatedData.managedteam; // TeamManager riassegnato ad un altro Team.
+        this.team = updatedData.team; // TeamManager riassegnato ad un altro Team.
         this.address = updatedData.address;
     }
+
+
 }

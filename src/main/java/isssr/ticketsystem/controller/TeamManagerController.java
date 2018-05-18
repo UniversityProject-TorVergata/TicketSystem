@@ -11,7 +11,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class TeamManagerController {
 
@@ -19,13 +18,13 @@ public class TeamManagerController {
     private TeamManagerDao teamManagerDao;
 
     @Transactional
-    public @NotNull TeamManager insertCompany(@NotNull TeamManager companyUser) {
-        TeamManager createdCompany = teamManagerDao.save(companyUser);
+    public @NotNull TeamManager insertTeamManager(@NotNull TeamManager teamManager) {
+        TeamManager createdCompany = teamManagerDao.save(teamManager);
         return createdCompany;
     }
 
     @Transactional
-    public @NotNull TeamManager updateCompany(@NotNull Long id, @NotNull TeamManager updatedData) throws NotFoundEntityException {
+    public @NotNull TeamManager updateTeamManager(@NotNull Long id, @NotNull TeamManager updatedData) throws NotFoundEntityException {
 
         TeamManager toBeUpdatedTeamManager = teamManagerDao.getOne(id);
 
@@ -33,17 +32,17 @@ public class TeamManagerController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTeamManager.updateTeamManager(updatedData);
-        TeamManager updatedCompany = teamManagerDao.save(toBeUpdatedTeamManager);
+        TeamManager teamManager = teamManagerDao.save(toBeUpdatedTeamManager);
 
-        return updatedCompany;
+        return teamManager;
     }
 
-    public TeamManager findCompanyById(@NotNull Long id) {
+    public TeamManager findTeamManagerById(@NotNull Long id) {
         TeamManager foundTeamManager = teamManagerDao.getOne(id);
         return foundTeamManager;
     }
 
-    public boolean deleteTeam(@NotNull Long id) {
+    public boolean deleteTeamManager(@NotNull Long id) {
         if (!teamManagerDao.existsById(id)) {
             return false;
         }
@@ -51,7 +50,7 @@ public class TeamManagerController {
         return true;
     }
 
-    public List<TeamManager> getCompanies() {
+    public List<TeamManager> getTeamManagers() {
 
         return teamManagerDao.findAll();
     }

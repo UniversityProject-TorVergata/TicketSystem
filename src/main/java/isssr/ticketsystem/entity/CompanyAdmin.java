@@ -28,4 +28,6 @@ public class CompanyAdmin extends CompanyUser {
         this.password = updatedData.password;
         this.address = updatedData.address;
     }
+
+
 }

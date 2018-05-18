@@ -19,23 +19,13 @@ import java.util.Date;
 
 
 @Configuration
-// La DispatcherServlet reindirizza una  richiesta HTTP verso il metodo Java configurato per servire quella richiesta.
-// La redirezione avviene in base ai valori dei seguenti attributi della richiesta HTTP: metodo, URL e parametri.
-// pring offre una implementazione di default, ovvero org.springframework.web.servlet.DispatcherServlet
-// La classe LoggableDispatcherServlet estende la DispatcherServlet di default aggiungendo la
 public class LoggableDispatcherServlet extends DispatcherServlet {
 
     public static final int MAX_PAYLOAD_LENGTH_TO_LOG = 5120;
-    // Anche per il logging, come per l'accesso alla persistenza, Java definisce un'interfaccia comune chiamata
-    // Simple Logging Facade for Java (SLF4J). Questa interfaccia viene implementata dalle varie librerie di logging
-    // (tra cui Logback).
-    // Spring di default imposta Logback come libreria di Logging, ma può essere modificata aggiungendo un'altra libreria
-    // di logging nel file pom.xml.
-    // Per prelevare l'istanza del Logger basta usare il factory method.
+
     private final Log logger = LogFactory.getLog(getClass());
 
-    // metodo di configurazione: quale dispatcher servlet bisogna utilizzare? S
-    // Tuttavia, lo sviluppatore può definire uno Spring Bean che ridefinisce i comportamenti dlla DispatcherServlet
+
     @Bean(name = DispatcherServletAutoConfiguration.DEFAULT_DISPATCHER_SERVLET_BEAN_NAME)
     public DispatcherServlet dispatcherServlet() {
         return new LoggableDispatcherServlet();

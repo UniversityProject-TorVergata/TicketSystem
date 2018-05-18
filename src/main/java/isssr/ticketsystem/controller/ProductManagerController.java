@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class ProductManagerController {
 
@@ -18,13 +17,13 @@ public class ProductManagerController {
     private ProductManagerDao productManagerDao;
 
     @Transactional
-    public @NotNull ProductManager insertCompany(@NotNull ProductManager companyUser) {
-        ProductManager createdCompany = productManagerDao.save(companyUser);
+    public @NotNull ProductManager insertProductManager(@NotNull ProductManager productManager) {
+        ProductManager createdCompany = productManagerDao.save(productManager);
         return createdCompany;
     }
 
     @Transactional
-    public @NotNull ProductManager updateCompany(@NotNull Long id, @NotNull ProductManager updatedData) throws NotFoundEntityException {
+    public @NotNull ProductManager updateProductManager(@NotNull Long id, @NotNull ProductManager updatedData) throws NotFoundEntityException {
 
         ProductManager toBeUpdatedProductManager = productManagerDao.getOne(id);
 
@@ -32,12 +31,12 @@ public class ProductManagerController {
             throw new NotFoundEntityException();
 
         toBeUpdatedProductManager.updateProductManager(updatedData);
-        ProductManager updatedCompany = productManagerDao.save(toBeUpdatedProductManager);
+        ProductManager updatedProductManager = productManagerDao.save(toBeUpdatedProductManager);
 
-        return updatedCompany;
+        return updatedProductManager;
     }
 
-    public ProductManager findCompanyById(@NotNull Long id) {
+    public ProductManager findProductManagerById(@NotNull Long id) {
         ProductManager foundProductManager = productManagerDao.getOne(id);
         return foundProductManager;
     }
@@ -50,7 +49,7 @@ public class ProductManagerController {
         return true;
     }
 
-    public List<ProductManager> getCompanies() {
+    public List<ProductManager> getProductManager() {
 
         return productManagerDao.findAll();
     }

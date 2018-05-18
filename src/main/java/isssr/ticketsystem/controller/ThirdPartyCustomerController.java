@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class ThirdPartyCustomerController {
 
@@ -18,13 +17,13 @@ public class ThirdPartyCustomerController {
     private ThirdPartyCustomerDao thirdPartyCustomerDao;
 
     @Transactional
-    public @NotNull ThirdPartyCustomer insertCompany(@NotNull ThirdPartyCustomer companyUser) {
-        ThirdPartyCustomer createdCompany = thirdPartyCustomerDao.save(companyUser);
-        return createdCompany;
+    public @NotNull ThirdPartyCustomer insertThirdParyCustomer(@NotNull ThirdPartyCustomer thirdPartyCustomer) {
+        ThirdPartyCustomer createdThirdPartyCustomer = thirdPartyCustomerDao.save(thirdPartyCustomer);
+        return createdThirdPartyCustomer;
     }
 
     @Transactional
-    public @NotNull ThirdPartyCustomer updateCompany(@NotNull Long id, @NotNull ThirdPartyCustomer updatedData) throws NotFoundEntityException {
+    public @NotNull ThirdPartyCustomer updateThirdParyCustomer(@NotNull Long id, @NotNull ThirdPartyCustomer updatedData) throws NotFoundEntityException {
 
         ThirdPartyCustomer toBeUpdatedThirdPartyCustomer = thirdPartyCustomerDao.getOne(id);
 
@@ -32,9 +31,9 @@ public class ThirdPartyCustomerController {
             throw new NotFoundEntityException();
 
         toBeUpdatedThirdPartyCustomer.updateThirdPartyCustomer(updatedData);
-        ThirdPartyCustomer updatedCompany = thirdPartyCustomerDao.save(toBeUpdatedThirdPartyCustomer);
+        ThirdPartyCustomer thirdPartyCustomer = thirdPartyCustomerDao.save(toBeUpdatedThirdPartyCustomer);
 
-        return updatedCompany;
+        return thirdPartyCustomer;
     }
 
     public ThirdPartyCustomer findCompanyById(@NotNull Long id) {
@@ -50,7 +49,7 @@ public class ThirdPartyCustomerController {
         return true;
     }
 
-    public List<ThirdPartyCustomer> getCompanies() {
+    public List<ThirdPartyCustomer> getThirdPartyCustomers() {
 
         return thirdPartyCustomerDao.findAll();
     }

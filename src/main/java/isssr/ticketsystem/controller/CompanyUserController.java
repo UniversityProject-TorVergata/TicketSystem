@@ -10,7 +10,6 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
-// @Service identifica uno Spring Bean che nell'architettura MVC è un Controller
 @Service
 public class CompanyUserController {
 
@@ -18,13 +17,13 @@ public class CompanyUserController {
     private CompanyUserDao companyUserDao;
 
     @Transactional
-    public @NotNull CompanyUser insertCompany(@NotNull CompanyUser companyUser) {
-        CompanyUser createdCompany = companyUserDao.save(companyUser);
-        return createdCompany;
+    public @NotNull CompanyUser insertCompanyUser(@NotNull CompanyUser companyUser) {
+        CompanyUser createdCompanyUser = companyUserDao.save(companyUser);
+        return createdCompanyUser;
     }
 
     @Transactional
-    public @NotNull CompanyUser updateCompany(@NotNull Long id, @NotNull CompanyUser updatedData) throws NotFoundEntityException {
+    public @NotNull CompanyUser updateCompanyUser(@NotNull Long id, @NotNull CompanyUser updatedData) throws NotFoundEntityException {
 
         CompanyUser toBeUpdatedCompanyUser = companyUserDao.getOne(id);
 
@@ -32,12 +31,12 @@ public class CompanyUserController {
             throw new NotFoundEntityException();
 
         toBeUpdatedCompanyUser.updateCompanyUser(updatedData);
-        CompanyUser updatedCompany = companyUserDao.save(toBeUpdatedCompanyUser);
+        CompanyUser updatedCompanyUser = companyUserDao.save(toBeUpdatedCompanyUser);
 
-        return updatedCompany;
+        return updatedCompanyUser;
     }
 
-    public CompanyUser findCompanyById(@NotNull Long id) {
+    public CompanyUser findCompanyUserById(@NotNull Long id) {
         CompanyUser foundCompanyUser = companyUserDao.getOne(id);
         return foundCompanyUser;
     }
@@ -50,7 +49,7 @@ public class CompanyUserController {
         return true;
     }
 
-    public List<CompanyUser> getCompanies() {
+    public List<CompanyUser> getCompanyUsers() {
 
         return companyUserDao.findAll();
     }
