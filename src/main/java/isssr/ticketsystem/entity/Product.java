@@ -78,6 +78,8 @@ public class Product {
     public void updateProduct(@NotNull Product updatedData) {
 
         this.name = updatedData.name;
+        this.description = updatedData.description;
+        this.version = updatedData.version;
         this.company = updatedData.company;
     }
 
