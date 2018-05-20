@@ -4,6 +4,7 @@ import isssr.ticketsystem.controller.CompanyController;
 import isssr.ticketsystem.controller.ProductController;
 import isssr.ticketsystem.entity.Company;
 import isssr.ticketsystem.entity.Product;
+import isssr.ticketsystem.entity.ProductState;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,6 +26,26 @@ public class ProductRestService {
         return new ResponseEntity<>(createdProduct, HttpStatus.CREATED);
     }
 
+    @RequestMapping(path="/retire/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<Product> retireProduct(@PathVariable Long id) {
+        Product updatedProduct;
+        try {
+            updatedProduct =  productController.changeStateProduct(id,ProductState.RETIRED);
+        } catch (NotFoundEntityException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @RequestMapping(path="/reab/{id}",method = RequestMethod.PUT)
+    public ResponseEntity<Product> reabProduct(@PathVariable Long id) {
+        Product updatedProduct;
+        try {
+            updatedProduct =  productController.changeStateProduct(id,ProductState.ACTIVE);
+        } catch (NotFoundEntityException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Product> updateProduct(@PathVariable Long id, @RequestBody Product product) {
         Product updatedProduct;

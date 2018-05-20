@@ -3,6 +3,9 @@ package isssr.ticketsystem.rest;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.RegisteredUser;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
@@ -54,14 +57,39 @@ public class RegisteredUserRestService {
         return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/login",method = RequestMethod.GET)
+    @RequestMapping(path = "/login",method = RequestMethod.POST)
     @ResponseBody
-    public ResponseEntity<RegisteredUser> getRegisteredUserByLogin(@Param("username") String username ,@Param("password") String password){
-        RegisteredUser userLogged = registeredUserController.getRegisteredUserByLogin(username,password);
+    public ResponseEntity<RegisteredUser> getRegisteredUserByLogin(@RequestBody LoginBean loginBean){
+        RegisteredUser userLogged = registeredUserController.getRegisteredUserByLogin(loginBean.getUsername(),loginBean.getPassword());
         if(userLogged != null)
             return new ResponseEntity<>(userLogged,HttpStatus.OK);
         else
             return new ResponseEntity<>(userLogged,HttpStatus.NOT_FOUND);
 
+    }
+
+
+    public static class LoginBean {
+
+        private String username;
+        private String password;
+
+        public LoginBean(){};
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
+        }
     }
 }

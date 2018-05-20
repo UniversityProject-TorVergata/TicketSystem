@@ -1,6 +1,7 @@
 package isssr.ticketsystem.entity;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Entity;
@@ -11,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "company_admin")
 @Getter
 @Setter
+@NoArgsConstructor
 public class CompanyAdmin extends CompanyUser {
 
     public CompanyAdmin(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,

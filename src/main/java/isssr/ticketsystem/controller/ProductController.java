@@ -3,6 +3,7 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.ProductDao;
 import isssr.ticketsystem.entity.Company;
 import isssr.ticketsystem.entity.Product;
+import isssr.ticketsystem.entity.ProductState;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,18 @@ public class ProductController {
     public List<Product> getProduct() {
 
         return productDao.findAll();
+    }
+
+    public Product changeStateProduct(@NotNull Long id,ProductState productState) throws NotFoundEntityException {
+
+        Product toBeUpdatedProduct = productDao.getOne(id);
+
+        if (toBeUpdatedProduct == null)
+            throw new NotFoundEntityException();
+
+        toBeUpdatedProduct.setProductState(productState);
+        Product updatedProduct = productDao.save(toBeUpdatedProduct);
+
+        return toBeUpdatedProduct;
     }
 }

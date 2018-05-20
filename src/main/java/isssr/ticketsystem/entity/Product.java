@@ -20,6 +20,8 @@ public class Product {
     @GeneratedValue // Autoincrement
     private Long id;
 
+    @Enumerated(EnumType.STRING)
+    private ProductState productState;
     private String name;
     private String description;
     private double version;
@@ -37,6 +39,12 @@ public class Product {
         this.name = name;
         this.description = description;
         this.version = version;
+        this.productState = ProductState.ACTIVE;
+    }
+
+    public Product(Long id,ProductState productState){
+        this.id = id;
+        this.productState = productState;
     }
 
     public Long getId() {
@@ -47,7 +55,13 @@ public class Product {
         this.id = id;
     }
 
+    public ProductState getProductState() {
+        return productState;
+    }
 
+    public void setProductState(ProductState productState) {
+        this.productState = productState;
+    }
 
     @JsonIgnore
     public List<Ticket> getTicketList() {
@@ -81,6 +95,7 @@ public class Product {
         this.description = updatedData.description;
         this.version = updatedData.version;
         this.company = updatedData.company;
+        this.productState = updatedData.productState;
     }
 
 }
