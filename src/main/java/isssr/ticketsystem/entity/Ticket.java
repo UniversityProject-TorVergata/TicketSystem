@@ -1,8 +1,10 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 import org.springframework.web.multipart.MultipartFile;
 
 
@@ -29,7 +31,6 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private UserType sourceType;
 
-
     private String timestamp;
 
     @Enumerated(EnumType.STRING)
@@ -38,16 +39,12 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     private TicketType actualType;
 
-
-
     private String title;
-
 
     private String description;
 
-    //TODO http://www.devglan.com/spring-boot/file-upload-angularjs-spring-boot-rest
     @Lob
-    private byte[] attachedFile;
+    private String attachedFile;
 
     private String mediaType;
 
@@ -86,7 +83,8 @@ public class Ticket {
     //Costruttore usato per la CRUD utente.
     public Ticket(TicketState state, UserType sourceType ,
                   TicketType presumedType, String title,
-                  String description, String attachedByteStream, String attachedByteStreamType,
+                  String description, String attachedFile,
+                  String attachedByteStream, String attachedByteStreamType,
                   Assistant resolverUser, RegisteredUser openerUser, Product target, Priority customerPriority,
                   Visibility visibility) {
         this.state = state;
@@ -96,6 +94,7 @@ public class Ticket {
         this.title = title;
         this.description = description;
         //TODO aggiungere i campi per l'allegato
+        this.attachedFile = attachedFile;
         //this.attachedByteStream = attachedByteStream;
         //this.attachedByteStreamType = attachedByteStreamType;
         this.resolverUser = resolverUser;
