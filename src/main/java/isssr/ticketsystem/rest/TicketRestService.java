@@ -49,8 +49,8 @@ public class TicketRestService {
     }
 
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteTicket(@PathVariable Long id) {
-        boolean deletedTicket = ticketController.deleteTicket(id);
+    public @ResponseBody ResponseEntity<Boolean> deleteTicket(@PathVariable("id") String id) {
+        boolean deletedTicket = ticketController.deleteTicket(Long.parseLong(id));
         return new ResponseEntity<>(deletedTicket, deletedTicket ? HttpStatus.OK : HttpStatus.NOT_FOUND);
     }
 
