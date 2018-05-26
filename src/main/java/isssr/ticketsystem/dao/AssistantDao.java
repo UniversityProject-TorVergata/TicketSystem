@@ -1,7 +1,7 @@
 package isssr.ticketsystem.dao;
 
-import isssr.ticketsystem.entity.Assistant;
+import isssr.ticketsystem.entity.TeamMember;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface AssistantDao extends JpaRepository<Assistant, Long> {
+public interface AssistantDao extends JpaRepository<TeamMember, Long> {
 }

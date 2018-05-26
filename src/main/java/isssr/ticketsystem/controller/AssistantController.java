@@ -1,7 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.AssistantDao;
-import isssr.ticketsystem.entity.Assistant;
+import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,33 +12,33 @@ import java.util.List;
 
 @Service
 public class AssistantController {
-
+    /*
     @Autowired
     private AssistantDao assistantDao;
 
     @Transactional
-    public @NotNull Assistant insertAssistant(@NotNull Assistant assistant) {
-        Assistant createdAssistant = assistantDao.save(assistant);
-        return createdAssistant;
+    public @NotNull TeamMember insertAssistant(@NotNull TeamMember teamMember) {
+        TeamMember createdTeamMember = assistantDao.save(teamMember);
+        return createdTeamMember;
     }
 
     @Transactional
-    public @NotNull Assistant updateAssistant(@NotNull Long id, @NotNull Assistant updatedData) throws NotFoundEntityException {
+    public @NotNull TeamMember updateAssistant(@NotNull Long id, @NotNull TeamMember updatedData) throws NotFoundEntityException {
 
-        Assistant toBeUpdatedAssistant = assistantDao.getOne(id);
+        TeamMember toBeUpdatedTeamMember = assistantDao.getOne(id);
 
-        if (toBeUpdatedAssistant == null)
+        if (toBeUpdatedTeamMember == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedAssistant.updateAssistant(updatedData);
-        Assistant updatedAssistant = assistantDao.save(toBeUpdatedAssistant);
+        toBeUpdatedTeamMember.update(updatedData);
+        TeamMember updatedTeamMember = assistantDao.save(toBeUpdatedTeamMember);
 
-        return updatedAssistant;
+        return updatedTeamMember;
     }
 
-    public Assistant findCompanyById(@NotNull Long id) {
-        Assistant foundAssistant = assistantDao.getOne(id);
-        return foundAssistant;
+    public TeamMember findCompanyById(@NotNull Long id) {
+        TeamMember foundTeamMember = assistantDao.getOne(id);
+        return foundTeamMember;
     }
 
     public boolean deleteAssistant(@NotNull Long id) {
@@ -49,8 +49,8 @@ public class AssistantController {
         return true;
     }
 
-    public List<Assistant> getAssitants() {
+    public List<TeamMember> getAssitants() {
 
         return assistantDao.findAll();
-    }
+    }*/
 }

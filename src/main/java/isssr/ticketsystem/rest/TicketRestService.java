@@ -1,7 +1,7 @@
 package isssr.ticketsystem.rest;
 
 
-import isssr.ticketsystem.controller.ProductController;
+import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
@@ -23,7 +23,7 @@ public class TicketRestService {
     @Autowired
     private RegisteredUserController registeredUserController;
     @Autowired
-    private ProductController productController;
+    private TargetController targetController;
 
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<Ticket> insertTicket(@RequestBody Ticket ticket) {
@@ -72,6 +72,13 @@ public class TicketRestService {
 
         List<Ticket> tickets = ticketController.getTicketByOpenerUser(username);
         return new ResponseEntity<>(tickets,HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/findTiket",method = RequestMethod.POST)
+    public ResponseEntity<List<Ticket>> getTicketByAll(@RequestParam("searchType") int searchType){
+
+
+        return null;
     }
 }
 

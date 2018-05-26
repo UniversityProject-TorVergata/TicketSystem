@@ -1,6 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
+import isssr.ticketsystem.entity.TAG;
 import isssr.ticketsystem.entity.Ticket;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.apache.commons.logging.Log;
@@ -64,5 +65,21 @@ public class TicketController {
     public List<Ticket> getTicketByResolverUser(String username){
 
         return ticketDao.getTicketByResolverUser(username);
+    }
+
+    public List<Ticket> getTicketByTag(List<TAG> tags){
+
+        List<Ticket> allTicket = ticketDao.findAll();
+        for(Ticket t : allTicket){
+            List<TAG> tTag = t.getTags();
+            for(TAG tag : tags){
+                if(tTag.contains(tag))
+                    continue;
+                else
+                    allTicket.remove(t);
+            }
+        }
+        return allTicket;
+
     }
 }

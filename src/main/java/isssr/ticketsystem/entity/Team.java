@@ -5,18 +5,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "team")
 @Getter
 @Setter
 @NoArgsConstructor
+/**
+ * Formato da Team Coordinator,composto da Team Member e guidato da un Team Leader.
+ * Ha una specifica area di risoluzione di problemi.
+ *
+ */
 public class Team {
 
     @Id
@@ -31,17 +34,25 @@ public class Team {
 
     @JsonIgnore
     @OneToMany(mappedBy = "team")
-    private Collection<Assistant> assistantList;
+    private Collection<TeamMember> teamMemberList;
 
     @JsonIgnore
     @OneToOne(mappedBy = "managedTeam")
-    private TeamManager teamManager;
+    private TeamLeader teamLeader;
 
-    public Team(String name, ProblemArea problemArea, Collection<Assistant> assistantList, TeamManager teamManager) {
+    /**
+     *
+     *
+     * @param name
+     * @param problemArea Area di risoluzione a cui si dedica il team
+     * @param teamMemberList lista dei TeamMember
+     * @param teamLeader TeamLedaer del Team
+     */
+    public Team(String name, ProblemArea problemArea, Collection<TeamMember> teamMemberList, TeamLeader teamLeader) {
         this.name = name;
         this.problemArea =problemArea;
-        this.assistantList = assistantList;
-        this.teamManager = teamManager;
+        this.teamMemberList = teamMemberList;
+        this.teamLeader = teamLeader;
     }
 
     public Team(String name) {
@@ -66,40 +77,45 @@ public class Team {
     }
 
     @JsonIgnore
-    public Collection<Assistant> getAssistantList() {
-        return assistantList;
+    public Collection<TeamMember> getTeamMemberList() {
+        return teamMemberList;
     }
 
     @JsonProperty
-    public void setAssistantList(Collection<Assistant> assistantList) {
-        this.assistantList = assistantList;
+    public void setTeamMemberList(Collection<TeamMember> teamMemberList) {
+        this.teamMemberList = teamMemberList;
     }
 
     @JsonIgnore
-    public TeamManager getTeamManager() {
-        return teamManager;
+    public TeamLeader getTeamLeader() {
+        return teamLeader;
     }
 
     @JsonProperty
-    public void setTeamManager(TeamManager teamManager) {
-        this.teamManager = teamManager;
+    public void setTeamLeader(TeamLeader teamLeader) {
+        this.teamLeader = teamLeader;
     }
 
-    public void addAssistant(Assistant assistant) {
-        this.assistantList.add(assistant);
+    public void addAssistant(TeamMember teamMember) {
+        this.teamMemberList.add(teamMember);
     }
 
-    public void removeAssistent(Assistant assistant) {
+    public void removeAssistent(TeamMember teamMember) {
 
-        this.assistantList.remove(assistant);
+        this.teamMemberList.remove(teamMember);
     }
 
+    /**
+     * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
+     * @see isssr.ticketsystem.rest.TeamRestService
+     * @param updatedData Un'oggetto ricevuto dal metodo REST con i valori aggiornati da un utente.
+     */
     public void updateTeam(@NotNull Team updatedData) {
 
         this.problemArea = updatedData.problemArea;
         this.name = updatedData.name;
-        this.assistantList = updatedData.assistantList;
-        this.teamManager = updatedData.teamManager;
+        this.teamMemberList = updatedData.teamMemberList;
+        this.teamLeader = updatedData.teamLeader;
     }
 
 

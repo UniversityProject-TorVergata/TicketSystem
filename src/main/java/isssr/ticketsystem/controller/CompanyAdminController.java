@@ -1,7 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.CompanyAdminDao;
-import isssr.ticketsystem.entity.CompanyAdmin;
+import isssr.ticketsystem.entity.Admin;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,32 +13,33 @@ import java.util.List;
 @Service
 public class CompanyAdminController {
 
+    /*
     @Autowired
     private CompanyAdminDao companyAdminDao;
 
     @Transactional
-    public @NotNull CompanyAdmin insertCompanyAdmin(@NotNull CompanyAdmin companyAdmin) {
-        CompanyAdmin createdCompanyAdmin = companyAdminDao.save(companyAdmin);
-        return createdCompanyAdmin;
+    public @NotNull Admin insertCompanyAdmin(@NotNull Admin admin) {
+        Admin createdAdmin = companyAdminDao.save(admin);
+        return createdAdmin;
     }
 
     @Transactional
-    public @NotNull CompanyAdmin updateCompanyAdmin(@NotNull Long id, @NotNull CompanyAdmin updatedData) throws NotFoundEntityException {
+    public @NotNull Admin updateCompanyAdmin(@NotNull Long id, @NotNull Admin updatedData) throws NotFoundEntityException {
 
-        CompanyAdmin toBeUpdatedCompanyAdmin = companyAdminDao.getOne(id);
+        Admin toBeUpdatedAdmin = companyAdminDao.getOne(id);
 
-        if (toBeUpdatedCompanyAdmin == null)
+        if (toBeUpdatedAdmin == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedCompanyAdmin.updateCompanyAdmin(updatedData);
-        CompanyAdmin updatedCompanyAdmin = companyAdminDao.save(toBeUpdatedCompanyAdmin);
+        toBeUpdatedAdmin.update(updatedData);
+        Admin updatedAdmin = companyAdminDao.save(toBeUpdatedAdmin);
 
-        return updatedCompanyAdmin;
+        return updatedAdmin;
     }
 
-    public CompanyAdmin findCompanyAdmminById(@NotNull Long id) {
-        CompanyAdmin foundCompanyAdmin = companyAdminDao.getOne(id);
-        return foundCompanyAdmin;
+    public Admin findCompanyAdmminById(@NotNull Long id) {
+        Admin foundAdmin = companyAdminDao.getOne(id);
+        return foundAdmin;
     }
 
     public boolean deleteCompanyAdmin(@NotNull Long id) {
@@ -49,8 +50,8 @@ public class CompanyAdminController {
         return true;
     }
 
-    public List<CompanyAdmin> getCompanyAdmins() {
+    public List<Admin> getCompanyAdmins() {
 
         return companyAdminDao.findAll();
-    }
+    }*/
 }
