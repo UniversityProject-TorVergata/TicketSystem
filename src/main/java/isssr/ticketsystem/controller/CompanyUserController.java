@@ -1,7 +1,6 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.CompanyUserDao;
-import isssr.ticketsystem.entity.CompanyUser;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,6 +11,8 @@ import java.util.List;
 
 @Service
 public class CompanyUserController {
+
+    /*
 
     @Autowired
     private CompanyUserDao companyUserDao;
@@ -53,4 +54,5 @@ public class CompanyUserController {
 
         return companyUserDao.findAll();
     }
+    */
 }

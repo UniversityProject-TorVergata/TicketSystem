@@ -1,8 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TeamManagerDao;
-import isssr.ticketsystem.entity.Team;
-import isssr.ticketsystem.entity.TeamManager;
+import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,28 +17,28 @@ public class TeamManagerController {
     private TeamManagerDao teamManagerDao;
 
     @Transactional
-    public @NotNull TeamManager insertTeamManager(@NotNull TeamManager teamManager) {
-        TeamManager createdCompany = teamManagerDao.save(teamManager);
+    public @NotNull TeamLeader insertTeamManager(@NotNull TeamLeader teamLeader) {
+        TeamLeader createdCompany = teamManagerDao.save(teamLeader);
         return createdCompany;
     }
 
     @Transactional
-    public @NotNull TeamManager updateTeamManager(@NotNull Long id, @NotNull TeamManager updatedData) throws NotFoundEntityException {
+    public @NotNull TeamLeader updateTeamManager(@NotNull Long id, @NotNull TeamLeader updatedData) throws NotFoundEntityException {
 
-        TeamManager toBeUpdatedTeamManager = teamManagerDao.getOne(id);
+        TeamLeader toBeUpdatedTeamLeader = teamManagerDao.getOne(id);
 
-        if (toBeUpdatedTeamManager == null)
+        if (toBeUpdatedTeamLeader == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedTeamManager.updateTeamManager(updatedData);
-        TeamManager teamManager = teamManagerDao.save(toBeUpdatedTeamManager);
+        toBeUpdatedTeamLeader.update(updatedData);
+        TeamLeader teamLeader = teamManagerDao.save(toBeUpdatedTeamLeader);
 
-        return teamManager;
+        return teamLeader;
     }
 
-    public TeamManager findTeamManagerById(@NotNull Long id) {
-        TeamManager foundTeamManager = teamManagerDao.getOne(id);
-        return foundTeamManager;
+    public TeamLeader findTeamManagerById(@NotNull Long id) {
+        TeamLeader foundTeamLeader = teamManagerDao.getOne(id);
+        return foundTeamLeader;
     }
 
     public boolean deleteTeamManager(@NotNull Long id) {
@@ -50,7 +49,7 @@ public class TeamManagerController {
         return true;
     }
 
-    public List<TeamManager> getTeamManagers() {
+    public List<TeamLeader> getTeamManagers() {
 
         return teamManagerDao.findAll();
     }

@@ -12,9 +12,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
- *
- * This class is used to group tickets related it is necessary to save
- * the Map<RelationshipType,List<Ticket>> in the DB.
+ * Questa classe è usata per raggruppare ticket relazionati.
  * @see Ticket
  *
  */

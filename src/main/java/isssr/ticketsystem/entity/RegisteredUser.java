@@ -18,10 +18,15 @@ import java.text.SimpleDateFormat;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value =ThirdPartyCustomer.class, name = "ThirdPartyCustomer"),
+        @JsonSubTypes.Type(value =Customer.class, name = "Customer"),
 
-        @JsonSubTypes.Type(value = CompanyUser.class, name = "CompanyUser") }
+        @JsonSubTypes.Type(value = InternalUser.class, name = "InternalUser") }
 )
+/**
+ * Superclasse di tutte le entità di Utente all'interno del sistema.
+ * Contiene gli attributi caratterizzanti di un utente.
+ *
+ */
 public abstract class RegisteredUser {
 
     /**
@@ -132,11 +137,17 @@ public abstract class RegisteredUser {
         return created_at;
     }
 
+
     public void setCreated_at(String created_at) {
         this.created_at = created_at;
     }
 
-    public void updateRegisteredUser(@NotNull RegisteredUser updatedData) {
+    /**
+     * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
+     * @see isssr.ticketsystem.rest.RegisteredUserRestService
+     * @param updatedData Un'oggetto ricevuto dal metodo REST con i valori aggiornati da un utente.
+     */
+    public void update(@NotNull RegisteredUser updatedData) {
 
         this.fiscal_code = updatedData.fiscal_code;
         this.name = updatedData.name;

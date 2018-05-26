@@ -1,7 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.ThirdPartyCustomerDao;
-import isssr.ticketsystem.entity.ThirdPartyCustomer;
+import isssr.ticketsystem.entity.Customer;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,28 +17,28 @@ public class ThirdPartyCustomerController {
     private ThirdPartyCustomerDao thirdPartyCustomerDao;
 
     @Transactional
-    public @NotNull ThirdPartyCustomer insertThirdParyCustomer(@NotNull ThirdPartyCustomer thirdPartyCustomer) {
-        ThirdPartyCustomer createdThirdPartyCustomer = thirdPartyCustomerDao.save(thirdPartyCustomer);
-        return createdThirdPartyCustomer;
+    public @NotNull Customer insertThirdParyCustomer(@NotNull Customer customer) {
+        Customer createdCustomer = thirdPartyCustomerDao.save(customer);
+        return createdCustomer;
     }
 
     @Transactional
-    public @NotNull ThirdPartyCustomer updateThirdParyCustomer(@NotNull Long id, @NotNull ThirdPartyCustomer updatedData) throws NotFoundEntityException {
+    public @NotNull Customer updateThirdParyCustomer(@NotNull Long id, @NotNull Customer updatedData) throws NotFoundEntityException {
 
-        ThirdPartyCustomer toBeUpdatedThirdPartyCustomer = thirdPartyCustomerDao.getOne(id);
+        Customer toBeUpdatedCustomer = thirdPartyCustomerDao.getOne(id);
 
-        if (toBeUpdatedThirdPartyCustomer == null)
+        if (toBeUpdatedCustomer == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedThirdPartyCustomer.updateThirdPartyCustomer(updatedData);
-        ThirdPartyCustomer thirdPartyCustomer = thirdPartyCustomerDao.save(toBeUpdatedThirdPartyCustomer);
+        toBeUpdatedCustomer.update(updatedData);
+        Customer customer = thirdPartyCustomerDao.save(toBeUpdatedCustomer);
 
-        return thirdPartyCustomer;
+        return customer;
     }
 
-    public ThirdPartyCustomer findCompanyById(@NotNull Long id) {
-        ThirdPartyCustomer foundThirdPartyCustomer = thirdPartyCustomerDao.getOne(id);
-        return foundThirdPartyCustomer;
+    public Customer findCompanyById(@NotNull Long id) {
+        Customer foundCustomer = thirdPartyCustomerDao.getOne(id);
+        return foundCustomer;
     }
 
     public boolean deleteThirdPartyCustomer(@NotNull Long id) {
@@ -49,7 +49,7 @@ public class ThirdPartyCustomerController {
         return true;
     }
 
-    public List<ThirdPartyCustomer> getThirdPartyCustomers() {
+    public List<Customer> getThirdPartyCustomers() {
 
         return thirdPartyCustomerDao.findAll();
     }

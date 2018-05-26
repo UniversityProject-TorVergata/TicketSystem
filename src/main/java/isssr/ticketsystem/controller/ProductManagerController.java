@@ -1,7 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.ProductManagerDao;
-import isssr.ticketsystem.entity.ProductManager;
+import isssr.ticketsystem.entity.TeamCoordinator;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,28 +17,28 @@ public class ProductManagerController {
     private ProductManagerDao productManagerDao;
 
     @Transactional
-    public @NotNull ProductManager insertProductManager(@NotNull ProductManager productManager) {
-        ProductManager createdCompany = productManagerDao.save(productManager);
+    public @NotNull TeamCoordinator insertProductManager(@NotNull TeamCoordinator teamCoordinator) {
+        TeamCoordinator createdCompany = productManagerDao.save(teamCoordinator);
         return createdCompany;
     }
 
     @Transactional
-    public @NotNull ProductManager updateProductManager(@NotNull Long id, @NotNull ProductManager updatedData) throws NotFoundEntityException {
+    public @NotNull TeamCoordinator updateProductManager(@NotNull Long id, @NotNull TeamCoordinator updatedData) throws NotFoundEntityException {
 
-        ProductManager toBeUpdatedProductManager = productManagerDao.getOne(id);
+        TeamCoordinator toBeUpdatedTeamCoordinator = productManagerDao.getOne(id);
 
-        if (toBeUpdatedProductManager == null)
+        if (toBeUpdatedTeamCoordinator == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedProductManager.updateProductManager(updatedData);
-        ProductManager updatedProductManager = productManagerDao.save(toBeUpdatedProductManager);
+        toBeUpdatedTeamCoordinator.update(updatedData);
+        TeamCoordinator updatedTeamCoordinator = productManagerDao.save(toBeUpdatedTeamCoordinator);
 
-        return updatedProductManager;
+        return updatedTeamCoordinator;
     }
 
-    public ProductManager findProductManagerById(@NotNull Long id) {
-        ProductManager foundProductManager = productManagerDao.getOne(id);
-        return foundProductManager;
+    public TeamCoordinator findProductManagerById(@NotNull Long id) {
+        TeamCoordinator foundTeamCoordinator = productManagerDao.getOne(id);
+        return foundTeamCoordinator;
     }
 
     public boolean deleteProductManager(@NotNull Long id) {
@@ -49,7 +49,7 @@ public class ProductManagerController {
         return true;
     }
 
-    public List<ProductManager> getProductManager() {
+    public List<TeamCoordinator> getProductManager() {
 
         return productManagerDao.findAll();
     }

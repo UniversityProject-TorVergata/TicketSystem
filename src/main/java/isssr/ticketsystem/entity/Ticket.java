@@ -132,7 +132,7 @@ public class Ticket {
                   String title, String description, String attachedFile, String mediaType,
                   RegisteredUser openerUser, Target target, Priority customerPriority, Visibility visibility,
                    List<TAG> tags) {
-        this.state = TicketState.New;
+        this.state = TicketState.NEW;
         this.sourceType = sourceType;
         this.timestamp = new Timestamp(System.currentTimeMillis()).toString();
         this.presumedType = presumedType;

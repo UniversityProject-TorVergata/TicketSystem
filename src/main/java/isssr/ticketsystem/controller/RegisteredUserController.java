@@ -35,7 +35,7 @@ public class RegisteredUserController {
         if (toBeUpdatedRegisteredUser == null)
             throw new NotFoundEntityException();
 
-        toBeUpdatedRegisteredUser.updateRegisteredUser(updatedData);
+        toBeUpdatedRegisteredUser.update(updatedData);
         RegisteredUser updatedRegisteredUser = registeredUserDao.save(toBeUpdatedRegisteredUser);
 
         return updatedRegisteredUser;

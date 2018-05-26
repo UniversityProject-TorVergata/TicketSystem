@@ -8,9 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- *
- * SystemEvent map every action on the system , it is useful for auditing.
- *
+ * SystemEvent rappresenta un'azione sul sistema ed è usato per l'auditing.
  */
 
 @Entity
@@ -33,6 +31,14 @@ public class SystemEvent {
 
     private String timestamp;
 
+
+    /**
+     * Costruttore
+     *
+     * @param eventGenerator L'utente che ha generato l'evento
+     * @param ticket Il ticket oggetto dell'evento (se presente)
+     * @param description descrizione dell'evento.
+     */
     public SystemEvent(RegisteredUser eventGenerator,Ticket ticket, String description) {
         this.eventGenerator = eventGenerator;
         this.description = description;
