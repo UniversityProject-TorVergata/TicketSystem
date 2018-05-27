@@ -68,12 +68,12 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(username);
     }
 
-    /*public List<Ticket> getTicketByState(TicketState ticketState){
+    public List<Ticket> getTicketByState(TicketState ticketState){
 
         List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
 
         return ticketDao.getTicketByState(ticketState);
-    }*/
+    }
 
     public List<Ticket> getTicketByTag(List<TAG> tags){
 
