@@ -2,6 +2,7 @@ package isssr.ticketsystem.dao;
 
 
 import isssr.ticketsystem.entity.Ticket;
+import isssr.ticketsystem.entity.TicketState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +28,14 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
       */
      @Query("select t from Ticket t where t.resolverUser.username = :username")
      List<Ticket> getTicketByResolverUser(@Param("username") String username);
+
+
+    /**
+     * Per ricercare un ticket in una specifica fase del suo WorkFlow
+     *
+     * @param ticketState Stato dei Ticket da ricercare nel DB.
+     * @return List<Ticket> : Tutti i ticket nello specifico ticketState
+     */
+     @Query("select t from Ticket  t where t.ticketState = :ticketState")
+     List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
 }

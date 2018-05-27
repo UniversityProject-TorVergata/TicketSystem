@@ -16,11 +16,21 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum TicketState {
 
-    NEW,
-    PENDING,
+    NEW("NEW"),
+    PENDING("PENDING"),
 
-    READY,
-    EXECUTION,
-    TRASHED //Per i ticket cestinati.
+    READY("READY"),
+    EXECUTION("EXECUTION"),
+    TRASHED("TRASHED"); //Per i ticket cestinati.
+
+    private final String name;
+
+    private TicketState(String name){
+        this.name = name;
+    }
+
+    public String toString() {
+        return this.name;
+    }
 
 }

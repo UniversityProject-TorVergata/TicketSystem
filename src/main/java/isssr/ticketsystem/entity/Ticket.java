@@ -187,4 +187,39 @@ public class Ticket {
     public void setTags(List<TAG> tags) {
         this.tags = tags;
     }
+
+    public TeamMember getResolverUser() {
+        return resolverUser;
+    }
+
+    public void setResolverUser(TeamMember resolverUser) {
+        this.resolverUser = resolverUser;
+    }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", ticketState=" + state +
+                ", sourceType=" + sourceType +
+                ", timestamp='" + timestamp + '\'' +
+                ", presumedType=" + presumedType +
+                ", actualType=" + actualType +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", attachedFile='" + attachedFile + '\'' +
+                ", mediaType='" + mediaType + '\'' +
+                ", resolverUser=" + resolverUser +
+                ", openerUser=" + openerUser +
+                ", target=" + target +
+                ", customerPriority=" + customerPriority +
+                ", actualPriority=" + actualPriority +
+                ", visibility=" + visibility +
+                ", relationships=" + relationships +
+                ", difficulty=" + difficulty +
+                ", eventRegister=" + eventRegister +
+                ", ticketComments=" + ticketComments +
+                ", tags=" + tags +
+                '}';
+    }
 }

@@ -1,8 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
-import isssr.ticketsystem.entity.TAG;
-import isssr.ticketsystem.entity.Ticket;
+import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -18,6 +17,8 @@ public class TicketController {
 
     @Autowired
     private TicketDao ticketDao;
+    @Autowired
+    private RegisteredUserController registeredUserController;
 
     @Transactional
     public @NotNull Ticket insertTicket(@NotNull Ticket ticket) {
@@ -34,6 +35,7 @@ public class TicketController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTicket.updateTicket(updatedData);
+
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
 
         return updatedTicket;
@@ -67,6 +69,13 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(username);
     }
 
+    public List<Ticket> getTicketByState(TicketState ticketState){
+
+        List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
+
+        return ticketDao.getTicketByState(ticketState);
+    }
+
     public List<Ticket> getTicketByTag(List<TAG> tags){
 
         List<Ticket> allTicket = ticketDao.findAll();
@@ -81,5 +90,12 @@ public class TicketController {
         }
         return allTicket;
 
+    }
+
+    public void assignTicket(Long ticketID, Long teamLeaderID) throws NotFoundEntityException {
+        Ticket assignedTicket  = this.findTicketById(ticketID);
+        TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
+        assignedTicket.setResolverUser(teamLeader);
+        ticketDao.save(assignedTicket);
     }
 }

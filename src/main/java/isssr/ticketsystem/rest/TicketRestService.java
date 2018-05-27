@@ -6,7 +6,10 @@ import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -70,15 +73,36 @@ public class TicketRestService {
     @RequestMapping(path="/ticketByResolverUser",method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> getTicketsByResolverUser(@RequestParam("username") String username){
 
+
         List<Ticket> tickets = ticketController.getTicketByOpenerUser(username);
         return new ResponseEntity<>(tickets,HttpStatus.OK);
     }
 
-    @RequestMapping(path = "/findTiket",method = RequestMethod.POST)
+    @RequestMapping(path = "/findTicket",method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> getTicketByAll(@RequestParam("searchType") int searchType){
 
 
         return null;
     }
+
+    @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state") TicketState ticketState){
+        Log logger = LogFactory.getLog(getClass());
+        logger.info(ticketState.toString() +" " + ticketState.getClass());
+        List<Ticket> tickets = ticketController.getTicketByState(ticketState);
+        return new ResponseEntity<>(tickets,HttpStatus.OK);
+    }
+
+
+    @RequestMapping(path= "/assignTicket/{ticketID}/{teamLeaderID}",method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> assignTicket(@PathVariable("ticketID") Long ticketID,@PathVariable("teamLeaderID") Long teamLeaderID)
+            throws NotFoundEntityException {
+
+        ticketController.assignTicket(ticketID,teamLeaderID);
+        Ticket ticket = ticketController.findTicketById(ticketID);
+        return new ResponseEntity<>(ticket,HttpStatus.OK);
+
+    }
+
 }
 
