@@ -85,13 +85,13 @@ public class TicketRestService {
         return null;
     }
 
-    @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
+    /*@RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state") TicketState ticketState){
         Log logger = LogFactory.getLog(getClass());
         logger.info(ticketState.toString() +" " + ticketState.getClass());
         List<Ticket> tickets = ticketController.getTicketByState(ticketState);
         return new ResponseEntity<>(tickets,HttpStatus.OK);
-    }
+    }*/
 
 
     @RequestMapping(path= "/assignTicket/{ticketID}/{teamLeaderID}",method = RequestMethod.PUT)

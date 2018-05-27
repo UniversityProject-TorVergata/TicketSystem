@@ -3,8 +3,6 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +15,7 @@ public class TicketController {
 
     @Autowired
     private TicketDao ticketDao;
+
     @Autowired
     private RegisteredUserController registeredUserController;
 
@@ -69,12 +68,12 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(username);
     }
 
-    public List<Ticket> getTicketByState(TicketState ticketState){
+    /*public List<Ticket> getTicketByState(TicketState ticketState){
 
         List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
 
         return ticketDao.getTicketByState(ticketState);
-    }
+    }*/
 
     public List<Ticket> getTicketByTag(List<TAG> tags){
 
