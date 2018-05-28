@@ -2,12 +2,9 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.RegisteredUser;
+import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.exception.NotFoundEntityException;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -115,6 +112,14 @@ public class RegisteredUserRestService {
 
     }
 
+    @RequestMapping(path = "/team_leader", method = RequestMethod.GET)
+    public ResponseEntity<List<TeamLeader>> getListTeamLeader() {
+        List<TeamLeader> listTeamLeader = registeredUserController.getListTeamLeader();
+        if(listTeamLeader != null)
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
+    }
 
     public static class LoginBean {
 

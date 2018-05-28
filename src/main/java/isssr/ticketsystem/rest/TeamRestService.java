@@ -3,12 +3,15 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.TeamController;
 import isssr.ticketsystem.entity.Team;
+import isssr.ticketsystem.entity.TeamLeader;
+import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -95,6 +98,22 @@ public class TeamRestService {
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "/team_member/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamId(@PathVariable Long id) {
+        Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamId(id);
+        if(listTeamMember != null)
+            return new ResponseEntity<>(listTeamMember,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
+    }
 
+    @RequestMapping(path = "/team_member/team_leader/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamLeaderId(@PathVariable Long id) {
+        Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamLeaderId(id);
+        if(listTeamMember != null)
+            return new ResponseEntity<>(listTeamMember,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
+    }
 
 }
