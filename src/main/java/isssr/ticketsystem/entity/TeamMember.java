@@ -42,12 +42,11 @@ public class TeamMember extends InternalUser {
      * @param username
      * @param password
      * @param address
-     * @param company
      * @param team Team a cui appartiene il Team Member
      */
     public TeamMember(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                      @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Company company, @NotNull Team team) {
-        super(fiscal_code, name, surname, email, username, password, company, address);
+                      @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Team team) {
+        super(fiscal_code, name, surname, email, username, password, address);
         this.team = team;
     }
 

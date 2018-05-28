@@ -40,14 +40,13 @@ public class TeamLeader extends TeamMember {
      * @param username
      * @param password
      * @param address
-     * @param company
      * @param team
      * @param managedTeam Team gestito dal Team Leader
      */
     public TeamLeader(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                      @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Company company,
+                      @NotNull String username, @NotNull String password, @NotNull String address,
                       @NotNull Team team, @NotNull Team managedTeam) {
-        super(fiscal_code, name, surname, email, username, password, address, company, team);
+        super(fiscal_code, name, surname, email, username, password, address, team);
         this.managedTeam = managedTeam;
     }
 

@@ -11,7 +11,6 @@ public enum TicketType {
 
     //TODO
     BUG,
-
     CHANGE_REQUEST,
     NEW_IMPLEMENTATION,
     OTHER

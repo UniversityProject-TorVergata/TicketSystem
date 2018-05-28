@@ -33,8 +33,8 @@ public class TeamCoordinator extends InternalUser {
 
 
     public TeamCoordinator(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                           @NotNull String username, @NotNull String password, @NotNull Company company, Target managedTarget, @NotNull String address) {
-        super(fiscal_code, name, surname, email, username, password, company, address);
+                           @NotNull String username, @NotNull String password, Target managedTarget, @NotNull String address) {
+        super(fiscal_code, name, surname, email, username, password, address);
 
     }
 

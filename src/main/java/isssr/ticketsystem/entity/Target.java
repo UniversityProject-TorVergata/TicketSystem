@@ -7,6 +7,8 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.Collection;
+import java.util.List;
 
 
 @Entity
@@ -30,6 +32,9 @@ public class Target {
     private String name;
     private String description;
     private double version;
+
+    @ElementCollection
+    private Collection<String> categories;
 
     /*
     Deprecato alla luce degli ultimi Brainstorming
@@ -63,6 +68,14 @@ public class Target {
         this.description = description;
         this.version = version;
         this.targetState = targetState;
+    }
+
+    public Target(String name, String description, double version, TargetState targetState,List<String> categories){
+        this.name = name;
+        this.description = description;
+        this.version = version;
+        this.targetState = targetState;
+        this.categories = categories;
     }
 
     public Target(Long id, TargetState targetState){
@@ -132,6 +145,14 @@ public class Target {
     }
     */
 
+    public Collection<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<String> categories) {
+        this.categories = categories;
+    }
+
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
      * @see isssr.ticketsystem.rest.TargetRestService
@@ -145,6 +166,8 @@ public class Target {
         //this.company = updatedData.company;
         this.targetState = updatedData.targetState;
         this.targetType = updatedData.targetType;
+        this.categories = updatedData.categories;
     }
+
 
 }

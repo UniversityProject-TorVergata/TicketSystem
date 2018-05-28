@@ -34,26 +34,13 @@ public abstract class InternalUser extends RegisteredUser {
 
      */
 
-    private Long idCompanyUser;
-
-    @ManyToOne
-    private Company company;
 
 
     public InternalUser() { }
 
     public InternalUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                        @NotNull String username, @NotNull String password, @NotNull Company company, @NotNull String address) {
+                        @NotNull String username, @NotNull String password, @NotNull String address) {
         super(fiscal_code, name, surname, email, username, password, address);
-        this.company = company;
-    }
-
-    public Long getIdCompanyUser() {
-        return idCompanyUser;
-    }
-
-    public void setIdCompanyUser(Long idCompanyUser) {
-        this.idCompanyUser = idCompanyUser;
     }
 
     /**
@@ -71,7 +58,6 @@ public abstract class InternalUser extends RegisteredUser {
         this.username = updatedData.username;
         this.email = updatedData.email;
         this.password = updatedData.password;
-        this.company = updatedData.company;
         this.address = updatedData.address;
     }
 }

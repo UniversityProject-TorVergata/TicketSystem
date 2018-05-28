@@ -24,8 +24,8 @@ import javax.validation.constraints.NotNull;
 public class Admin extends InternalUser {
 
     public Admin(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                 @NotNull String username, @NotNull String password, @NotNull Company company, @NotNull String address) {
-        super(fiscal_code, name, surname, email, username, password, company, address);
+                 @NotNull String username, @NotNull String password, @NotNull String address) {
+        super(fiscal_code, name, surname, email, username, password, address);
     }
 
     /**
