@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY)
 @JsonSubTypes({
-        @JsonSubTypes.Type(value = TeamLeader.class, name = "TeamLA"),
+        @JsonSubTypes.Type(value = TeamLeader.class, name = "TeamLeader"),
         }
 )
 /**

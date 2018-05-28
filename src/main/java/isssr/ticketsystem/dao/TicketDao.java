@@ -38,4 +38,8 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      */
      @Query("select t from Ticket  t where t.state = :ticketState")
      List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
+
+     @Query("select t from Ticket t where t.resolverUser.id = :teamLeaderID")
+     List<Ticket> findTicketByTeamLeaderID(@Param("teamLeaderID") Long teamLeaderID);
+
 }

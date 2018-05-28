@@ -182,5 +182,18 @@ public class TicketRestService {
 
     }
 
+    /**
+     * Questo metodo ricerca i ticket assegnati a un Determinato TeamLeader
+     *
+     * @param teamLeaderID ID del team leader su cui si effettua le ricerca
+     * @return una lista con i ticket assegnati al TeamLeader ricercato.
+     */
+    @RequestMapping(path = "/findTicketByTeamLeader/{teamLeaderID}",method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> findTicketByState(@PathVariable("teamLeaderID") Long teamLeaderID){
+        List<Ticket> ticketList = ticketController.findTicketByTeamLeaderID(teamLeaderID);
+        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+
+    }
+
 }
 

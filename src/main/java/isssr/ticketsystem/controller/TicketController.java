@@ -97,4 +97,9 @@ public class TicketController {
         assignedTicket.setResolverUser(teamLeader);
         ticketDao.save(assignedTicket);
     }
+
+    public List<Ticket> findTicketByTeamLeaderID(Long teamLeaderID) {
+        return ticketDao.findTicketByTeamLeaderID(teamLeaderID);
+
+    }
 }
