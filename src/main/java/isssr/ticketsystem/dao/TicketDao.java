@@ -1,6 +1,7 @@
 package isssr.ticketsystem.dao;
 
 
+import isssr.ticketsystem.entity.TAG;
 import isssr.ticketsystem.entity.Ticket;
 import isssr.ticketsystem.entity.TicketState;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,20 +15,20 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      /**
       * To search the ticket opened by a specified user username
       *
-      * @param username
+      * @param customerID
       * @return List<Ticket> : All tickets opened by a user
       */
-     @Query("select t from Ticket t where t.openerUser.username = :username")
-     List<Ticket> getTicketByOpenerUser(@Param("username") String username);
+     @Query("select t from Ticket t where t.openerUser.id = :customerID")
+     List<Ticket> getTicketByOpenerUser(@Param("customerID") Long customerID);
 
      /**
       * To search the ticket assigned to a specified TeamMember username
       *
-      * @param username
+      * @param teamLeaderID
       * @return List<Ticket> : All tickets assigned to a TeamMember
       */
-     @Query("select t from Ticket t where t.resolverUser.username = :username")
-     List<Ticket> getTicketByResolverUser(@Param("username") String username);
+     @Query("select t from Ticket t where t.resolverUser.id = :teamLeaderID")
+     List<Ticket> getTicketByResolverUser(@Param("teamLeaderID") Long teamLeaderID);
 
 
     /**
@@ -42,4 +43,10 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      @Query("select t from Ticket t where t.resolverUser.id = :teamLeaderID")
      List<Ticket> findTicketByTeamLeaderID(@Param("teamLeaderID") Long teamLeaderID);
 
+     @Query("select t from Ticket t where t.actualType = :category and t.target.id = :targetID")
+     List<Ticket> getTicketByCategoryAndTarget(@Param("category") String category,@Param("targetID") Long targetID);
+
+
+     @Query("select t from Ticket t where  t.target.id = :targetID ")
+     List<Ticket> getTicketByTarget(@Param("targetID") Long targetID);
 }

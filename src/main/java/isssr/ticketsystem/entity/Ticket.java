@@ -36,11 +36,11 @@ public class Ticket {
 
     private String timestamp;
 
-    @Enumerated(EnumType.STRING)
-    private TicketType presumedType;
 
-    @Enumerated(EnumType.STRING)
-    private TicketType actualType;
+    private String presumedType;
+
+
+    private String actualType;
 
     private String title;
 
@@ -87,9 +87,161 @@ public class Ticket {
     List<TAG> tags;
 
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public TicketState getState() {
+        return state;
+    }
+
+    public void setState(TicketState state) {
+        this.state = state;
+    }
+
+    public UserType getSourceType() {
+        return sourceType;
+    }
+
+    public void setSourceType(UserType sourceType) {
+        this.sourceType = sourceType;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getPresumedType() {
+        return presumedType;
+    }
+
+    public void setPresumedType(String presumedType) {
+        this.presumedType = presumedType;
+    }
+
+    public String getActualType() {
+        return actualType;
+    }
+
+    public void setActualType(String actualType) {
+        this.actualType = actualType;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getAttachedFile() {
+        return attachedFile;
+    }
+
+    public void setAttachedFile(String attachedFile) {
+        this.attachedFile = attachedFile;
+    }
+
+    public String getMediaType() {
+        return mediaType;
+    }
+
+    public void setMediaType(String mediaType) {
+        this.mediaType = mediaType;
+    }
+
+    public RegisteredUser getOpenerUser() {
+        return openerUser;
+    }
+
+    public void setOpenerUser(RegisteredUser openerUser) {
+        this.openerUser = openerUser;
+    }
+
+    public Target getTarget() {
+        return target;
+    }
+
+    public void setTarget(Target target) {
+        this.target = target;
+    }
+
+    public Priority getCustomerPriority() {
+        return customerPriority;
+    }
+
+    public void setCustomerPriority(Priority customerPriority) {
+        this.customerPriority = customerPriority;
+    }
+
+    public Priority getActualPriority() {
+        return actualPriority;
+    }
+
+    public void setActualPriority(Priority actualPriority) {
+        this.actualPriority = actualPriority;
+    }
+
+    public Visibility getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Visibility visibility) {
+        this.visibility = visibility;
+    }
+
+    public Map<ReletionshipType, RelatedTicket> getRelationships() {
+        return relationships;
+    }
+
+    public void setRelationships(Map<ReletionshipType, RelatedTicket> relationships) {
+        this.relationships = relationships;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public List<SystemEvent> getEventRegister() {
+        return eventRegister;
+    }
+
+    public void setEventRegister(List<SystemEvent> eventRegister) {
+        this.eventRegister = eventRegister;
+    }
+
+    public List<TicketComment> getTicketComments() {
+        return ticketComments;
+    }
+
+    public void setTicketComments(List<TicketComment> ticketComments) {
+        this.ticketComments = ticketComments;
+    }
+
     //Costruttore usato per la CRUD utente.
     public Ticket(TicketState state, UserType sourceType ,
-                  TicketType presumedType, String title,
+                  String presumedType, String title,
                   String description, String attachedFile,
                   String attachedByteStream, String attachedByteStreamType,
                   TeamMember resolverUser, RegisteredUser openerUser, Target target, Priority customerPriority,
@@ -128,7 +280,7 @@ public class Ticket {
      * @param visibility visibilità del ticket agli altri Customer.
      * @param tags Elenco di tag indicati dall utente all'apertura del ticket.
      */
-    public Ticket( UserType sourceType, String timestamp, TicketType presumedType,
+    public Ticket( UserType sourceType, String timestamp, String presumedType,
                   String title, String description, String attachedFile, String mediaType,
                   RegisteredUser openerUser, Target target, Priority customerPriority, Visibility visibility,
                    List<TAG> tags) {

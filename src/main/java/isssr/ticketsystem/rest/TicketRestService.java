@@ -6,6 +6,7 @@ import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import lombok.NoArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -108,45 +109,33 @@ public class TicketRestService {
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
      * una richiesta di questo tipo vengono restiutiti tutti i ticket presenti nel DB aperti dall'utente indicato.
-     * @param username Username dell'utente di cui si vogliono visualizzare i ticket aperti.
+     * @param customerID ID dell'utente di cui si vogliono visualizzare i ticket aperti.
      * @return Ticket presenti nel DB che rispondono ai criteri sopraspecificati + esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TicketController
      */
-    @RequestMapping(path="/ticketByOpenerUser",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTicketsByOpenerUser(@RequestParam("username") String username){
+    @RequestMapping(path="/ticketByOpenerUser/{customerID}",method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> getTicketsByOpenerUser(@PathVariable("customerID") Long customerID){
 
-        List<Ticket> tickets = ticketController.getTicketByOpenerUser(username);
+        List<Ticket> tickets = ticketController.getTicketByOpenerUser(customerID);
         return new ResponseEntity<>(tickets,HttpStatus.OK);
     }
 
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
      * una richiesta di questo tipo vengono restiutiti tutti i ticket presenti nel DB risolti dall'utente indicato.
-     * @param username Username dell'utente di cui si vogliono visualizzare i ticket risolti.
+     * @param teamLeaderID teamLeader dell'utente di cui si vogliono visualizzare i ticket risolti.
      * @return Ticket presenti nel DB che rispondono ai criteri sopraspecificati + esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TicketController
      */
-    @RequestMapping(path="/ticketByResolverUser",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTicketsByResolverUser(@RequestParam("username") String username){
+    @RequestMapping(path="/ticketByResolverUser/{teamLeaderID}",method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> getTicketsByResolverUser(@PathVariable("teamLeaderID") Long teamLeaderID){
 
 
-        List<Ticket> tickets = ticketController.getTicketByOpenerUser(username);
+        List<Ticket> tickets = ticketController.getTicketByResolverUser(teamLeaderID);
         return new ResponseEntity<>(tickets,HttpStatus.OK);
     }
 
-    /**
-     * Metodo usato per la gestione di una POST che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo vengono restiutiti tutti i ticket presenti nel DB corrispondenti al tipo indicato.
-     * @param searchType Tipo di ticket che si vuole visualizzare
-     * @return Ticket presenti nel DB che rispondono ai criteri sopraspecificati + esito della richiesta HTTP
-     * @see isssr.ticketsystem.controller.TicketController
-     */
-    @RequestMapping(path = "/findTicket",method = RequestMethod.POST)
-    public ResponseEntity<List<Ticket>> getTicketByAll(@RequestParam("searchType") int searchType){
 
-
-        return null;
-    }
 
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
@@ -189,11 +178,72 @@ public class TicketRestService {
      * @return una lista con i ticket assegnati al TeamLeader ricercato.
      */
     @RequestMapping(path = "/findTicketByTeamLeader/{teamLeaderID}",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findTicketByState(@PathVariable("teamLeaderID") Long teamLeaderID){
+    public ResponseEntity<List<Ticket>> findTicketByTeamLeaderID(@PathVariable("teamLeaderID") Long teamLeaderID){
         List<Ticket> ticketList = ticketController.findTicketByTeamLeaderID(teamLeaderID);
         return new ResponseEntity<>(ticketList,HttpStatus.OK);
 
     }
 
+    @RequestMapping(path = "/searchTicketExclusive",method = RequestMethod.POST)
+    public ResponseEntity<List<Ticket>> searchTicketExclusive(@RequestBody SearchBean searchBean){
+        List<Ticket> ticketList = ticketController.searchTicketExclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
+        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/searchTicketInclusive",method = RequestMethod.POST)
+    public ResponseEntity<List<Ticket>> searchTicketInclusive(@RequestBody SearchBean searchBean){
+        List<Ticket> ticketList = ticketController.searchTicketInclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
+        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+    }
+
+
+    @NoArgsConstructor
+    public static class SearchBean {
+
+        private List<TAG> tags;
+        private Long targetID;
+        private String category;
+
+
+        public SearchBean(List<TAG> tags, Long targetID, String category) {
+            this.tags = tags;
+            this.targetID = targetID;
+            this.category = category;
+        }
+
+        public SearchBean(List<TAG> tags, Long targetID) {
+            this.tags = tags;
+            this.targetID = targetID;
+        }
+
+        public SearchBean(Long targetID, String category) {
+            this.targetID = targetID;
+            this.category = category;
+        }
+
+        public List<TAG> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<TAG> tags) {
+            this.tags = tags;
+        }
+
+        public Long getTargetID() {
+            return targetID;
+        }
+
+        public void setTargetID(Long targetID) {
+            this.targetID = targetID;
+        }
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+    }
 }
 

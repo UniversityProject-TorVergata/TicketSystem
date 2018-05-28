@@ -37,7 +37,7 @@ public class Team {
     private Collection<TeamMember> teamMemberList;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "managedTeam")
+    @OneToOne
     private TeamLeader teamLeader;
 
     /**

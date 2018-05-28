@@ -17,7 +17,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping(path = "product")
+@RequestMapping(path = "target")
 public class TargetRestService {
 
     @Autowired
@@ -63,7 +63,7 @@ public class TargetRestService {
      * @return esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TargetController
      */
-    @RequestMapping(path="/reab/{id}",method = RequestMethod.PUT)
+    @RequestMapping(path="/rehab/{id}",method = RequestMethod.PUT)
     public ResponseEntity<Target> reabProduct(@PathVariable Long id) {
         Target updatedTarget;
         try {

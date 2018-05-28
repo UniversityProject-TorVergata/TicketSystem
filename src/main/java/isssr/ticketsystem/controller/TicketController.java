@@ -58,14 +58,14 @@ public class TicketController {
         return ticketDao.findAll();
     }
 
-    public List<Ticket> getTicketByOpenerUser(String username){
+    public List<Ticket> getTicketByOpenerUser(Long customerID){
 
-        return ticketDao.getTicketByOpenerUser(username);
+        return ticketDao.getTicketByOpenerUser(customerID);
     }
 
-    public List<Ticket> getTicketByResolverUser(String username){
+    public List<Ticket> getTicketByResolverUser(Long teamLeaderID){
 
-        return ticketDao.getTicketByResolverUser(username);
+        return ticketDao.getTicketByResolverUser(teamLeaderID);
     }
 
     public List<Ticket> getTicketByState(TicketState ticketState){
@@ -75,19 +75,43 @@ public class TicketController {
         return ticketDao.getTicketByState(ticketState);
     }
 
-    public List<Ticket> getTicketByTag(List<TAG> tags){
+    public List<Ticket> searchTicketTagExclusive(List<Ticket> tickets ,List<TAG> tags){
 
-        List<Ticket> allTicket = ticketDao.findAll();
-        for(Ticket t : allTicket){
+
+        for(Ticket t : tickets){
             List<TAG> tTag = t.getTags();
             for(TAG tag : tags){
                 if(tTag.contains(tag))
                     continue;
                 else
-                    allTicket.remove(t);
+                    tickets.remove(t);
+                if(tickets.isEmpty())
+                    return null;
             }
         }
-        return allTicket;
+        return tickets;
+
+    }
+
+    public List<Ticket> searchTicketTagInclusive(List<Ticket> tickets ,List<TAG> tags){
+
+
+        for(Ticket t : tickets){
+            boolean find = false;
+            List<TAG> tTag = t.getTags();
+            for(TAG tag : tags) {
+                if (tTag.contains(tag))
+                    find = true;
+                    break;
+
+
+            }
+            if(find = false)
+                tickets.remove(t);
+            if(tickets.isEmpty())
+                return null;
+        }
+        return tickets;
 
     }
 
@@ -101,5 +125,48 @@ public class TicketController {
     public List<Ticket> findTicketByTeamLeaderID(Long teamLeaderID) {
         return ticketDao.findTicketByTeamLeaderID(teamLeaderID);
 
+    }
+
+
+    public List<Ticket> searchTicketExclusive(String category, List<TAG> tags, Long targetID) {
+
+        if(tags == null){
+            //Ricerca Prodotto,Categoria
+            return ticketDao.getTicketByCategoryAndTarget(category,targetID);
+        }
+        else if(category == null){
+            //Ricerca Prodotto,TAG
+           List<Ticket> ticketList = findTicketByTarget(targetID);
+           return searchTicketTagExclusive(ticketList,tags);
+        }
+        else {
+            //Ricerca Prodotto,TAG,Categoria
+            List<Ticket> ticketList = ticketDao.getTicketByCategoryAndTarget(category,targetID);
+
+            return  searchTicketTagExclusive(ticketList,tags);
+        }
+    }
+
+    public List<Ticket> searchTicketInclusive(String category, List<TAG> tags, Long targetID) {
+
+        if(tags == null){
+            //Ricerca Prodotto,Categoria
+            return ticketDao.getTicketByCategoryAndTarget(category,targetID);
+        }
+        else if(category == null){
+            //Ricerca Prodotto,TAG
+            List<Ticket> ticketList = findTicketByTarget(targetID);
+            return searchTicketTagInclusive(ticketList,tags);
+        }
+        else {
+            //Ricerca Prodotto,TAG,Categoria
+            List<Ticket> ticketList = ticketDao.getTicketByCategoryAndTarget(category,targetID);
+
+            return  searchTicketTagInclusive(ticketList,tags);
+        }
+    }
+
+    public List<Ticket> findTicketByTarget(Long targetID){
+        return ticketDao.getTicketByTarget(targetID);
     }
 }
