@@ -96,7 +96,7 @@ public class Team {
         this.teamLeader = teamLeader;
     }
 
-    public void addAssistant(TeamMember teamMember) {
+    public void addTeamMember(TeamMember teamMember) {
         this.teamMemberList.add(teamMember);
     }
 
@@ -117,6 +117,12 @@ public class Team {
         this.teamMemberList = updatedData.teamMemberList;
         this.teamLeader = updatedData.teamLeader;
     }
+
+    public void setProblemArea(ProblemArea problemArea) {
+        this.problemArea = problemArea;
+    }
+
+
 
 
 }

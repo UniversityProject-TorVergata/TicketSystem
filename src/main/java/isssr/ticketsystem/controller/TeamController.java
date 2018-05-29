@@ -1,6 +1,7 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TeamDao;
+import isssr.ticketsystem.entity.ProblemArea;
 import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
@@ -68,5 +69,21 @@ public class TeamController {
         Collection<TeamMember> foundListTeamMember = teamDao.getTeamMemberByTeamLeaderId(id);
         return foundListTeamMember;
     }
+
+    public TeamMember addTeamMember(@NotNull Long team_id, @NotNull TeamMember tmToAdd){
+        Team teamToUpdate = teamDao.getOne(team_id);
+        teamToUpdate.addTeamMember(tmToAdd);
+        teamDao.save(teamToUpdate);
+        return tmToAdd;
+    }
+
+    public Team updateProblemArea(@NotNull Long team_id, @NotNull ProblemArea problemArea){
+        Team teamToUpdate = teamDao.getOne(team_id);
+        teamToUpdate.setProblemArea(problemArea);
+        teamDao.save(teamToUpdate);
+        return teamToUpdate;
+    }
+
+
 
 }

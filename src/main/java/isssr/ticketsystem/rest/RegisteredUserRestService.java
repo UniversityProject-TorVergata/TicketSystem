@@ -3,6 +3,7 @@ package isssr.ticketsystem.rest;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.RegisteredUser;
 import isssr.ticketsystem.entity.TeamLeader;
+import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -119,6 +120,15 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
         else
             return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(path = "/free_team_member", method = RequestMethod.GET)
+    public ResponseEntity<List<TeamMember>> getListFreeTeamMember() {
+        List<TeamMember> listFreeTeamMember = registeredUserController.getListFreeTeamMember();
+        if(listFreeTeamMember != null)
+            return new ResponseEntity<>(listFreeTeamMember, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
     }
 
     public static class LoginBean {

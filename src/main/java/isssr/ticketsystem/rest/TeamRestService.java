@@ -2,6 +2,7 @@ package isssr.ticketsystem.rest;
 
 
 import isssr.ticketsystem.controller.TeamController;
+import isssr.ticketsystem.entity.ProblemArea;
 import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 
@@ -115,5 +117,20 @@ public class TeamRestService {
         else
             return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
     }
+
+    @RequestMapping(path = "/add_team_member/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<TeamMember> addTeamMember(@PathVariable Long id, @RequestBody TeamMember tm){
+        TeamMember updatedTeamMember = teamController.addTeamMember(id, tm);
+        return new ResponseEntity<>(updatedTeamMember, updatedTeamMember == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+
+    }
+
+    @RequestMapping(path = "/problem_area/{id}/{problemArea}", method = RequestMethod.PUT)
+    public ResponseEntity<Team> updateProblemAreaTeam(@PathVariable Long id, @PathVariable ProblemArea problemArea){
+        Team updatedTeam = teamController.updateProblemArea(id, problemArea);
+        return new ResponseEntity<>(updatedTeam, updatedTeam == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+
+    }
+
 
 }

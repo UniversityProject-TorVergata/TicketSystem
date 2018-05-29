@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.Collection;
+import java.util.List;
 
 public interface TeamDao extends JpaRepository<Team, Long> {
 
@@ -15,5 +16,6 @@ public interface TeamDao extends JpaRepository<Team, Long> {
 
     @Query("select u.teamMemberList from Team u where u.teamLeader.id = :id")
     Collection<TeamMember> getTeamMemberByTeamLeaderId(@Param("id") Long id);
+
 
 }
