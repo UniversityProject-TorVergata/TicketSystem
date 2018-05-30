@@ -75,7 +75,14 @@ public class TicketController {
         return ticketDao.getTicketByState(ticketState);
     }
 
-    public List<Ticket> searchTicketTagExclusive(List<Ticket> tickets ,List<TAG> tags){
+    /**
+     * Metodo "interno" depura una Lista di Ticket eliminando quelli che non contengono tutti i Tag passati in argomento.
+     *
+     * @param tickets
+     * @param tags TAG su cui filtrare i ticket.
+     * @return
+     */
+    private List<Ticket> searchTicketTagExclusive(List<Ticket> tickets ,List<TAG> tags){
 
 
         for(Ticket t : tickets){
@@ -93,7 +100,14 @@ public class TicketController {
 
     }
 
-    public List<Ticket> searchTicketTagInclusive(List<Ticket> tickets ,List<TAG> tags){
+    /**
+     * Metodo interno che depura una lista di Ticket eliminando quelli che non contengono almeno uno dei Tag passati in argomento.
+     *
+     * @param tickets
+     * @param tags TAG su cui filtrare i Ticket.
+     * @return
+     */
+    private List<Ticket> searchTicketTagInclusive(List<Ticket> tickets ,List<TAG> tags){
 
 
         for(Ticket t : tickets){
@@ -115,6 +129,13 @@ public class TicketController {
 
     }
 
+    /**
+     * Assegna un Ticket a un TeamLeader
+     *
+     * @param ticketID
+     * @param teamLeaderID
+     * @throws NotFoundEntityException
+     */
     public void assignTicket(Long ticketID, Long teamLeaderID) throws NotFoundEntityException {
         Ticket assignedTicket  = this.findTicketById(ticketID);
         TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
@@ -127,7 +148,15 @@ public class TicketController {
 
     }
 
-
+    /**
+     * Ricerca "ESCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
+     * Esclusiva --> Il ticket deve contenere almeno tutti i Tag in argomento.
+     *
+     * @param category
+     * @param tags
+     * @param targetID
+     * @return
+     */
     public List<Ticket> searchTicketExclusive(String category, List<TAG> tags, Long targetID) {
 
         if(tags == null){
@@ -147,6 +176,15 @@ public class TicketController {
         }
     }
 
+    /**
+     * Ricerca "INCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
+     * Inclusiva --> Il ticket deve contenere almeno uno dei Tag in argomento.
+     *
+     * @param category
+     * @param tags
+     * @param targetID
+     * @return
+     */
     public List<Ticket> searchTicketInclusive(String category, List<TAG> tags, Long targetID) {
 
         if(tags == null){

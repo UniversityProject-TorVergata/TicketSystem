@@ -100,6 +100,12 @@ public class TeamRestService {
         return new ResponseEntity<>(team, HttpStatus.OK);
     }
 
+    /**
+     * Ricerca di tutti i TeamMember di un Team
+     *
+     * @param id ID del team di cui interessano i TeamMember
+     * @return Lista dei TeamMember del Team
+     */
     @RequestMapping(path = "/team_member/{id}", method = RequestMethod.GET)
     public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamId(@PathVariable Long id) {
         Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamId(id);
@@ -109,6 +115,12 @@ public class TeamRestService {
             return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Ricerca di tutti i TeamMember assistenti di un TeamLeader
+     *
+     * @param id ID del TeamLeader di cui servono gli assistenti
+     * @return Lista dei TeamMember assistenti del TeamLeader
+     */
     @RequestMapping(path = "/team_member/team_leader/{id}", method = RequestMethod.GET)
     public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamLeaderId(@PathVariable Long id) {
         Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamLeaderId(id);
@@ -118,6 +130,14 @@ public class TeamRestService {
             return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
     }
 
+
+    /**
+     * Aggiunta di un TeamMember ad un Team
+     *
+     * @param id ID del Team destinazione.
+     * @param tm Oggetto TeamMember da Aggiungere al Team
+     * @return l'oggetto TeamMember aggiornato con l 'aggiunta del Team
+     */
     @RequestMapping(path = "/add_team_member/{id}", method = RequestMethod.PUT)
     public ResponseEntity<TeamMember> addTeamMember(@PathVariable Long id, @RequestBody TeamMember tm){
         TeamMember updatedTeamMember = teamController.addTeamMember(id, tm);
@@ -125,6 +145,14 @@ public class TeamRestService {
 
     }
 
+    /**
+     * Modifica/Aggiunta di una ProblemArea ad un Team
+     *
+     * @see ProblemArea
+     * @param id  ID del Team da modificare
+     * @param problemArea ProblemArea da inserire
+     * @return L'oggetto Team aggiornato con l'aggiunta/modifica della ProblemArea
+     */
     @RequestMapping(path = "/problem_area/{id}/{problemArea}", method = RequestMethod.PUT)
     public ResponseEntity<Team> updateProblemAreaTeam(@PathVariable Long id, @PathVariable ProblemArea problemArea){
         Team updatedTeam = teamController.updateProblemArea(id, problemArea);

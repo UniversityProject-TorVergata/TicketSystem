@@ -40,13 +40,31 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      @Query("select t from Ticket  t where t.state = :ticketState")
      List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
 
+    /**
+     * Metodo query che seleziona tutti i Ticket assegnati a un Determinato TeamMember.
+     *
+     * @param teamLeaderID Id del TeamMember di cui cercare i Ticket .
+     * @return la lista dei Ticket assegnati al TeamMember
+     */
      @Query("select t from Ticket t where t.resolverUser.id = :teamLeaderID")
      List<Ticket> findTicketByTeamLeaderID(@Param("teamLeaderID") Long teamLeaderID);
 
+    /**
+     * Metodo query che seleziona tutti i Ticket relativi a un determinato Target e ad una determinata Categoria
+     *
+     * @param category
+     * @param targetID Id del Target di cui cercare i ticket.
+     * @return Lista dei Ticket della Categoria e del Target in argomento.
+     */
      @Query("select t from Ticket t where t.actualType = :category and t.target.id = :targetID")
      List<Ticket> getTicketByCategoryAndTarget(@Param("category") String category,@Param("targetID") Long targetID);
 
-
+    /**
+     * Metodo Query che seleziona i ticket relativi a un determinato Target
+     *
+     * @param targetID ID del target di cui sono cercati i Ticket.
+     * @return la lista dei Ticket.
+     */
      @Query("select t from Ticket t where  t.target.id = :targetID ")
      List<Ticket> getTicketByTarget(@Param("targetID") Long targetID);
 }

@@ -94,11 +94,15 @@ public class RegisteredUserRestService {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<List<RegisteredUser>> getRegisteredUsers() {
         List<RegisteredUser> registeredUsers = registeredUserController.getRegisteredUsers();
-        return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
+        if(registeredUsers !=null)
+            return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(registeredUsers,HttpStatus.NOT_FOUND);
     }
 
     /**
      * Metodo usato per la gestione del login di un utente precedentemente registrato.
+     *
      * @param loginBean oggetto contenente username e password dell'utente che vuole loggarsi.
      * @return esito del login
      */
@@ -113,6 +117,11 @@ public class RegisteredUserRestService {
 
     }
 
+    /**
+     * Metodo usato per la richiesta della lista dei TeamLeader del sistema
+     *
+     * @return la lista dei TeamLeader del sistema
+     */
     @RequestMapping(path = "/team_leader", method = RequestMethod.GET)
     public ResponseEntity<List<TeamLeader>> getListTeamLeader() {
         List<TeamLeader> listTeamLeader = registeredUserController.getListTeamLeader();
@@ -122,6 +131,11 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Metodo usato per la richiesta della lista dei TeamMember senza Team ("Disoccupati") del sistema.
+     *
+     * @return lista dei TeamMember senza Team
+     */
     @RequestMapping(path = "/free_team_member", method = RequestMethod.GET)
     public ResponseEntity<List<TeamMember>> getListFreeTeamMember() {
         List<TeamMember> listFreeTeamMember = registeredUserController.getListFreeTeamMember();
@@ -131,6 +145,16 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Questa classe interna è usata per passare i parametri della chiamata Rest /login che "autentica" un Utente
+     * che invia username e password.
+     * Corrisponde ad un JSON del tipo :
+     * {
+     *     "username" : "alessio",
+     *     "password" : "forzaroma"
+     * }
+     *
+     */
     public static class LoginBean {
 
         private String username;

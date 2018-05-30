@@ -103,7 +103,10 @@ public class TicketRestService {
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> getTickets() {
         List<Ticket> tickets = ticketController.getTickets();
-        return new ResponseEntity<>(tickets, HttpStatus.OK);
+        if(tickets !=null)
+            return new ResponseEntity<>(tickets,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -117,7 +120,10 @@ public class TicketRestService {
     public ResponseEntity<List<Ticket>> getTicketsByOpenerUser(@PathVariable("customerID") Long customerID){
 
         List<Ticket> tickets = ticketController.getTicketByOpenerUser(customerID);
-        return new ResponseEntity<>(tickets,HttpStatus.OK);
+        if(tickets !=null)
+            return new ResponseEntity<>(tickets,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -132,7 +138,10 @@ public class TicketRestService {
 
 
         List<Ticket> tickets = ticketController.getTicketByResolverUser(teamLeaderID);
-        return new ResponseEntity<>(tickets,HttpStatus.OK);
+        if(tickets !=null)
+            return new ResponseEntity<>(tickets,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
     }
 
 
@@ -150,7 +159,10 @@ public class TicketRestService {
         Log logger = LogFactory.getLog(getClass());
         logger.info(ticketState.toString() +" " + ticketState.getClass());
         List<Ticket> tickets = ticketController.getTicketByState(ticketState);
-        return new ResponseEntity<>(tickets,HttpStatus.OK);
+        if(tickets !=null)
+            return new ResponseEntity<>(tickets,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -180,23 +192,60 @@ public class TicketRestService {
     @RequestMapping(path = "/findTicketByTeamLeader/{teamLeaderID}",method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> findTicketByTeamLeaderID(@PathVariable("teamLeaderID") Long teamLeaderID){
         List<Ticket> ticketList = ticketController.findTicketByTeamLeaderID(teamLeaderID);
-        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        if(ticketList !=null)
+            return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
 
     }
 
+    /**
+     * Ricerca "Esclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
+     * Esclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
+     * almeno tutti i tag in Argomento.
+     *
+     * @param searchBean Un oggetto che contiene i parametri category,targetID e tags.
+     * @return Lista di Ticket trovati applicando i criteri indicati.
+     */
     @RequestMapping(path = "/searchTicketExclusive",method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> searchTicketExclusive(@RequestBody SearchBean searchBean){
         List<Ticket> ticketList = ticketController.searchTicketExclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        if(ticketList !=null)
+            return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Ricerca "Inclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
+     * Inclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
+     * almeno uno dei  tag in Argomento.
+     *
+     * @param searchBean Un oggetto che contiene i parametri category,targetID e tags.
+     * @return Lista di Ticket trovati applicando i criteri indicati.
+     */
     @RequestMapping(path = "/searchTicketInclusive",method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> searchTicketInclusive(@RequestBody SearchBean searchBean){
         List<Ticket> ticketList = ticketController.searchTicketInclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        if(ticketList !=null)
+            return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
     }
 
-
+    /**
+     * Questa classe interna è usata per passare i parametri delle chiamate rest /searchTicketExclusive ,/searchTicketInclusive
+     * che filtrano i ticket attraverso tag,targetID e category.
+     *
+     * Corrisponde ad un JSON del tipo :
+     *
+     * {
+     *     "tags" : ["tag1","tag2","tag3"],
+     *     "targetID" : 148,
+     *     "category" : "query"
+     * }
+     *
+     */
     @NoArgsConstructor
     public static class SearchBean {
 

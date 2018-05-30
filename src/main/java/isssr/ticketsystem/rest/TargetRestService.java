@@ -127,7 +127,10 @@ public class TargetRestService {
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
     public ResponseEntity<List<Target>> getProduct() {
-        List<Target> product = targetController.getTarget();
-        return new ResponseEntity<>(product, HttpStatus.OK);
+        List<Target> targetList = targetController.getTarget();
+        if(targetList !=null)
+            return new ResponseEntity<>(targetList, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
     }
 }
