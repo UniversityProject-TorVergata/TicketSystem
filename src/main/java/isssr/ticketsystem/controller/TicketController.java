@@ -3,6 +3,7 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import org.apache.tomcat.util.descriptor.tld.TldRuleSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -207,7 +208,27 @@ public class TicketController {
         }
     }
 
+    /**
+     * Ricerca i Ticket relativi ad un determinato target.
+     *
+     * @param targetID ID del target di cui cercare i ticket.
+     * @return La lista di ticket collegati al target in argomento.
+     */
     public List<Ticket> findTicketByTarget(Long targetID){
         return ticketDao.getTicketByTarget(targetID);
+    }
+
+    /**
+     * "Cestina" un ticket ponendo il suo stato a TRASHED.
+     *
+     * @param ticketID ID del Ticket da cestinare.
+     * @return Il ticket con lo stato aggiornato.
+     */
+    public Ticket trashTicket(Long ticketID) {
+        Ticket ticket = findTicketById(ticketID);
+        ticket.setState(TicketState.TRASHED);
+        return ticketDao.save(ticket);
+
+
     }
 }

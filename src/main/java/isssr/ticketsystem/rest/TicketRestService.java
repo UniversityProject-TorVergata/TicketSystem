@@ -82,15 +82,18 @@ public class TicketRestService {
 
     /**
      * Metodo usato per la gestione di una Delete che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo il ticket specificato viene cancellato dal DB.
+     * una richiesta di questo tipo il ticket specificato viene marcato come TRASHED ("CESTINATO") nel DB.
      * @param id Id del ticket che va cancellato dal DB.
      * @return ticket cancellato dal DB + esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TicketController
      */
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public @ResponseBody ResponseEntity<Boolean> deleteTicket(@PathVariable("id") String id) {
-        boolean deletedTicket = ticketController.deleteTicket(Long.parseLong(id));
-        return new ResponseEntity<>(deletedTicket, deletedTicket ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+    public @ResponseBody ResponseEntity<Ticket> deleteTicket(@PathVariable("id") String id) {
+        Ticket trashedTicket = ticketController.trashTicket(Long.parseLong(id));
+        if(trashedTicket!=null)
+            return new ResponseEntity<>(trashedTicket,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(trashedTicket,HttpStatus.NOT_FOUND);
     }
 
     /**
