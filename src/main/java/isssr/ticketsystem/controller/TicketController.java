@@ -40,6 +40,8 @@ public class TicketController {
         return updatedTicket;
     }
 
+
+    @Transactional
     public Ticket findTicketById(@NotNull Long id) {
         Ticket foundTicket = ticketDao.getOne(id);
         return foundTicket;
@@ -137,6 +139,7 @@ public class TicketController {
      * @param teamLeaderID
      * @throws NotFoundEntityException
      */
+    @Transactional
     public void assignTicket(Long ticketID, Long teamLeaderID) throws NotFoundEntityException {
         Ticket assignedTicket  = this.findTicketById(ticketID);
         TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
