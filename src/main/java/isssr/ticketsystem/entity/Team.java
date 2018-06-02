@@ -10,16 +10,17 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 
-@Entity
-@Table(name = "team")
-@Getter
-@Setter
-@NoArgsConstructor
+
 /**
  * Formato da Team Coordinator,composto da Team Member e guidato da un Team Leader.
  * Ha una specifica area di risoluzione di problemi.
  *
  */
+@Entity
+@Table(name = "team")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Team {
 
     @Id

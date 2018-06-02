@@ -12,7 +12,7 @@ import javax.persistence.OneToMany;
 import java.util.List;
 
 /**
- * Questa classe è usata per raggruppare ticket relazionati.
+ * Questa classe e' usata per raggruppare ticket relazionati.
  * @see Ticket
  *
  */

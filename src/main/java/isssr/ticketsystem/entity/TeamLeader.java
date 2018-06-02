@@ -8,19 +8,20 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "team_leader")
-@Getter
-@Setter
+
 /**
- * Il Team Leader è un TeamMember posto alla guida del Team a cui appartiene
- * ha le seguenti responsabilità :
+ * Il Team Leader e' un TeamMember posto alla guida del Team a cui appartiene
+ * ha le seguenti responsabilita' :
  * <ul>
  *     <li>Eseguire il pull sulla coda di Ticket assegnati dal Team Coordinator</li>
  *     <li>Assegnare ticket tra i Team Member del suo Team</li>
  * </ul>
  *
  */
+@Entity
+@Table(name = "team_leader")
+@Getter
+@Setter
 public class TeamLeader extends TeamMember {
 
     private Long id;

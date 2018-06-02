@@ -11,15 +11,15 @@ import java.util.Collection;
 import java.util.List;
 
 
+/**
+ * Il Target e' l'entita' per la quale il sistema di Ticketing offre assistenza.
+ * Puo' essere un Prodotto o un Servizio.
+ *
+ */
 @Entity
 @Table(name = "target")
 @Getter
 @Setter
-/**
- * Il Target è l'entità per la quale il sistema di Ticketing offre assistenza.
- * Può essere un Prodotto o un Servizio.
- *
- */
 public class Target {
 
     @Id

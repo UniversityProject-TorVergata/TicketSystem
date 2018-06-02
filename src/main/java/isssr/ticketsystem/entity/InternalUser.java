@@ -9,7 +9,13 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-//@MappedSuperclass
+
+
+/**
+ * Superclasse che rappresenta il personale interno al sistema che si occupa,
+ * di gestione della piattaforma e dei Ticket.
+ *
+ */
 @Entity
 @Table(name = "internal_user")
 @Getter
@@ -21,12 +27,6 @@ import javax.validation.constraints.NotNull;
         @JsonSubTypes.Type(value = TeamMember.class, name = "TeamMember") ,
         @JsonSubTypes.Type(value = TeamCoordinator.class, name = "TeamCoordinator") }
 )
-
-/**
- * Superclasse che rappresenta il personale interno al sistema che si occupa,
- * di gestione della piattaforma e dei Ticket.
- *
- */
 public abstract class InternalUser extends RegisteredUser {
 
     /*

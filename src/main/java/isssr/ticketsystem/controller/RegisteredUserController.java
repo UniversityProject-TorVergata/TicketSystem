@@ -1,7 +1,9 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.RegisteredUserDao;
+import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.RegisteredUser;
+import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;
@@ -19,6 +21,7 @@ public class RegisteredUserController {
 
     @Autowired
     private RegisteredUserDao registeredUserDao;
+
 
     @Transactional
     public @NotNull RegisteredUser insertRegisteredUser(@NotNull RegisteredUser registeredUser) {
@@ -81,4 +84,6 @@ public class RegisteredUserController {
         List<TeamMember> listFreeTeamMember = registeredUserDao.getListFreeTeamMember();
         return listFreeTeamMember;
     }
+
+
 }

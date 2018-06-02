@@ -9,6 +9,11 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
+
+/**
+ * Componente di un Team si occupa della risoluzione di Ticket.
+ *
+ */
 @Entity
 @Table(name = "team_member")
 @Getter
@@ -19,10 +24,6 @@ import javax.validation.constraints.NotNull;
         @JsonSubTypes.Type(value = TeamLeader.class, name = "TeamLeader"),
         }
 )
-/**
- * Componente di un Team si occupa della risoluzione di Ticket.
- *
- */
 public class TeamMember extends InternalUser {
 
     @OneToOne
@@ -69,5 +70,11 @@ public class TeamMember extends InternalUser {
         this.address = updatedData.address;
     }
 
+    public Team getTeam() {
+        return team;
+    }
 
+    public void setTeam(Team team) {
+        this.team = team;
+    }
 }

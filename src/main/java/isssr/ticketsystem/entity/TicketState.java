@@ -7,7 +7,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * <ul>
  *     <li>New : Appena inserito dall'utente</li>
  *     <li>Pending : Deve essere assegnato dal Team Coordinator a un Team</li>
- *     <li>Execution : Ticket in fase di risoluzione</li>
+ *     <li>Ready : Ticket assegnato a un Team Leader</li>
+ *     <li>Execution : Ticket in fase di risoluzione e assegnato a un Team Member</li>
  *     <li>Trashed : Ticket cestinato</li>
  * </ul>
  *

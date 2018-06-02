@@ -2,6 +2,7 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.RegisteredUser;
+import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;

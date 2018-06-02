@@ -3,7 +3,7 @@ package isssr.ticketsystem.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
- * Il TAG è una parola chiave che un'utente può indicare all'apertura di un Ticket,
+ * Il TAG e' una parola chiave che un'utente puo' indicare all'apertura di un Ticket,
  * Usato per il filtraggio e la caratterizzazione dei Ticket.
  *
  */

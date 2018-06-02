@@ -1,10 +1,8 @@
 package isssr.ticketsystem.controller;
 
+import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
-import isssr.ticketsystem.entity.ProblemArea;
-import isssr.ticketsystem.entity.Team;
-import isssr.ticketsystem.entity.TeamLeader;
-import isssr.ticketsystem.entity.TeamMember;
+import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,12 +11,15 @@ import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TeamController {
 
     @Autowired
     private TeamDao teamDao;
+    @Autowired
+    private RegisteredUserDao registeredUserDao;
 
     @Transactional
     public @NotNull Team insertTeam(@NotNull Team team) {
@@ -70,11 +71,24 @@ public class TeamController {
         return foundListTeamMember;
     }
 
-    public TeamMember addTeamMember(@NotNull Long team_id, @NotNull TeamMember tmToAdd){
-        Team teamToUpdate = teamDao.getOne(team_id);
-        teamToUpdate.addTeamMember(tmToAdd);
+    public TeamMember addTeamMember(@NotNull Long teamID, Long teamMemberID){
+        Team teamToUpdate = teamDao.getOne(teamID);
+        Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(teamMemberID);
+        RegisteredUser registeredUser;
+        if(registeredUserOptional.isPresent())
+            registeredUser = registeredUserOptional.get();
+        else
+            return null;
+        TeamMember teamMember;
+        if(registeredUser.getClass().equals(TeamMember.class) || registeredUser.getClass().equals(TeamLeader.class))
+            teamMember = (TeamMember) registeredUser;
+        else
+            return null;
+        teamToUpdate.addTeamMember(teamMember);
         teamDao.save(teamToUpdate);
-        return tmToAdd;
+        teamMember.setTeam(teamToUpdate);
+        return registeredUserDao.save(teamMember);
+
     }
 
     public Team updateProblemArea(@NotNull Long team_id, @NotNull ProblemArea problemArea){

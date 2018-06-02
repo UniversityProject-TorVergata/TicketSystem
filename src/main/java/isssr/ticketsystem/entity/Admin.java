@@ -8,19 +8,19 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-@Entity
-@Table(name = "admin")
-@Getter
-@Setter
-@NoArgsConstructor
 /**
- * Rappresenta l'amministratore di sistema ha le seguenti responsabilità :
+ * Rappresenta l'amministratore di sistema ha le seguenti responsabilita' :
  * <ul>
  *     <li>Assumere personale Interno (Team Coordinator,Team Member,Team Leader)</li>
  *     <li>Registrare Target nel sistema</li>
  * </ul>
  *
  */
+@Entity
+@Table(name = "admin")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Admin extends InternalUser {
 
     public Admin(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,

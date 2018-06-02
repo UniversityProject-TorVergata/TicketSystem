@@ -134,13 +134,13 @@ public class TeamRestService {
     /**
      * Aggiunta di un TeamMember ad un Team
      *
-     * @param id ID del Team destinazione.
-     * @param tm Oggetto TeamMember da Aggiungere al Team
+     * @param teamID ID del Team destinazione.
+     * @param teamMemberID Id del  TeamMember da Aggiungere al Team
      * @return l'oggetto TeamMember aggiornato con l 'aggiunta del Team
      */
-    @RequestMapping(path = "/add_team_member/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<TeamMember> addTeamMember(@PathVariable Long id, @RequestBody TeamMember tm){
-        TeamMember updatedTeamMember = teamController.addTeamMember(id, tm);
+    @RequestMapping(path = "/add_team_member/{teamID}/{teamMemberID}", method = RequestMethod.PUT)
+    public ResponseEntity<TeamMember> addTeamMember(@PathVariable("teamID") Long teamID, @PathVariable("teamMemberID") Long teamMemberID){
+        TeamMember updatedTeamMember = teamController.addTeamMember(teamID,teamMemberID);
         return new ResponseEntity<>(updatedTeamMember, updatedTeamMember == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
 
     }

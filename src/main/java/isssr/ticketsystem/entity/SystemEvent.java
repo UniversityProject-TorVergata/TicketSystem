@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 
 /**
- * SystemEvent rappresenta un'azione sul sistema ed è usato per l'auditing.
+ * SystemEvent rappresenta un'azione sul sistema ed e' usato per l'auditing.
  */
 
 @Entity

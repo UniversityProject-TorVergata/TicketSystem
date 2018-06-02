@@ -154,7 +154,7 @@ public class TicketController {
 
     /**
      * Ricerca "ESCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
-     * Esclusiva --> Il ticket deve contenere almeno tutti i Tag in argomento.
+     * Esclusiva : Il ticket deve contenere almeno tutti i Tag in argomento.
      *
      * @param category
      * @param tags
@@ -182,7 +182,7 @@ public class TicketController {
 
     /**
      * Ricerca "INCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
-     * Inclusiva --> Il ticket deve contenere almeno uno dei Tag in argomento.
+     * Inclusiva : Il ticket deve contenere almeno uno dei Tag in argomento.
      *
      * @param category
      * @param tags

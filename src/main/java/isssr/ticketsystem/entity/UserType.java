@@ -1,7 +1,7 @@
 package isssr.ticketsystem.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@JsonFormat(shape = JsonFormat.Shape.STRING)
+
 /**
  * Tipo di utente che apre il Ticket.
  * <ul>
@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  * </ul>
  *
  */
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum UserType {
     CUSTOMER,
     HELP_DESK_CUSTOMER,

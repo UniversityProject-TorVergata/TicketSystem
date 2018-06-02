@@ -1,7 +1,7 @@
 package isssr.ticketsystem.entity;
 
 /**
- * Difficoltà di risoluzione di un Ticket così come indicata dal Team Coordinator
+ * Difficolta' di risoluzione di un Ticket cosi' come indicata dal Team Coordinator
  *
  */
 public enum Difficulty {

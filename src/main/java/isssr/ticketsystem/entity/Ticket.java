@@ -8,20 +8,20 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+
+/**
+ * Entita' fondamentale del sistema.
+ * E' aperto da un utente per richiedere assistenza su un Target da lui Posseduto
+ *
+ */
 @Entity
 @Table(name = "ticket")
 @Getter
 @Setter
 @NoArgsConstructor
-/**
- * Entità fondamentale del sistema.
- * E' aperto da un utente per richiedere assistenza su un Target da lui Posseduto
- *
- */
 public class Ticket {
 
 
@@ -72,7 +72,7 @@ public class Ticket {
     private Visibility visibility;
 
     @OneToMany
-    private Map<ReletionshipType,RelatedTicket> relationships;
+    private Map<RelationshipType,RelatedTicket> relationships;
 
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
@@ -209,11 +209,11 @@ public class Ticket {
         this.visibility = visibility;
     }
 
-    public Map<ReletionshipType, RelatedTicket> getRelationships() {
+    public Map<RelationshipType, RelatedTicket> getRelationships() {
         return relationships;
     }
 
-    public void setRelationships(Map<ReletionshipType, RelatedTicket> relationships) {
+    public void setRelationships(Map<RelationshipType, RelatedTicket> relationships) {
         this.relationships = relationships;
     }
 

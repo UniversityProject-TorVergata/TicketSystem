@@ -1,12 +1,13 @@
 package isssr.ticketsystem.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-@JsonFormat(shape = JsonFormat.Shape.STRING)
+
 /**
  *
  * Categoria assegnata al Ticket.
  *
  */
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum TicketType {
 
     //TODO

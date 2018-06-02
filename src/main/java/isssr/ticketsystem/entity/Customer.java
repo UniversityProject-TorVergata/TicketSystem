@@ -7,15 +7,14 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
-
+/**
+ * Il Customer e' l'utente che si rivolge al sistema di Ticketing per ottenere assistenza su un Target da lui posseduto.
+ *
+ */
 @Entity
 @Table(name = "customer")
 @Getter
 @Setter
-/**
- * Il Customer è l'utente che si rivolge al sistema di Ticketing per ottenere assistenza su un Target da lui posseduto.
- *
- */
 public class Customer extends RegisteredUser {
 
     public Customer() {}

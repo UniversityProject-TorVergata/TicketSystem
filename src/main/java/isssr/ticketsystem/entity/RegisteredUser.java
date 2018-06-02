@@ -10,7 +10,12 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
 
-//@MappedSuperclass
+
+/**
+ * Superclasse di tutte le entita' di Utente all'interno del sistema.
+ * Contiene gli attributi caratterizzanti di un utente.
+ *
+ */
 @Table(name = "registered_user")
 @Getter
 @Setter
@@ -22,11 +27,6 @@ import java.text.SimpleDateFormat;
 
         @JsonSubTypes.Type(value = InternalUser.class, name = "InternalUser") }
 )
-/**
- * Superclasse di tutte le entità di Utente all'interno del sistema.
- * Contiene gli attributi caratterizzanti di un utente.
- *
- */
 public abstract class RegisteredUser {
 
     /**
