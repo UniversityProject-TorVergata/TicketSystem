@@ -68,6 +68,7 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(teamLeaderID);
     }
 
+    @Transactional
     public List<Ticket> getTicketByState(TicketState ticketState){
 
         List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
