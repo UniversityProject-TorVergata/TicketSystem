@@ -142,6 +142,7 @@ public class TicketController {
         Ticket assignedTicket  = this.findTicketById(ticketID);
         TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
         assignedTicket.setResolverUser(teamLeader);
+        assignedTicket.setState(TicketState.READY);
         ticketDao.save(assignedTicket);
     }
 

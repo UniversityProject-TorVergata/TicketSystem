@@ -17,6 +17,7 @@ public enum TicketState {
 
     NEW("NEW"),
     PENDING("PENDING"),
+    READY("READY"),
     EXECUTION("EXECUTION"),
     TRASHED("TRASHED"); //Per i ticket cestinati.
 
