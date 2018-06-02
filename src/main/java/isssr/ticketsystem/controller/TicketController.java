@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -84,20 +85,18 @@ public class TicketController {
      * @return
      */
     private List<Ticket> searchTicketTagExclusive(List<Ticket> tickets ,List<TAG> tags){
-
-
+        List<Ticket>  outputList = new ArrayList<>();
+        outputList.addAll(tickets);
         for(Ticket t : tickets){
             List<TAG> tTag = t.getTags();
             for(TAG tag : tags){
                 if(tTag.contains(tag))
                     continue;
                 else
-                    tickets.remove(t);
-                if(tickets.isEmpty())
-                    return null;
+                    outputList.remove(t);
             }
         }
-        return tickets;
+        return outputList;
 
     }
 
@@ -109,7 +108,8 @@ public class TicketController {
      * @return
      */
     private List<Ticket> searchTicketTagInclusive(List<Ticket> tickets ,List<TAG> tags){
-
+        List<Ticket>  outputList = new ArrayList<>();
+        outputList.addAll(tickets);
 
         for(Ticket t : tickets){
             boolean find = false;
@@ -121,12 +121,10 @@ public class TicketController {
 
 
             }
-            if(find = false)
-                tickets.remove(t);
-            if(tickets.isEmpty())
-                return null;
+            if(find == false)
+                outputList.remove(t);
         }
-        return tickets;
+        return outputList;
 
     }
 

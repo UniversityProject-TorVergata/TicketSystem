@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Collection;
@@ -56,6 +57,7 @@ public class Ticket {
 
     @ManyToOne
     private RegisteredUser openerUser;
+
 
     @ManyToOne
     private Target target;
