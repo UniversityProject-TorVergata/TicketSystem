@@ -72,9 +72,17 @@ public class TeamController {
     }
 
     public boolean deleteTeam(@NotNull Long id) {
-        if (!teamDao.existsById(id)) {
+        Optional<Team> optionalTeam = teamDao.findById(id);
+        if(!optionalTeam.isPresent())
             return false;
+        Team team = optionalTeam.get();
+
+        if (!teamDao.existsById(id))
+            return false;
+        for(TeamMember teamMember:team.getTeamMemberList()){
+            teamMember.setTeam(null);
         }
+        team.getTeamMemberList().clear();
         teamDao.deleteById(id);
         return true;
     }
