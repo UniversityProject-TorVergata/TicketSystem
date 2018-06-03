@@ -9,6 +9,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
+import java.util.List;
 
 
 /**
@@ -35,7 +36,7 @@ public class Team {
 
     @JsonIgnore
     @OneToMany(mappedBy = "team")
-    private Collection<TeamMember> teamMemberList;
+    private List<TeamMember> teamMemberList;
 
     @JsonIgnore
     @OneToOne
@@ -49,7 +50,7 @@ public class Team {
      * @param teamMemberList lista dei TeamMember
      * @param teamLeader TeamLedaer del Team
      */
-    public Team(String name, ProblemArea problemArea, Collection<TeamMember> teamMemberList, TeamLeader teamLeader) {
+    public Team(String name, ProblemArea problemArea, List<TeamMember> teamMemberList, TeamLeader teamLeader) {
         this.name = name;
         this.problemArea =problemArea;
         this.teamMemberList = teamMemberList;
@@ -78,12 +79,12 @@ public class Team {
     }
 
     @JsonIgnore
-    public Collection<TeamMember> getTeamMemberList() {
+    public List<TeamMember> getTeamMemberList() {
         return teamMemberList;
     }
 
     @JsonProperty
-    public void setTeamMemberList(Collection<TeamMember> teamMemberList) {
+    public void setTeamMemberList(List<TeamMember> teamMemberList) {
         this.teamMemberList = teamMemberList;
     }
 

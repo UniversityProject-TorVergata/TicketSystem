@@ -77,6 +77,14 @@ public abstract class RegisteredUser {
         this.address = address;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public String getFiscal_code() {
         return fiscal_code;
     }

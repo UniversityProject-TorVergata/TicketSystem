@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -23,6 +24,28 @@ public class TeamController {
 
     @Transactional
     public @NotNull Team insertTeam(@NotNull Team team) {
+        List<TeamMember> teamMembers = team.getTeamMemberList();
+        for (TeamMember tm : teamMembers) {
+            Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(tm.getId());
+            if (!registeredUserOptional.isPresent())
+                continue;
+            if (!registeredUserOptional.get().getClass().equals(TeamMember.class))
+                continue;
+            TeamMember teamMember = (TeamMember) registeredUserOptional.get();
+            teamMember.setTeam(team);
+            registeredUserDao.save(teamMember);
+        }
+        if (team.getTeamLeader() != null) {
+            Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(team.getTeamLeader().getId());
+            if (registeredUserOptional.isPresent()) {
+                if (registeredUserOptional.get().getClass().equals(TeamLeader.class)) {
+                    TeamLeader teamLeader = (TeamLeader) registeredUserOptional.get();
+                    teamLeader.setTeam(team);
+                    registeredUserDao.save(teamLeader);
+                }
+            }
+        }
+
         Team createdTeam = teamDao.save(team);
         return createdTeam;
     }
