@@ -25,15 +25,17 @@ public class TeamController {
     @Transactional
     public @NotNull Team insertTeam(@NotNull Team team) {
         List<TeamMember> teamMembers = team.getTeamMemberList();
-        for (TeamMember tm : teamMembers) {
-            Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(tm.getId());
-            if (!registeredUserOptional.isPresent())
-                continue;
-            if (!registeredUserOptional.get().getClass().equals(TeamMember.class))
-                continue;
-            TeamMember teamMember = (TeamMember) registeredUserOptional.get();
-            teamMember.setTeam(team);
-            registeredUserDao.save(teamMember);
+        if(teamMembers != null) {
+            for (TeamMember tm : teamMembers) {
+                Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(tm.getId());
+                if (!registeredUserOptional.isPresent())
+                    continue;
+                if (!registeredUserOptional.get().getClass().equals(TeamMember.class))
+                    continue;
+                TeamMember teamMember = (TeamMember) registeredUserOptional.get();
+                teamMember.setTeam(team);
+                registeredUserDao.save(teamMember);
+            }
         }
         if (team.getTeamLeader() != null) {
             Optional<RegisteredUser> registeredUserOptional = registeredUserDao.findById(team.getTeamLeader().getId());
