@@ -1,14 +1,15 @@
 package isssr.ticketsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * Area di problemi risolti da un Team.
  *
  */
+@JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum ProblemArea {
 
-   //TODO
-
-
-
-
+    AREA1,
+    AREA2,
+    AREA3
 }
