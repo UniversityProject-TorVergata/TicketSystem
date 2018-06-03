@@ -28,20 +28,16 @@ public class Target {
 
     @Enumerated(EnumType.STRING)
     private TargetState targetState;
+
+    @Enumerated(EnumType.STRING)
     private TargetType targetType;
+
     private String name;
     private String description;
     private double version;
 
     @ElementCollection
     private Collection<String> categories;
-
-    /*
-    Deprecato alla luce degli ultimi Brainstorming
-
-    @ManyToOne
-    private Company company;
-    */
 
     /*
     Mantenere una lista di Ticket aperta per prodotto perde di significato,
@@ -57,12 +53,18 @@ public class Target {
 
     public Target() { }
 
+    public Target(Long id, TargetState targetState){
+        this.id = id;
+        this.targetState = targetState;
+    }
+
     public Target(String name, String description, double version) {
         this.name = name;
         this.description = description;
         this.version = version;
         this.targetState = TargetState.ACTIVE;
     }
+
     public Target(String name, String description, double version, TargetState targetState){
         this.name = name;
         this.description = description;
@@ -70,33 +72,30 @@ public class Target {
         this.targetState = targetState;
     }
 
-    public Target(String name, String description, double version, TargetState targetState,List<String> categories){
+    /**
+     * Costruttore del Target
+     *
+     * @param targetType Enumerazione che rappresenta il tipo di Target (Prodotto o Servizio).
+     * @param targetState Enumerazione che rappresenta il tipo di Stato (RETIRED o ACTIVE).
+     * @param name Il nome del Target.
+     * @param description Breve descrizione del Target.
+     * @param version Versione del Target alla quale si fa riferimento.
+     */
+    public Target(String name, String description, double version, TargetState targetState, TargetType targetType){
+        this.name = name;
+        this.description = description;
+        this.version = version;
+        this.targetState = targetState;
+        this.targetType = targetType;
+    }
+
+    public Target(String name, String description, double version, TargetState targetState, TargetType targetType, List<String> categories){
         this.name = name;
         this.description = description;
         this.version = version;
         this.targetState = targetState;
         this.categories = categories;
-    }
-
-    public Target(Long id, TargetState targetState){
-        this.id = id;
-        this.targetState = targetState;
-    }
-
-    /**
-     * Costruttore del Target
-     *
-     * @param targetType Enumerazione che rappresenta il tipo di Target (Prodotto o Servizio).
-     * @param name Il nome del Target.
-     * @param description Breve descrizione del Target.
-     * @param version Versione del Target alla quale si fa riferimento.
-     */
-    public Target(TargetType targetType, String name, String description, double version) {
-        this.targetState = TargetState.ACTIVE;
         this.targetType = targetType;
-        this.name = name;
-        this.description = description;
-        this.version = version;
     }
 
     public Long getId() {
@@ -163,7 +162,6 @@ public class Target {
         this.name = updatedData.name;
         this.description = updatedData.description;
         this.version = updatedData.version;
-        //this.company = updatedData.company;
         this.targetState = updatedData.targetState;
         this.targetType = updatedData.targetType;
         this.categories = updatedData.categories;
