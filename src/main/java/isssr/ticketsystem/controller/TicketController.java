@@ -224,6 +224,7 @@ public class TicketController {
      * @param ticketID ID del Ticket da cestinare.
      * @return Il ticket con lo stato aggiornato.
      */
+    @Transactional
     public Ticket trashTicket(Long ticketID) {
         Ticket ticket = findTicketById(ticketID);
         ticket.setState(TicketState.TRASHED);
