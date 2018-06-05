@@ -1,27 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!--
-    Document   : Default_StateMachine.xml
-    Created on : 22 March, 2013, 9:05 AM
-    Author     : ANKIT
-    Description:
-        File specifies states and transition of an FSM.
-        This is an example file.
--->
-
 <FSM>
-	<STATE id="START" type="ID">
-		<MESSAGE id="MOVE" action="move" nextState="START"/>
-		<MESSAGE id="MOVELEFT" action="moveLeft" nextState="INTERMEDIATE"/>
-		<MESSAGE id="MOVERIGHT" action="moveRight" nextState="STOP"/>
+	<STATE id="NEW">
+		<MESSAGE id="MOVEFOWARD" action="creation" nextState="VALIDATION"/>
 	</STATE>
-	<STATE id="INTERMEDIATE">
-		<MESSAGE id="MOVELEFT" action="moveLeft" nextState="STOP"/>
-		<MESSAGE id="MOVERIGHT" action="moveRight" nextState="ANKIT"/>
+	<STATE id="VALIDATION">
+		<MESSAGE id="MOVEBACK" action="TicketInvalidated" nextState="NEW"/>
+		<MESSAGE id="MOVEFOWARD_1" action="assignToTeamLeader" nextState="PENDING"/>
+		<MESSAGE id="MOVEFOWARD_2" action="TicketFalse" nextState="DISCARDED"/>
 	</STATE>
-	<STATE id="STOP">
+	<STATE id="DISCARDED">
+		<MESSAGE id="MOVEFOWARD" action="restore" nextState="PENDING"/>
 	</STATE>
-	<STATE id="ANKIT">
+	<STATE id="PENDING">
+		<MESSAGE id="MOVEBACK" action="TeamLeaderWrongAssignment" nextState="VALIDATION"/>
+		<MESSAGE id="MOVEFOWARD_1" action="assignTeamMemberLowPriority" nextState="READY"/>
+		<MESSAGE id="MOVEFOWARD_2" action="assignTeamMemberHighPriority" nextState="EXECUTION"/>
 	</STATE>
-	
+	<STATE id="READY">
+		<MESSAGE id="MOVEFOWARD" action="readyToWork" nextState="EXECUTION"/>
+	</STATE>
+	<STATE id="EXECUTION">
+		<MESSAGE id="MOVEBACK" action="TeamMemberWrongAssignment" nextState="PENDING"/>
+		<MESSAGE id="MOVEFOWARD_1" action="close" nextState="CLOSED"/>
+		<MESSAGE id="MOVEFOWARD_2" action="resolveTicket" nextState="RESOLVED"/>
+		<MESSAGE id="MOVEFOWARD_3" action="stopExecution" nextState="PAUSED"/>
+	</STATE>
+	<STATE id="PAUSED">
+		<MESSAGE id="MOVEFOWARD" action="restoreWork" nextState="EXECUTION"/>
+	</STATE>
+	<STATE id="RESOLVED">
+		<MESSAGE id="MOVEBACK" action="NoResolved" nextState="PENDING"/>
+		<MESSAGE id="MOVEFOWARD" action="closeByCustomer" nextState="CLOSED"/>
+	</STATE>
+	<STATE id="CLOSED">
+	</STATE>
 </FSM>
