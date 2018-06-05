@@ -1,5 +1,7 @@
 package isssr.ticketsystem.entity;
 
+import Action.FSMAction;
+import FSM.FSM;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -88,6 +90,11 @@ public class Ticket {
     @Enumerated(EnumType.STRING)
     List<TAG> tags;
 
+    /**
+     * Macchina a stati per ciascun Ticket che definisce il suo workflow.
+     */
+    @Lob
+    private FSM stateMachine;
 
     public Long getId() {
         return id;
@@ -375,5 +382,25 @@ public class Ticket {
                 ", ticketComments=" + ticketComments +
                 ", tags=" + tags +
                 '}';
+    }
+
+    public void createStateMachine(String fileXMLStates) {
+
+        try {
+            this.stateMachine = new FSM(fileXMLStates, new FSMAction() {
+                @Override
+                public boolean action(String curState, String message, String nextState, Object args) {
+                    System.out.println(curState + ":" + message + " : " + nextState);
+
+                    // Here we can implement our login of how we wish to handle
+                    // an action
+
+                    return true;
+                }
+            });
+        }
+        catch (Exception e){
+            System.out.println("Error\n" + e);
+        }
     }
 }

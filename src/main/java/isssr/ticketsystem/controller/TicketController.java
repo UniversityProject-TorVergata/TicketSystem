@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,6 +24,16 @@ public class TicketController {
 
     @Transactional
     public @NotNull Ticket insertTicket(@NotNull Ticket ticket) {
+
+        String fileName = "Default_StateMachine.xml";
+
+        File file = new File(fileName);
+        String path = file.getAbsolutePath();
+        String absolutePath = path.substring(0, path.length()-24);
+        String relativePath = "src/main/java/isssr/ticketsystem/state_machine/";
+
+        ticket.createStateMachine( absolutePath + relativePath + fileName);
+
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
