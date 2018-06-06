@@ -2,9 +2,8 @@ package isssr.ticketsystem.rest;
 
 
 import isssr.ticketsystem.controller.TeamController;
-import isssr.ticketsystem.entity.ProblemArea;
+import isssr.ticketsystem.enumeration.ProblemArea;
 import isssr.ticketsystem.entity.Team;
-import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.List;
 

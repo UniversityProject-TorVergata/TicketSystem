@@ -1,4 +1,4 @@
-package isssr.ticketsystem.entity;
+package isssr.ticketsystem.enumeration;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**

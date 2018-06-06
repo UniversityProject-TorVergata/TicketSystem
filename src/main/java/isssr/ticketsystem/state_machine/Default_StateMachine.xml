@@ -3,15 +3,17 @@
 <FSM>
 	<STATE id="NEW">
 		<MESSAGE id="TicketCreation" action="creation" nextState="VALIDATION"/>
-	</STATE>
+        <MESSAGE id="TicketDelete" action="delete" nextState="DISCARDED"/>
+    </STATE>
 	<STATE id="VALIDATION">
 		<MESSAGE id="TicketInvalidated" action="TicketInvalidated" nextState="NEW"/>
 		<MESSAGE id="assignToTeamLeader" action="assignToTeamLeader" nextState="PENDING"/>
 		<MESSAGE id="TicketFalse" action="TicketFalse" nextState="DISCARDED"/>
 	</STATE>
 	<STATE id="DISCARDED">
-		<MESSAGE id="TicketRestore" action="restore" nextState="PENDING"/>
-	</STATE>
+		<MESSAGE id="TicketRestoreByTeamCoordinator" action="restore" nextState="VALIDATION"/>
+        <MESSAGE id="TicketRestoreByCustomer" action="restore" nextState="NEW"/>
+    </STATE>
 	<STATE id="PENDING">
 		<MESSAGE id="TeamLeaderWrongAssignment" action="TeamLeaderWrongAssignment" nextState="VALIDATION"/>
 		<MESSAGE id="assignTeamMemberLowPriority" action="assignTeamMemberLowPriority" nextState="READY"/>

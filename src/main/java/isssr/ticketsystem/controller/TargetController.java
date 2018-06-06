@@ -2,10 +2,9 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TargetDao;
 import isssr.ticketsystem.entity.Target;
-import isssr.ticketsystem.entity.TargetState;
+import isssr.ticketsystem.enumeration.TargetState;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;

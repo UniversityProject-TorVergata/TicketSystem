@@ -2,10 +2,10 @@ package isssr.ticketsystem.entity;
 
 import Action.FSMAction;
 import FSM.FSM;
+import isssr.ticketsystem.enumeration.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Cascade;
 
 
 import javax.persistence.*;
@@ -236,8 +236,12 @@ public class Ticket {
         this.ticketComments = ticketComments;
     }
 
+    public FSM getStateMachine() {
+        return this.stateMachine;
+    }
+
     //Costruttore usato per la CRUD utente.
-    public Ticket(TicketState state, UserType sourceType ,
+    public Ticket(UserType sourceType ,
                   String presumedType, String title,
                   String description, String attachedFile,
                   String attachedByteStream, String attachedByteStreamType,

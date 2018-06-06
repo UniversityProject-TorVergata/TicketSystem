@@ -1,5 +1,7 @@
 package isssr.ticketsystem.entity;
 
+import isssr.ticketsystem.enumeration.TargetState;
+import isssr.ticketsystem.enumeration.TargetType;
 import lombok.Getter;
 import lombok.Setter;
 

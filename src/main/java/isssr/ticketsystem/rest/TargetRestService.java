@@ -2,7 +2,7 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.entity.Target;
-import isssr.ticketsystem.entity.TargetState;
+import isssr.ticketsystem.enumeration.TargetState;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

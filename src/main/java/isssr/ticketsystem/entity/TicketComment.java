@@ -1,5 +1,6 @@
 package isssr.ticketsystem.entity;
 
+import isssr.ticketsystem.enumeration.Visibility;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

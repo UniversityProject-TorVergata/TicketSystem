@@ -3,13 +3,13 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.ProblemArea;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;

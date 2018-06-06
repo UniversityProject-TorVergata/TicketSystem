@@ -2,6 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -238,8 +239,7 @@ public class TicketController {
     @Transactional
     public Ticket trashTicket(Long ticketID) {
         Ticket ticket = findTicketById(ticketID);
+        ticket.getStateMachine().ProcessFSM("TicketDelete");
         return ticketDao.save(ticket);
-
-
     }
 }
