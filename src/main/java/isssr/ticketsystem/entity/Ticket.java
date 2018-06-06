@@ -2,6 +2,7 @@ package isssr.ticketsystem.entity;
 
 import Action.FSMAction;
 import FSM.FSM;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import isssr.ticketsystem.enumeration.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -82,6 +83,9 @@ public class Ticket {
     @OneToMany(mappedBy = "ticket",targetEntity = SystemEvent.class )
     private List<TicketComment> ticketComments;
 
+    @JsonIgnore
+    private String currentState;
+
     @ElementCollection(targetClass = TAG.class)
     @Enumerated(EnumType.STRING)
     List<TAG> tags;
@@ -106,6 +110,15 @@ public class Ticket {
 
     public void setSourceType(UserType sourceType) {
         this.sourceType = sourceType;
+    }
+
+    @JsonIgnore
+    public String getCurrentState() {
+        return currentState;
+    }
+
+    public void setCurrentState(String currentState) {
+        this.currentState = currentState;
     }
 
     public String getTimestamp() {

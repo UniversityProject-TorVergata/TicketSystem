@@ -132,5 +132,12 @@ public class TeamController {
     }
 
 
+    public TeamLeader getTeamLeaderByTeamId(Long id) {
+        Team team = teamDao.getOne(id);
+        if(team!=null)
+            return team.getTeamLeader();
+        return null;
+
+    }
 
 }

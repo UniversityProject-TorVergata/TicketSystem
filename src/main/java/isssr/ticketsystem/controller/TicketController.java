@@ -32,6 +32,7 @@ public class TicketController {
         String relativePath = "src/main/java/isssr/ticketsystem/state_machine/";
 
         ticket.createStateMachine( absolutePath + relativePath + stateMachineFileName + ".xml");
+        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
 
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
@@ -82,16 +83,15 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(teamLeaderID);
     }
 
-    //  TODO Da rifare.
-    /*
+
     @Transactional
-    public List<Ticket> getTicketByState(TicketState ticketState){
+    public List<Ticket> getTicketByState(String ticketState){
 
         List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
 
         return ticketDao.getTicketByState(ticketState);
     }
-    */
+
 
     /**
      * Metodo "interno" depura una Lista di Ticket eliminando quelli che non contengono tutti i Tag passati in argomento.
@@ -230,16 +230,21 @@ public class TicketController {
         return ticketDao.getTicketByTarget(targetID);
     }
 
+
     /**
-     * "Cestina" un ticket ponendo il suo stato a TRASHED.
+     * Metodo per cambiare lo stato di un ticket
      *
-     * @param ticketID ID del Ticket da cestinare.
-     * @return Il ticket con lo stato aggiornato.
+     *
+     * @param ticketID
+     * @param action String che identifica l'azione da intraprendere come configurato nell file XML
+     * @return
      */
     @Transactional
-    public Ticket trashTicket(Long ticketID) {
+    public Ticket changeState(Long ticketID,String action){
         Ticket ticket = findTicketById(ticketID);
-        ticket.getStateMachine().ProcessFSM("TicketDelete");
+        ticket.getStateMachine().ProcessFSM(action);
+        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
         return ticketDao.save(ticket);
     }
+
 }

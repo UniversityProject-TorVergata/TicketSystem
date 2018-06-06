@@ -78,20 +78,14 @@ public class TicketRestService {
         return new ResponseEntity<>(ticketFound, ticketFound == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
     }
 
-    /**
-     * Metodo usato per la gestione di una Delete che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo il ticket specificato viene marcato come TRASHED ("CESTINATO") nel DB.
-     * @param id Id del ticket che va cancellato dal DB.
-     * @return ticket cancellato dal DB + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.TicketController
-     */
-    @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public @ResponseBody ResponseEntity<Ticket> deleteTicket(@PathVariable("id") String id) {
-        Ticket trashedTicket = ticketController.trashTicket(Long.parseLong(id));
-        if(trashedTicket!=null)
-            return new ResponseEntity<>(trashedTicket,HttpStatus.OK);
+    @RequestMapping(path = "/changeState/{id}/{action}",method = RequestMethod.POST)
+    public ResponseEntity<Ticket> findTicket(@PathVariable("id") Long id,@PathVariable("action") String action){
+        Ticket updatedTicket = ticketController.changeState(id,action);
+        if(updatedTicket!=null)
+            return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
-            return new ResponseEntity<>(trashedTicket,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
+
     }
 
     /**
@@ -155,17 +149,16 @@ public class TicketRestService {
      * @return Ticket presenti nel DB che rispondono ai criteri sopraspecificati + esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TicketController
      */
-    //  TODO Da rifare.
-    //@RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
-    //public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state") TicketState ticketState){
-    //    Log logger = LogFactory.getLog(getClass());
-    //    logger.info(ticketState.toString() +" " + ticketState.getClass());
-    //    List<Ticket> tickets = ticketController.getTicketByState(ticketState);
-    //    if(tickets !=null)
-    //       return new ResponseEntity<>(tickets,HttpStatus.OK);
-    //    else
-    //        return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
-    //}
+    @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
+    public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state")String ticketState){
+        //Log logger = LogFactory.getLog(getClass());
+        //logger.info(ticketState.toString() +" " + ticketState.getClass());
+        List<Ticket> tickets = ticketController.getTicketByState(ticketState);
+        if(tickets !=null)
+           return new ResponseEntity<>(tickets,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
+    }
 
     /**
      * Metodo usato per la gestione di una PUT che arriva sull'url specificato. A fronte di

@@ -35,9 +35,8 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      * @param ticketState Stato dei Ticket da ricercare nel DB.
      * @return Tutti i ticket nello specifico ticketState
      */
-    //  TODO Da rifare.
-    // @Query("select t from Ticket  t where t.state = :ticketState"
-    // List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
+     @Query("select t from Ticket  t where t.currentState = :ticketState")
+     List<Ticket> getTicketByState(@Param("ticketState") String ticketState);
 
     /**
      * Metodo query che seleziona tutti i Ticket assegnati a un Determinato TeamMember.

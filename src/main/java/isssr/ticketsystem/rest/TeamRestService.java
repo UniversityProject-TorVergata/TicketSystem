@@ -2,6 +2,7 @@ package isssr.ticketsystem.rest;
 
 
 import isssr.ticketsystem.controller.TeamController;
+import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.enumeration.ProblemArea;
 import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamMember;
@@ -111,6 +112,21 @@ public class TeamRestService {
             return new ResponseEntity<>(listTeamMember,HttpStatus.OK);
         else
             return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Ricerca il TeamLeader di un Team
+     *
+     * @param id ID del team di cui interessa il TeamLeader
+     * @return Lista dei TeamMember del Team
+     */
+    @RequestMapping(path = "/team_leader/{id}", method = RequestMethod.GET)
+    public ResponseEntity<TeamLeader> getTeamLeaderByTeamId(@PathVariable Long id) {
+        TeamLeader teamLeader= teamController.getTeamLeaderByTeamId(id);
+        if(teamLeader != null)
+            return new ResponseEntity<>(teamLeader,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(teamLeader,HttpStatus.NOT_FOUND);
     }
 
     /**
