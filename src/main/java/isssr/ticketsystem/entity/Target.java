@@ -32,6 +32,11 @@ public class Target {
     @Enumerated(EnumType.STRING)
     private TargetType targetType;
 
+    /**
+     *  NOME della Macchina a stati associata allo specifico Target.
+     */
+    private String stateMachineName;
+
     private String name;
     private String description;
     private double version;
@@ -39,23 +44,13 @@ public class Target {
     @ElementCollection
     private Collection<String> categories;
 
-    /*
-    Mantenere una lista di Ticket aperta per prodotto perde di significato,
-    infatti è un'informazione che non può essere inviata in formato JSON
-    (causerebbe un ciclo infinito : il prodotto contiene ticket che a sua volta contiene
-    un prodotto) , per ottenere una lista di Ticket aperti per prodotto sarà sufficente
-    effettuare una query invocata da metodo REST.
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "target")
-    private List<Ticket> ticketList;
-    */
 
     public Target() { }
 
-    public Target(Long id, TargetState targetState){
+    public Target(Long id, TargetState targetState, String stateMachineName){
         this.id = id;
         this.targetState = targetState;
+        this.stateMachineName = stateMachineName;
     }
 
     public Target(String name, String description, double version) {
@@ -114,17 +109,9 @@ public class Target {
         this.targetState = targetState;
     }
 
-    /*
-    @JsonIgnore
-    public List<Ticket> getTicketList() {
-        return ticketList;
+    public String getStateMachineName() {
+        return this.stateMachineName;
     }
-
-    @JsonProperty
-    public void setTicketList(List<Ticket> ticketList) {
-        this.ticketList = ticketList;
-    }
-    */
 
     public String getName() {
         return name;
@@ -133,16 +120,6 @@ public class Target {
     public void setName(String name) {
         this.name = name;
     }
-
-    /*
-    public void addTicket(Ticket ticket) {
-        this.ticketList.add(ticket);
-    }
-
-    public void removeTicket(Ticket ticket) {
-        this.ticketList.remove(ticket);
-    }
-    */
 
     public Collection<String> getCategories() {
         return categories;

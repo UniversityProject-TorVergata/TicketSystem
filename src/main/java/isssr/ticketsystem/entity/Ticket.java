@@ -5,7 +5,7 @@ import FSM.FSM;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.hibernate.annotations.Cascade;
 
 
 import javax.persistence.*;
@@ -62,6 +62,7 @@ public class Ticket {
 
 
     @ManyToOne
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Target target;
 
     @Enumerated(EnumType.STRING)

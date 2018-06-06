@@ -5,6 +5,7 @@ import isssr.ticketsystem.entity.Target;
 import isssr.ticketsystem.entity.TargetState;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -18,9 +19,9 @@ public class TargetController {
     private TargetDao targetDao;
 
     @Transactional
-    public @NotNull Target insertProduct(@NotNull Target product) {
-        Target createdProduct = targetDao.save(product);
-        return createdProduct;
+    public @NotNull Target insertProduct(@NotNull Target target) {
+        Target createdTarget = targetDao.save(target);
+        return createdTarget;
     }
 
     @Transactional
@@ -32,9 +33,9 @@ public class TargetController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTarget.updateTarget(updatedData);
-        Target updatedProduct = targetDao.save(toBeUpdatedTarget);
+        Target updatedTarget = targetDao.save(toBeUpdatedTarget);
 
-        return toBeUpdatedTarget;
+        return updatedTarget;
     }
 
     public Target findProductById(@NotNull Long id) {
@@ -55,7 +56,7 @@ public class TargetController {
         return targetDao.findAll();
     }
 
-    public Target changeStateProduct(@NotNull Long id,TargetState targetState) throws NotFoundEntityException {
+    public Target changeStateProduct(@NotNull Long id, TargetState targetState) throws NotFoundEntityException {
 
         Target toBeUpdatedTarget = targetDao.getOne(id);
 
@@ -63,8 +64,8 @@ public class TargetController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTarget.setTargetState(targetState);
-        Target updatedProduct = targetDao.save(toBeUpdatedTarget);
+        Target updatedTarget = targetDao.save(toBeUpdatedTarget);
 
-        return toBeUpdatedTarget;
+        return updatedTarget;
     }
 }

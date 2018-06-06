@@ -3,10 +3,8 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
-import org.apache.tomcat.util.descriptor.tld.TldRuleSet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.io.File;
@@ -25,14 +23,14 @@ public class TicketController {
     @Transactional
     public @NotNull Ticket insertTicket(@NotNull Ticket ticket) {
 
-        String fileName = "Default_StateMachine.xml";
+        String stateMachineFileName = ticket.getTarget().getStateMachineName();
 
-        File file = new File(fileName);
+        File file = new File(stateMachineFileName + ".xml");
         String path = file.getAbsolutePath();
         String absolutePath = path.substring(0, path.length()-24);
         String relativePath = "src/main/java/isssr/ticketsystem/state_machine/";
 
-        ticket.createStateMachine( absolutePath + relativePath + fileName);
+        ticket.createStateMachine( absolutePath + relativePath + stateMachineFileName + ".xml");
 
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
