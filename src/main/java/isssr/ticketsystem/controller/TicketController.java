@@ -81,6 +81,8 @@ public class TicketController {
         return ticketDao.getTicketByResolverUser(teamLeaderID);
     }
 
+    //  TODO Da rifare.
+    /*
     @Transactional
     public List<Ticket> getTicketByState(TicketState ticketState){
 
@@ -88,6 +90,7 @@ public class TicketController {
 
         return ticketDao.getTicketByState(ticketState);
     }
+    */
 
     /**
      * Metodo "interno" depura una Lista di Ticket eliminando quelli che non contengono tutti i Tag passati in argomento.
@@ -152,7 +155,6 @@ public class TicketController {
         Ticket assignedTicket  = this.findTicketById(ticketID);
         TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
         assignedTicket.setResolverUser(teamLeader);
-        assignedTicket.setState(TicketState.READY);
         ticketDao.save(assignedTicket);
     }
 
@@ -236,7 +238,6 @@ public class TicketController {
     @Transactional
     public Ticket trashTicket(Long ticketID) {
         Ticket ticket = findTicketById(ticketID);
-        ticket.setState(TicketState.TRASHED);
         return ticketDao.save(ticket);
 
 

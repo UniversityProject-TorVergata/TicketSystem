@@ -157,16 +157,17 @@ public class TicketRestService {
      * @return Ticket presenti nel DB che rispondono ai criteri sopraspecificati + esito della richiesta HTTP.
      * @see isssr.ticketsystem.controller.TicketController
      */
-    @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state") TicketState ticketState){
-        Log logger = LogFactory.getLog(getClass());
-        logger.info(ticketState.toString() +" " + ticketState.getClass());
-        List<Ticket> tickets = ticketController.getTicketByState(ticketState);
-        if(tickets !=null)
-            return new ResponseEntity<>(tickets,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
-    }
+    //  TODO Da rifare.
+    //@RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
+    //public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state") TicketState ticketState){
+    //    Log logger = LogFactory.getLog(getClass());
+    //    logger.info(ticketState.toString() +" " + ticketState.getClass());
+    //    List<Ticket> tickets = ticketController.getTicketByState(ticketState);
+    //    if(tickets !=null)
+    //       return new ResponseEntity<>(tickets,HttpStatus.OK);
+    //    else
+    //        return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
+    //}
 
     /**
      * Metodo usato per la gestione di una PUT che arriva sull'url specificato. A fronte di

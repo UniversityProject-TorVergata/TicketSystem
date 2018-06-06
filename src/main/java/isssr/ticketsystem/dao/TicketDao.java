@@ -1,9 +1,7 @@
 package isssr.ticketsystem.dao;
 
 
-import isssr.ticketsystem.entity.TAG;
 import isssr.ticketsystem.entity.Ticket;
-import isssr.ticketsystem.entity.TicketState;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,8 +35,9 @@ public interface TicketDao extends JpaRepository<Ticket, Long> {
      * @param ticketState Stato dei Ticket da ricercare nel DB.
      * @return Tutti i ticket nello specifico ticketState
      */
-     @Query("select t from Ticket  t where t.state = :ticketState")
-     List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
+    //  TODO Da rifare.
+    // @Query("select t from Ticket  t where t.state = :ticketState"
+    // List<Ticket> getTicketByState(@Param("ticketState") TicketState ticketState);
 
     /**
      * Metodo query che seleziona tutti i Ticket assegnati a un Determinato TeamMember.

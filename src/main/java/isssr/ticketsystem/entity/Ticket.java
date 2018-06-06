@@ -32,9 +32,6 @@ public class Ticket {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private TicketState state;
-
-    @Enumerated(EnumType.STRING)
     private UserType sourceType;
 
     private String timestamp;
@@ -60,9 +57,7 @@ public class Ticket {
     @ManyToOne
     private RegisteredUser openerUser;
 
-
     @ManyToOne
-    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private Target target;
 
     @Enumerated(EnumType.STRING)
@@ -103,14 +98,6 @@ public class Ticket {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public TicketState getState() {
-        return state;
-    }
-
-    public void setState(TicketState state) {
-        this.state = state;
     }
 
     public UserType getSourceType() {
@@ -256,7 +243,6 @@ public class Ticket {
                   String attachedByteStream, String attachedByteStreamType,
                   TeamMember resolverUser, RegisteredUser openerUser, Target target, Priority customerPriority,
                   Visibility visibility) {
-        this.state = state;
         this.sourceType = sourceType;
         this.timestamp = new Timestamp(System.currentTimeMillis()).toString();
         this.presumedType = presumedType;
@@ -294,7 +280,6 @@ public class Ticket {
                   String title, String description, String attachedFile, String mediaType,
                   RegisteredUser openerUser, Target target, Priority customerPriority, Visibility visibility,
                    List<TAG> tags) {
-        this.state = TicketState.NEW;
         this.sourceType = sourceType;
         this.timestamp = new Timestamp(System.currentTimeMillis()).toString();
         this.presumedType = presumedType;
@@ -317,9 +302,6 @@ public class Ticket {
      */
     public void updateTicket(Ticket updatedData) {
 
-
-
-        this.state = updatedData.state;
         this.sourceType = updatedData.sourceType;
         this.timestamp = updatedData.timestamp;
         this.presumedType = updatedData.presumedType;
@@ -362,7 +344,6 @@ public class Ticket {
     public String toString() {
         return "Ticket{" +
                 "id=" + id +
-                ", ticketState=" + state +
                 ", sourceType=" + sourceType +
                 ", timestamp='" + timestamp + '\'' +
                 ", presumedType=" + presumedType +
