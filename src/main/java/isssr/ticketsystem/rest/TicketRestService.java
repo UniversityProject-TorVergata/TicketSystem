@@ -97,7 +97,6 @@ public class TicketRestService {
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
-
     }
 
     /**
