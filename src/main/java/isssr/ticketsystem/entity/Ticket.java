@@ -7,6 +7,7 @@ import isssr.ticketsystem.enumeration.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Cascade;
 
 
 import javax.persistence.*;
@@ -77,10 +78,11 @@ public class Ticket {
     private Difficulty difficulty;
 
 
-    @OneToMany(mappedBy = "ticket")
+    @OneToMany
     private List<SystemEvent> eventRegister;
 
-    @OneToMany(mappedBy = "ticket",targetEntity = SystemEvent.class )
+    @OneToMany(targetEntity = SystemEvent.class )
+    @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<TicketComment> ticketComments;
 
     @JsonIgnore

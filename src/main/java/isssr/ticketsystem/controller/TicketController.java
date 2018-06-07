@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TicketController {
@@ -56,8 +57,8 @@ public class TicketController {
 
     @Transactional
     public Ticket findTicketById(@NotNull Long id) {
-        Ticket foundTicket = ticketDao.getOne(id);
-        return foundTicket;
+        Optional<Ticket> optionalTicket = ticketDao.findById(id);
+        return optionalTicket.get();
     }
 
     public boolean deleteTicket(@NotNull Long id) {

@@ -75,7 +75,9 @@ public class TicketRestService {
     @RequestMapping(path = "{id}", method = RequestMethod.GET)
     public ResponseEntity<Ticket> findTicket(@PathVariable Long id) {
         Ticket ticketFound = ticketController.findTicketById(id);
-        return new ResponseEntity<>(ticketFound, ticketFound == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        if(ticketFound!=null)
+            return new ResponseEntity<>(ticketFound,HttpStatus.OK);
+        return new ResponseEntity<>(ticketFound,HttpStatus.NOT_FOUND);
     }
 
     @RequestMapping(path = "/changeState/{id}/{action}",method = RequestMethod.POST)

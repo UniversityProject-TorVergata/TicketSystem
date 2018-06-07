@@ -30,7 +30,9 @@ public class TicketComment extends SystemEvent{
      * @param visibility Visibilitò del commento.
      */
     public TicketComment(RegisteredUser author, Ticket ticket, String comment, Visibility visibility) {
-        super(author,ticket,comment);
+        super(author,comment);
         this.visibility = visibility;
     }
+
+
 }

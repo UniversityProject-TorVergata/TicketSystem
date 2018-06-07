@@ -19,30 +19,28 @@ public class SystemEvent {
 
     @Id
     @GeneratedValue
-    private Long id;
+    protected Long id;
 
     @ManyToOne
-    private RegisteredUser eventGenerator;
+    protected RegisteredUser eventGenerator;
 
-    private String description;
+    protected String description;
 
-    @ManyToOne
-    private Ticket ticket;
 
-    private String timestamp;
+
+    protected String timestamp;
+
 
 
     /**
      * Costruttore
      *
      * @param eventGenerator L'utente che ha generato l'evento
-     * @param ticket Il ticket oggetto dell'evento (se presente)
      * @param description descrizione dell'evento.
      */
-    public SystemEvent(RegisteredUser eventGenerator,Ticket ticket, String description) {
+    public SystemEvent(RegisteredUser eventGenerator, String description) {
         this.eventGenerator = eventGenerator;
         this.description = description;
-        this.ticket = ticket;
         this.timestamp = new Timestamp(System.currentTimeMillis()).toString();
     }
 }
