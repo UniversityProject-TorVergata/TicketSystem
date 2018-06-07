@@ -265,4 +265,14 @@ public class TicketController {
         return ticket;
 
     }
+
+    @Transactional
+    public Ticket changeStateAndResolverUser(Long id, String action, Long internalUserID) {
+        Ticket ticket = findTicketById(id);
+        RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
+        ticket.setResolverUser((InternalUser) registeredUser);
+        ticketDao.save(ticket);
+        return changeState(id,action);
+
+    }
 }

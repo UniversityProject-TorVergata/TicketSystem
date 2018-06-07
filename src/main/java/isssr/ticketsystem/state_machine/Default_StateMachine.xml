@@ -1,39 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <FSM>
-	<STATE id="NEW">
-		<MESSAGE id="TicketCreation" action="creation" nextState="VALIDATION"/>
-        <MESSAGE id="TicketDelete" action="delete" nextState="DISCARDED"/>
-    </STATE>
 	<STATE id="VALIDATION">
-		<MESSAGE id="TicketInvalidated" action="TicketInvalidated" nextState="NEW"/>
+		<MESSAGE id="TicketEdited" action="TicketEdited" nextState="EDIT"/>
 		<MESSAGE id="assignToTeamLeader" action="assignToTeamLeader" nextState="PENDING"/>
 		<MESSAGE id="TicketFalse" action="TicketFalse" nextState="DISCARDED"/>
 	</STATE>
+	<STATE id="EDIT">
+		<MESSAGE id="TicketModified" action="TicketModified" nextState="VALIDATION"/>
+		<MESSAGE id="TicketDelete" action="TicketDelete" nextState="DISCARDED"/>
+	</STATE>
 	<STATE id="DISCARDED">
-		<MESSAGE id="TicketRestoreByTeamCoordinator" action="restore" nextState="VALIDATION"/>
-        <MESSAGE id="TicketRestoreByCustomer" action="restore" nextState="NEW"/>
+		<MESSAGE id="TicketRestoredByTeamCoordinator" action="TicketRestoredByTeamCoordinator" nextState="VALIDATION"/>
+        <MESSAGE id="TicketRestoredByCustomer" action="TicketRestoredByCustomer" nextState="EDIT"/>
     </STATE>
 	<STATE id="PENDING">
 		<MESSAGE id="TeamLeaderWrongAssignment" action="TeamLeaderWrongAssignment" nextState="VALIDATION"/>
-		<MESSAGE id="assignTeamMemberLowPriority" action="assignTeamMemberLowPriority" nextState="READY"/>
-		<MESSAGE id="assignTeamMemberHighPriority" action="assignTeamMemberHighPriority" nextState="EXECUTION"/>
+		<MESSAGE id="assignTeamMember" action="assignTeamMember" nextState="EXECUTION"/>
 	</STATE>
-	<STATE id="READY">
-		<MESSAGE id="TicketReadyToWork" action="readyToWork" nextState="EXECUTION"/>
-	</STATE>
-	<STATE id="EXECUTION">
+    <STATE id="EXECUTION">
 		<MESSAGE id="TeamMemberWrongAssignment" action="TeamMemberWrongAssignment" nextState="PENDING"/>
-		<MESSAGE id="TicketCloseByTeamMember" action="close" nextState="CLOSED"/>
-		<MESSAGE id="TicketResolve" action="TicketResolve" nextState="RESOLVED"/>
-		<MESSAGE id="TicketStopExecution" action="stopExecution" nextState="PAUSED"/>
+		<MESSAGE id="TicketClosedByTeamMember" action="TicketClosedByTeamMember" nextState="CLOSED"/>
+		<MESSAGE id="TicketResolved" action="TicketResolved" nextState="RESOLVED"/>
 	</STATE>
-	<STATE id="PAUSED">
-		<MESSAGE id="TicketRestoreWork" action="TicketrestoreWork" nextState="EXECUTION"/>
-	</STATE>
-	<STATE id="RESOLVED">
-		<MESSAGE id="TicketNoResolved" action="NoResolved" nextState="PENDING"/>
-		<MESSAGE id="TicketCloseByCustomer" action="closeByCustomer" nextState="CLOSED"/>
+    <STATE id="RESOLVED">
+		<MESSAGE id="TicketNotResolved" action="TicketNotResolved" nextState="PENDING"/>
+		<MESSAGE id="TicketClosedByCustomer" action="TicketClosedByCustomer" nextState="CLOSED"/>
 	</STATE>
 	<STATE id="CLOSED">
 	</STATE>

@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.constraints.Pattern;
 import java.util.List;
 
 /**
@@ -80,14 +81,40 @@ public class TicketRestService {
         return new ResponseEntity<>(ticketFound,HttpStatus.NOT_FOUND);
     }
 
-    @RequestMapping(path = "/changeState/{id}/{action}",method = RequestMethod.POST)
-    public ResponseEntity<Ticket> findTicket(@PathVariable("id") Long id,@PathVariable("action") String action){
-        Ticket updatedTicket = ticketController.changeState(id,action);
+    /**
+     * Metodo per spostare il ticket tra gli stati della FSM.
+     *
+     * @param ticketID ID del ticket di cui deve essere cambiato lo stato
+     * @param action Azione che attiva la transizione di stato
+     * @param internalUserID ID del nuovo ResolverUser
+     * @return il ticket aggiornato.
+     */
+    @RequestMapping(path = "/changeState/{ticketID}/{action}/{internalUserID}",method = RequestMethod.POST)
+    public ResponseEntity<Ticket> changeTicketStateAndResolverUser(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
+                                             @PathVariable("internalUserID") Long internalUserID){
+        Ticket updatedTicket = ticketController.changeStateAndResolverUser(ticketID,action,internalUserID);
         if(updatedTicket!=null)
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
 
+    }
+
+    /**
+     * Servizio REST per cestinare un Ticket
+     *
+     * @param ticketID ID del ticket da cestinare
+     * @param action action da intraprendere per il cestinamento
+     * @return il ticket cestinato
+     */
+    @RequestMapping(path = "/trashTicket/{ticketID}/{action}",method = RequestMethod.PUT)
+    public ResponseEntity<Ticket>  trashTicket(@PathVariable("ticketID") Long ticketID,@PathVariable("action") String action){
+
+        Ticket trashedTicket = ticketController.changeState(ticketID,action);
+        if(trashedTicket!=null)
+            return new ResponseEntity<>(trashedTicket,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(trashedTicket,HttpStatus.NOT_FOUND);
     }
 
     /**

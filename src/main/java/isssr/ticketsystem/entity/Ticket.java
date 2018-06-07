@@ -54,7 +54,7 @@ public class Ticket {
     private String mediaType;
 
     @ManyToOne
-    private TeamMember resolverUser;
+    private InternalUser resolverUser;
 
     @ManyToOne
     private RegisteredUser openerUser;
@@ -351,11 +351,11 @@ public class Ticket {
         this.tags = tags;
     }
 
-    public TeamMember getResolverUser() {
+    public InternalUser getResolverUser() {
         return resolverUser;
     }
 
-    public void setResolverUser(TeamMember resolverUser) {
+    public void setResolverUser(InternalUser resolverUser) {
         this.resolverUser = resolverUser;
     }
 
