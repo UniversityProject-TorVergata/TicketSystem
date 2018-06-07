@@ -231,6 +231,22 @@ public class TicketRestService {
     }
 
     /**
+     * Servizio REST per l'inserimento di un commento in ticket.
+     *
+     *
+     * @param ticketID ID del ticket da commentare
+     * @param ticketComment commento da allegare al ticket.
+     * @return
+     */
+    @RequestMapping(path= "/insertComment/{ticketID}",method = RequestMethod.POST)
+    public ResponseEntity<Ticket> insertComment(@PathVariable("ticketID") Long ticketID,@RequestBody TicketComment ticketComment){
+        Ticket commentedTicket = ticketController.insertComment(ticketID,ticketComment);
+        if(commentedTicket!=null)
+            return new ResponseEntity<>(commentedTicket,HttpStatus.OK);
+        else return new ResponseEntity<>(commentedTicket,HttpStatus.NOT_FOUND);
+    }
+
+    /**
      * Questa classe interna è usata per passare i parametri delle chiamate rest /searchTicketExclusive ,/searchTicketInclusive
      * che filtrano i ticket attraverso tag,targetID e category.
      *

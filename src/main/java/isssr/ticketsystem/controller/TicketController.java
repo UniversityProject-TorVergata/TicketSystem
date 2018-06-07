@@ -248,4 +248,21 @@ public class TicketController {
         return ticketDao.save(ticket);
     }
 
+    /**
+     * Metodo per inserire un commento in un ticket
+     *
+     * @param ticketID ID del ticket da commentare
+     * @param ticketComment commento da allegare al ticket
+     * @return
+     */
+    @Transactional
+    public Ticket insertComment(Long ticketID, TicketComment ticketComment) {
+        Ticket ticket = findTicketById(ticketID);
+        if(ticket!=null){
+            ticket.getTicketComments().add(ticketComment);
+            ticketDao.save(ticket);
+        }
+        return ticket;
+
+    }
 }
