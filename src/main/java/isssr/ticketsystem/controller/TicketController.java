@@ -48,7 +48,8 @@ public class TicketController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTicket.updateTicket(updatedData);
-
+        toBeUpdatedTicket.getStateMachine().ProcessFSM("Action1");
+        toBeUpdatedTicket.setCurrentState(toBeUpdatedTicket.getStateMachine().getCurrentState());
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
 
         return updatedTicket;
