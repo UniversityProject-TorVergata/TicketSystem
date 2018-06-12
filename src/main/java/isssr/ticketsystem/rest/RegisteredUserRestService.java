@@ -1,10 +1,7 @@
 package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.RegisteredUserController;
-import isssr.ticketsystem.entity.RegisteredUser;
-import isssr.ticketsystem.entity.Team;
-import isssr.ticketsystem.entity.TeamLeader;
-import isssr.ticketsystem.entity.TeamMember;
+import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -144,6 +141,13 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listFreeTeamMember, HttpStatus.OK);
         else
             return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(path = "team_coordinator", method = RequestMethod.GET)
+    public ResponseEntity<TeamCoordinator> getTeamCoordinator(){
+        TeamCoordinator teamCoordinator = registeredUserController.getTeamCoordinator();
+        return new ResponseEntity<>(teamCoordinator, teamCoordinator == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+
     }
 
     /**

@@ -2,10 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
-import isssr.ticketsystem.entity.RegisteredUser;
-import isssr.ticketsystem.entity.Team;
-import isssr.ticketsystem.entity.TeamLeader;
-import isssr.ticketsystem.entity.TeamMember;
+import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -83,6 +80,12 @@ public class RegisteredUserController {
     {
         List<TeamMember> listFreeTeamMember = registeredUserDao.getListFreeTeamMember();
         return listFreeTeamMember;
+    }
+
+    public TeamCoordinator getTeamCoordinator()
+    {
+        TeamCoordinator teamCoordinator = registeredUserDao.getTeamCoordinator();
+        return teamCoordinator;
     }
 
 

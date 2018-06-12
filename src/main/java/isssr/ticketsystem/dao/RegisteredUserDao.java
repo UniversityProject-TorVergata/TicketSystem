@@ -1,6 +1,7 @@
 package isssr.ticketsystem.dao;
 
 import isssr.ticketsystem.entity.RegisteredUser;
+import isssr.ticketsystem.entity.TeamCoordinator;
 import isssr.ticketsystem.entity.TeamLeader;
 import isssr.ticketsystem.entity.TeamMember;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -38,6 +39,9 @@ public interface RegisteredUserDao extends JpaRepository<RegisteredUser, Long> {
      */
     @Query("select tm from TeamMember tm where tm.team = null")
     List<TeamMember> getListFreeTeamMember();
+
+    @Query("select tc from TeamCoordinator tc")
+    TeamCoordinator getTeamCoordinator();
 
 
 
