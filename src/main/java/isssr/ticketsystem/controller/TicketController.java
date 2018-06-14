@@ -2,6 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,7 @@ public class TicketController {
         return optionalTicket.get();
     }
 
+    @Transactional
     public boolean deleteTicket(@NotNull Long id) {
         if (!ticketDao.existsById(id)) {
             return false;
@@ -70,16 +72,19 @@ public class TicketController {
         return true;
     }
 
+    @Transactional
     public List<Ticket> getTickets() {
 
         return ticketDao.findAll();
     }
 
+    @Transactional
     public List<Ticket> getTicketByOpenerUser(Long customerID){
 
         return ticketDao.getTicketByOpenerUser(customerID);
     }
 
+    @Transactional
     public List<Ticket> getTicketByResolverUser(Long teamLeaderID){
 
         return ticketDao.getTicketByResolverUser(teamLeaderID);
@@ -161,6 +166,7 @@ public class TicketController {
         ticketDao.save(assignedTicket);
     }
 
+    @Transactional
     public List<Ticket> findTicketByTeamLeaderID(Long teamLeaderID) {
         return ticketDao.findTicketByTeamLeaderID(teamLeaderID);
 
@@ -175,6 +181,7 @@ public class TicketController {
      * @param targetID
      * @return
      */
+    @Transactional
     public List<Ticket> searchTicketExclusive(String category, List<TAG> tags, Long targetID) {
 
         if(tags == null){
@@ -203,6 +210,7 @@ public class TicketController {
      * @param targetID
      * @return
      */
+    @Transactional
     public List<Ticket> searchTicketInclusive(String category, List<TAG> tags, Long targetID) {
 
         if(tags == null){
@@ -228,6 +236,7 @@ public class TicketController {
      * @param targetID ID del target di cui cercare i ticket.
      * @return La lista di ticket collegati al target in argomento.
      */
+    @Transactional
     public List<Ticket> findTicketByTarget(Long targetID){
         return ticketDao.getTicketByTarget(targetID);
     }
@@ -275,5 +284,16 @@ public class TicketController {
         ticketDao.save(ticket);
         return changeState(id,action);
 
+    }
+
+    @Transactional
+    public Ticket changeStateResolverUserPriorityAndType(Long ticketID, String action, Long internalUserID, Priority priority, String actualType) {
+        Ticket ticket = findTicketById(ticketID);
+        RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
+        ticket.setResolverUser((InternalUser) registeredUser);
+        ticket.setActualPriority(priority);
+        ticket.setActualType(actualType);
+        ticketDao.save(ticket);
+        return changeState(ticketID,action);
     }
 }

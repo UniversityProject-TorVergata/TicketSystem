@@ -5,6 +5,7 @@ import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import lombok.NoArgsConstructor;
@@ -93,6 +94,25 @@ public class TicketRestService {
     public ResponseEntity<Ticket> changeTicketStateAndResolverUser(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
                                              @PathVariable("internalUserID") Long internalUserID){
         Ticket updatedTicket = ticketController.changeStateAndResolverUser(ticketID,action,internalUserID);
+        if(updatedTicket!=null)
+            return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Metodo per spostare il ticket tra gli stati della FSM.
+     *
+     * @param ticketID ID del ticket di cui deve essere cambiato lo stato
+     * @param action Azione che attiva la transizione di stato
+     * @param internalUserID ID del nuovo ResolverUser
+     * @return il ticket aggiornato.
+     */
+    @RequestMapping(path = "/changeState/{ticketID}/{action}/{internalUserID}/{priority}/{actualType}",method = RequestMethod.POST)
+    public ResponseEntity<Ticket> changeTicketStateResolverUserPriorityAndType(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
+                                                                   @PathVariable("internalUserID") Long internalUserID,@PathVariable("priority") Priority priority,
+                                                                             @PathVariable("actualType") String actualType  ){
+        Ticket updatedTicket = ticketController.changeStateResolverUserPriorityAndType(ticketID,action,internalUserID,priority,actualType);
         if(updatedTicket!=null)
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
