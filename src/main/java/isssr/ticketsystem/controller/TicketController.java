@@ -2,6 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
@@ -295,5 +296,12 @@ public class TicketController {
         ticket.setActualType(actualType);
         ticketDao.save(ticket);
         return changeState(ticketID,action);
+    }
+
+    public Ticket updateTicketDifficulty(Long id,Difficulty difficulty) {
+        Ticket ticket = findTicketById(id);
+        ticket.setDifficulty(difficulty);
+        return ticketDao.save(ticket);
+
     }
 }

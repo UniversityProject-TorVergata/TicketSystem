@@ -5,6 +5,7 @@ import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
@@ -67,6 +68,16 @@ public class TicketRestService {
         return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
     }
 
+    @RequestMapping(path = "changeDifficulty/{difficulty}/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> updateTicketDifficulty(@PathVariable("id") Long id, @PathVariable("difficulty") Difficulty difficulty) {
+        Ticket updatedTicket;
+        updatedTicket = ticketController.updateTicketDifficulty(id, difficulty);
+        if(updatedTicket==null)
+            return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+    }
+
+
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
      * una richiesta di questo tipo vengono restituite le info relative al ticket desiderato.
@@ -101,12 +112,14 @@ public class TicketRestService {
     }
 
     /**
-     * Metodo per spostare il ticket tra gli stati della FSM.
+     * Metodo per spostare i ticket sulla macchina a stati cambiando il resolveruser,la actual priority e l'actual type
      *
-     * @param ticketID ID del ticket di cui deve essere cambiato lo stato
-     * @param action Azione che attiva la transizione di stato
-     * @param internalUserID ID del nuovo ResolverUser
-     * @return il ticket aggiornato.
+     * @param ticketID
+     * @param action
+     * @param internalUserID
+     * @param priority
+     * @param actualType
+     * @return
      */
     @RequestMapping(path = "/changeState/{ticketID}/{action}/{internalUserID}/{priority}/{actualType}",method = RequestMethod.POST)
     public ResponseEntity<Ticket> changeTicketStateResolverUserPriorityAndType(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
