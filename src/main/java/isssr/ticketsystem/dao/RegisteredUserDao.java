@@ -43,7 +43,9 @@ public interface RegisteredUserDao extends JpaRepository<RegisteredUser, Long> {
     @Query("select tc from TeamCoordinator tc")
     TeamCoordinator getTeamCoordinator();
 
+    @Query("select tl from TeamLeader tl where tl.team <> null ")
+    List<TeamLeader> getListEmployedTeamLeader();
 
-
-
+    @Query("select tl from TeamLeader tl where tl.team = null ")
+    List<TeamLeader> getListFreeTeamLeader();
 }

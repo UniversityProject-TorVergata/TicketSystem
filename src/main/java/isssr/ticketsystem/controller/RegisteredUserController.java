@@ -89,4 +89,13 @@ public class RegisteredUserController {
     }
 
 
+    public List<TeamLeader> getListEmployedTeamLeader() {
+        List<TeamLeader> foundListTeamLeader = registeredUserDao.getListEmployedTeamLeader();
+        return foundListTeamLeader;
+    }
+
+    public List<TeamLeader> getListFreeEmployedTeamLeader() {
+        List<TeamLeader> foundListTeamLeader = registeredUserDao.getListFreeTeamLeader();
+        return foundListTeamLeader;
+    }
 }

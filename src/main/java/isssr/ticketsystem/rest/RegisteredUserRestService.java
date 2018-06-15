@@ -129,6 +129,35 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
     }
 
+
+    /**
+     * Metodo usato per la richiesta della lista dei TeamLeader con associatio un team del sistema
+     *
+     * @return la lista dei TeamLeader con associato un team del sistema
+     */
+    @RequestMapping(path = "/employed_team_leader", method = RequestMethod.GET)
+    public ResponseEntity<List<TeamLeader>> getListEmployedTeamLeader() {
+        List<TeamLeader> listTeamLeader = registeredUserController.getListEmployedTeamLeader();
+        if(listTeamLeader != null)
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Metodo usato per la richiesta della lista dei TeamLeader senza team del sistema
+     *
+     * @return la lista dei TeamLeader senza team  del sistema
+     */
+    @RequestMapping(path = "/free_team_leader", method = RequestMethod.GET)
+    public ResponseEntity<List<TeamLeader>> getListFreeTeamLeader() {
+        List<TeamLeader> listTeamLeader = registeredUserController.getListFreeEmployedTeamLeader();
+        if(listTeamLeader != null)
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
+    }
+
     /**
      * Metodo usato per la richiesta della lista dei TeamMember senza Team ("Disoccupati") del sistema.
      *
