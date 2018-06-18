@@ -36,7 +36,7 @@ public enum TAG {
     Performance,
     Server,
     Cost,
-    Biling,
+    Billing,
     Port,
     Connection,
     Settings,

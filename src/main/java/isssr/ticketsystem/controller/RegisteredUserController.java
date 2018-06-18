@@ -4,6 +4,8 @@ import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,12 +53,45 @@ public class RegisteredUserController {
     }
 
     public boolean deleteRegisteredUser(@NotNull Long id) {
+
         if (!registeredUserDao.existsById(id)) {
             return false;
+        }
+        RegisteredUser user = findRegisteredUserById(id);
+        if(user.getClass().equals(TeamCoordinator.class)){
+            return deleteTeamCoordinator((TeamCoordinator) user);
+        }
+
+        if(user.getClass().equals(Admin.class)){
+            return deleteAdmin((Admin) user);
         }
         registeredUserDao.deleteById(id);
         return true;
     }
+
+
+
+    public boolean deleteTeamCoordinator(TeamCoordinator teamCoordinator){
+        List<TeamCoordinator> teamCoordinators = registeredUserDao.getTeamCoordinators();
+        if(teamCoordinators.size()<2){
+            return false;
+        }
+        registeredUserDao.deleteById(teamCoordinator.getId());
+        return true;
+    }
+
+    public boolean deleteAdmin(Admin admin){
+        List<Admin> admins = registeredUserDao.getAdmins();
+        if(admins.size()<2){
+            return false;
+        }
+        registeredUserDao.deleteById(admin.getId());
+        return true;
+
+    }
+
+
+
 
     public List<RegisteredUser> getRegisteredUsers() {
 
@@ -84,8 +119,11 @@ public class RegisteredUserController {
 
     public TeamCoordinator getTeamCoordinator()
     {
-        TeamCoordinator teamCoordinator = registeredUserDao.getTeamCoordinator();
-        return teamCoordinator;
+        List<TeamCoordinator> teamCoordinators = registeredUserDao.getTeamCoordinators();
+        if(teamCoordinators.size()==1)
+            return teamCoordinators.get(0);
+        int selectedTeamCoordinator = (int)(Math.random()*teamCoordinators.size());
+        return teamCoordinators.get(selectedTeamCoordinator);
     }
 
 

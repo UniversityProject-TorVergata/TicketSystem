@@ -67,4 +67,9 @@ public class TargetController {
 
         return updatedTarget;
     }
+
+    public List<Target> getActiveTarget() {
+
+        return targetDao.getActiveTarget(TargetState.ACTIVE);
+    }
 }

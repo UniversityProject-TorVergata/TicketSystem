@@ -133,4 +133,19 @@ public class TargetRestService {
         else
             return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
     }
+
+    /**
+     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
+     * una richiesta di questo tipo vengono restuiti tutti i target attivi presenti nel DB.
+     * @return target presenti nel DB + esito della richiesta HTTP
+     * @see isssr.ticketsystem.controller.TargetController
+     */
+    @RequestMapping(path = "/active", method = RequestMethod.GET)
+    public ResponseEntity<List<Target>> getAcriveProduct() {
+        List<Target> targetList = targetController.getActiveTarget();
+        if(targetList !=null)
+            return new ResponseEntity<>(targetList, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
+    }
 }
