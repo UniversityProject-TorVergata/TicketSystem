@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum ProblemArea {
 
-    AREA1,
-    AREA2,
-    AREA3
+    Service_Payment,
+    Service_Technical,
+    Product_Technical,
+    Product_Payment
 }
