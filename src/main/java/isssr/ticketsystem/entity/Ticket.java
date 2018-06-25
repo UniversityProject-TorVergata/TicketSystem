@@ -36,6 +36,7 @@ public class Ticket {
 
     private String timestamp;
 
+    private long stateCounter;
 
     private String presumedType;
 
@@ -90,14 +91,16 @@ public class Ticket {
     /**
      * Macchina a stati per ciascun Ticket che definisce il suo workflow.
      */
-    // @JsonIgnore
+    @JsonIgnore
     @Lob
     private FSM stateMachine;
 
     /**
      * Stato Corrente del Ticket.
      */
-    private String currentState;
+    private State currentState;
+
+    private int TTL;
 
 
     public Long getId() {
@@ -116,12 +119,12 @@ public class Ticket {
         this.sourceType = sourceType;
     }
 
-    @JsonIgnore
-    public String getCurrentState() {
+
+    public State getCurrentState() {
         return currentState;
     }
 
-    public void setCurrentState(String currentState) {
+    public void setCurrentState(State currentState) {
         this.currentState = currentState;
     }
 
@@ -140,6 +143,16 @@ public class Ticket {
     public void setPresumedType(String presumedType) {
         this.presumedType = presumedType;
     }
+
+    public long getStateCounter() {
+        return stateCounter;
+    }
+
+    public void setStateCounter(long stateCounter) {
+        this.stateCounter = stateCounter;
+    }
+
+
 
     public String getActualType() {
         return actualType;
@@ -255,6 +268,18 @@ public class Ticket {
 
     public FSM getStateMachine() {
         return this.stateMachine;
+    }
+
+    public void setStateMachine(FSM stateMachine) {
+        this.stateMachine = stateMachine;
+    }
+
+    public int getTTL() {
+        return TTL;
+    }
+
+    public void setTTL(int TTL) {
+        this.TTL = TTL;
     }
 
     //Costruttore usato per la CRUD utente.

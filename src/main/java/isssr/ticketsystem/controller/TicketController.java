@@ -4,16 +4,23 @@ import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
+import isssr.ticketsystem.enumeration.State;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class TicketController {
@@ -33,8 +40,10 @@ public class TicketController {
 
         ticket.createStateMachine( relativePath + stateMachineFileName + ".xml");
 
-        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
-
+        State currentState = State.getEnum(ticket.getStateMachine().getCurrentState());
+        ticket.setCurrentState(currentState);
+        ticket.setTTL(currentState.getTTL());
+        ticket.setStateCounter(System.currentTimeMillis());
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
@@ -49,8 +58,8 @@ public class TicketController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTicket.updateTicket(updatedData);
-        toBeUpdatedTicket.getStateMachine().ProcessFSM("Action1");
-        toBeUpdatedTicket.setCurrentState(toBeUpdatedTicket.getStateMachine().getCurrentState());
+        //toBeUpdatedTicket.getStateMachine().ProcessFSM("Action1");
+        //toBeUpdatedTicket.setCurrentState(toBeUpdatedTicket.getStateMachine().getCurrentState());
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
 
         return updatedTicket;
@@ -281,8 +290,10 @@ public class TicketController {
 
         Ticket ticket = findTicketById(ticketID);
         ticket.getStateMachine().ProcessFSM(action);
-        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
-
+        State state = State.getEnum(ticket.getStateMachine().getCurrentState());
+        ticket.setCurrentState(state);
+        ticket.setTTL(state.getTTL());
+        ticket.setStateCounter(System.currentTimeMillis());
         return ticketDao.save(ticket);
     }
 

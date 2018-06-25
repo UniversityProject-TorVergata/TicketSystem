@@ -39,6 +39,9 @@ public class Target {
      */
     private String stateMachineName;
 
+    @Transient
+    private String attachedStateMachineXML;
+
     private String name;
     private String description;
     private double version;
@@ -93,6 +96,14 @@ public class Target {
         this.targetState = targetState;
         this.categories = categories;
         this.targetType = targetType;
+    }
+
+    public String getAttachedStateMachineXML() {
+        return attachedStateMachineXML;
+    }
+
+    public void setAttachedStateMachineXML(String attachedStateMachineXML) {
+        this.attachedStateMachineXML = attachedStateMachineXML;
     }
 
     public Long getId() {
