@@ -5,6 +5,4 @@ public enum SystemRole {
     TeamCoordinator,
     TeamLeader,
     TeamMember,
-    Customer;
-
 }

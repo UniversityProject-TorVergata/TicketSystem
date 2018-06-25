@@ -2,10 +2,7 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
-import isssr.ticketsystem.enumeration.Difficulty;
-import isssr.ticketsystem.enumeration.Priority;
-import isssr.ticketsystem.enumeration.State;
-import isssr.ticketsystem.enumeration.TAG;
+import isssr.ticketsystem.enumeration.*;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -44,11 +41,13 @@ public class TicketController {
         ticket.setCurrentState(currentState);
         ticket.setTTL(currentState.getTTL());
         ticket.setStateCounter(System.currentTimeMillis());
+
+        ticket.setResolverUser(registeredUserController.getTeamCoordinator());
+
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
 
-    // TODO perche "Action1" statica?
     @Transactional
     public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket updatedData) throws NotFoundEntityException {
 
@@ -58,8 +57,6 @@ public class TicketController {
             throw new NotFoundEntityException();
 
         toBeUpdatedTicket.updateTicket(updatedData);
-        //toBeUpdatedTicket.getStateMachine().ProcessFSM("Action1");
-        //toBeUpdatedTicket.setCurrentState(toBeUpdatedTicket.getStateMachine().getCurrentState());
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
 
         return updatedTicket;
@@ -72,14 +69,6 @@ public class TicketController {
         return optionalTicket.get();
     }
 
-    @Transactional
-    public boolean deleteTicket(@NotNull Long id) {
-        if (!ticketDao.existsById(id)) {
-            return false;
-        }
-        ticketDao.deleteById(id);
-        return true;
-    }
 
     @Transactional
     public List<Ticket> getTickets() {
@@ -101,10 +90,7 @@ public class TicketController {
 
 
     @Transactional
-    public List<Ticket> getTicketByState(String ticketState){
-
-        List<Ticket> tickets = ticketDao.getTicketByState(ticketState);
-
+    public List<Ticket> getTicketByState(State ticketState){
         return ticketDao.getTicketByState(ticketState);
     }
 

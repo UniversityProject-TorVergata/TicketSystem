@@ -2,6 +2,7 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -176,6 +177,17 @@ public class RegisteredUserRestService {
     public ResponseEntity<TeamCoordinator> getTeamCoordinator(){
         TeamCoordinator teamCoordinator = registeredUserController.getTeamCoordinator();
         return new ResponseEntity<>(teamCoordinator, teamCoordinator == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+
+    }
+
+    @RequestMapping(path= "getUserByRole/{role}", method = RequestMethod.GET)
+    public ResponseEntity<List<? extends InternalUser>> getListByRole(@PathVariable SystemRole role)
+    {
+        List<? extends InternalUser> listInternalUser = registeredUserController.getListByRole(role);
+        if(listInternalUser!= null)
+            return new ResponseEntity<>(listInternalUser, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
 
     }
 

@@ -3,6 +3,7 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.*;
+import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -135,5 +136,31 @@ public class RegisteredUserController {
     public List<TeamLeader> getListFreeEmployedTeamLeader() {
         List<TeamLeader> foundListTeamLeader = registeredUserDao.getListFreeTeamLeader();
         return foundListTeamLeader;
+    }
+
+    public List<TeamCoordinator> getListTeamCoordinator()
+    {
+        List<TeamCoordinator> listTeamCoordinator = registeredUserDao.getTeamCoordinators();
+        return listTeamCoordinator;
+    }
+
+    public List<TeamMember> getListTeamMember()
+    {
+        List<TeamMember> listTeamMember = registeredUserDao.getAllTeamMember();
+        return listTeamMember;
+    }
+
+    public List<? extends InternalUser> getListByRole (SystemRole role)
+    {
+        switch (role)
+        {
+            case TeamLeader:
+                return getListTeamLeader();
+            case TeamMember:
+                return getListTeamMember();
+            case TeamCoordinator:
+                return getListTeamCoordinator();
+        }
+        return null;
     }
 }

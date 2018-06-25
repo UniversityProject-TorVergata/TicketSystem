@@ -7,6 +7,7 @@ import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
+import isssr.ticketsystem.enumeration.State;
 import isssr.ticketsystem.enumeration.TAG;
 import isssr.ticketsystem.exception.NotFoundEntityException;
 import lombok.NoArgsConstructor;
@@ -153,24 +154,6 @@ public class TicketRestService {
         return new ResponseEntity<>(stateInfo, stateInfo == null ? HttpStatus.NOT_FOUND : HttpStatus.ACCEPTED);
     }
 
-    // TODO da eliminare?
-    /**
-     * Servizio REST per cestinare un Ticket
-     *
-     * @param ticketID ID del ticket da cestinare
-     * @param action action da intraprendere per il cestinamento
-     * @return il ticket cestinato
-     */
-    @RequestMapping(path = "/trashTicket/{ticketID}/{action}",method = RequestMethod.PUT)
-    public ResponseEntity<Ticket>  trashTicket(@PathVariable("ticketID") Long ticketID,@PathVariable("action") String action){
-
-        Ticket trashedTicket = ticketController.changeState(ticketID,action);
-        if(trashedTicket!=null)
-            return new ResponseEntity<>(trashedTicket,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(trashedTicket,HttpStatus.NOT_FOUND);
-    }
-
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
      * una richiesta di questo tipo vengono restuiti tutti i ticket registrati
@@ -233,9 +216,7 @@ public class TicketRestService {
      * @see isssr.ticketsystem.controller.TicketController
      */
     @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state")String ticketState){
-        //Log logger = LogFactory.getLog(getClass());
-        //logger.info(ticketState.toString() +" " + ticketState.getClass());
+    public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state")State ticketState){
         List<Ticket> tickets = ticketController.getTicketByState(ticketState);
         if(tickets !=null)
            return new ResponseEntity<>(tickets,HttpStatus.OK);
