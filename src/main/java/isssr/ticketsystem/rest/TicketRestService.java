@@ -15,7 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import javax.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -132,6 +134,26 @@ public class TicketRestService {
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Servizio REST per restituire le informazioni sullo stato attuale del Ticket, che sono:
+     *  - Azioni
+     *  - Ruoli
+     *  - Prossimi stati.
+     *
+     * @param ticketID
+     * @return
+     */
+    @RequestMapping(path = "getStateInformation/{ticketID}", method = RequestMethod.GET)
+    public ResponseEntity<ArrayList<ArrayList<String>>> getStateInformation(@PathVariable("ticketID") Long ticketID) {
+
+        Ticket ticketFound = ticketController.findTicketById(ticketID);
+
+        ArrayList<ArrayList<String>> stateInfo = ticketFound.getStateMachine().getStateInformation(ticketFound.getStateMachine().getCurrentState());
+
+        return new ResponseEntity<>(stateInfo, stateInfo == null ? HttpStatus.NOT_FOUND : HttpStatus.ACCEPTED);
+    }
+
+    // TODO da eliminare?
     /**
      * Servizio REST per cestinare un Ticket
      *

@@ -1,15 +1,13 @@
 package isssr.ticketsystem.entity;
 
-import Action.FSMAction;
-import FSM.FSM;
+import isssr.ticketsystem.state_machine.Action.FSMAction;
+import isssr.ticketsystem.state_machine.FSM.FSM;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import isssr.ticketsystem.enumeration.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Cascade;
-
-
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
@@ -85,9 +83,6 @@ public class Ticket {
     @Cascade(org.hibernate.annotations.CascadeType.ALL)
     private List<TicketComment> ticketComments;
 
-    @JsonIgnore
-    private String currentState;
-
     @ElementCollection(targetClass = TAG.class)
     @Enumerated(EnumType.STRING)
     List<TAG> tags;
@@ -95,8 +90,15 @@ public class Ticket {
     /**
      * Macchina a stati per ciascun Ticket che definisce il suo workflow.
      */
+    // @JsonIgnore
     @Lob
     private FSM stateMachine;
+
+    /**
+     * Stato Corrente del Ticket.
+     */
+    private String currentState;
+
 
     public Long getId() {
         return id;

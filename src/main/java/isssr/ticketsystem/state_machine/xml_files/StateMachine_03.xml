@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<FSM>
+	<STATE id="DISPATCHING">
+		<MESSAGE id="Action1" role="TeamMember" nextState="EXECUTION"/>
+		<MESSAGE id="Action2" role="Customer" nextState="EDIT"/>
+	</STATE>
+	<STATE id="EXECUTION">
+		<MESSAGE id="Action1" role="Customer" nextState="ACCEPTANCE"/>
+		<MESSAGE id="Action2" role="TeamCoordinator" nextState="DISPATCHING"/>
+	</STATE>
+	<STATE id="ACCEPTANCE">
+		<MESSAGE id="Action1" role="Customer" nextState="CLOSED"/>
+		<MESSAGE id="Action2" role="TeamCoordinator" nextState="REOPENED"/>
+	</STATE>
+	<STATE id="EDIT">
+		<MESSAGE id="Action1" role="TeamCoordinator" nextState="DISPATCHING"/>
+		<MESSAGE id="Action2" role="Customer" nextState="CLOSED"/>
+	</STATE>
+	<STATE id="REOPENED">
+		<MESSAGE id="Action1" role="TeamMember" nextState="EXECUTION"/>
+	</STATE>
+	<STATE id="CLOSED">
+	</STATE>
+	
+</FSM>

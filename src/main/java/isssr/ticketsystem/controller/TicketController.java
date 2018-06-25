@@ -29,18 +29,17 @@ public class TicketController {
 
         String stateMachineFileName = ticket.getTarget().getStateMachineName();
 
-        File file = new File(stateMachineFileName + ".xml");
-        String path = file.getAbsolutePath();
-        String absolutePath = path.substring(0, path.length()-24);
-        String relativePath = "src/main/java/isssr/ticketsystem/state_machine/";
+        String relativePath = "./src/main/java/isssr/ticketsystem/state_machine/xml_files/";
 
-        ticket.createStateMachine( absolutePath + relativePath + stateMachineFileName + ".xml");
+        ticket.createStateMachine( relativePath + stateMachineFileName + ".xml");
+
         ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
 
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
 
+    // TODO perche "Action1" statica?
     @Transactional
     public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket updatedData) throws NotFoundEntityException {
 
@@ -242,23 +241,6 @@ public class TicketController {
         return ticketDao.getTicketByTarget(targetID);
     }
 
-
-    /**
-     * Metodo per cambiare lo stato di un ticket
-     *
-     *
-     * @param ticketID
-     * @param action String che identifica l'azione da intraprendere come configurato nell file XML
-     * @return
-     */
-    @Transactional
-    public Ticket changeState(Long ticketID,String action){
-        Ticket ticket = findTicketById(ticketID);
-        ticket.getStateMachine().ProcessFSM(action);
-        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
-        return ticketDao.save(ticket);
-    }
-
     /**
      * Metodo per inserire un commento in un ticket
      *
@@ -268,40 +250,72 @@ public class TicketController {
      */
     @Transactional
     public Ticket insertComment(Long ticketID, TicketComment ticketComment) {
+
         Ticket ticket = findTicketById(ticketID);
         if(ticket!=null){
             ticket.getTicketComments().add(ticketComment);
             ticketDao.save(ticket);
         }
-        return ticket;
 
+        return ticket;
     }
 
-    @Transactional
-    public Ticket changeStateAndResolverUser(Long id, String action, Long internalUserID) {
+    public Ticket updateTicketDifficulty(Long id,Difficulty difficulty) {
+
         Ticket ticket = findTicketById(id);
+        ticket.setDifficulty(difficulty);
+
+        return ticketDao.save(ticket);
+    }
+
+    /**
+     * Metodo per cambiare lo stato di un ticket.
+     *
+     *
+     * @param ticketID
+     * @param action String che identifica l'azione da intraprendere come configurato nell file XML.
+     * @return
+     */
+    @Transactional
+    public Ticket changeState(Long ticketID, String action){
+
+        Ticket ticket = findTicketById(ticketID);
+        ticket.getStateMachine().ProcessFSM(action);
+        ticket.setCurrentState(ticket.getStateMachine().getCurrentState());
+
+        return ticketDao.save(ticket);
+    }
+
+    /**
+     * Metodo per cambiare lo stato di un ticket e il Resolver User del Ticket.
+     *
+     *
+     * @param ticketID
+     * @param action String che identifica l'azione da intraprendere come configurato nell file XML.
+     * @return
+     */
+    @Transactional
+    public Ticket changeStateAndResolverUser(Long ticketID, String action, Long internalUserID) {
+
+        Ticket ticket = findTicketById(ticketID);
         RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
         ticket.setResolverUser((InternalUser) registeredUser);
         ticketDao.save(ticket);
-        return changeState(id,action);
 
+        return changeState(ticketID, action);
     }
 
     @Transactional
     public Ticket changeStateResolverUserPriorityAndType(Long ticketID, String action, Long internalUserID, Priority priority, String actualType) {
+
         Ticket ticket = findTicketById(ticketID);
         RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
         ticket.setResolverUser((InternalUser) registeredUser);
         ticket.setActualPriority(priority);
         ticket.setActualType(actualType);
         ticketDao.save(ticket);
-        return changeState(ticketID,action);
+
+        return changeState(ticketID, action);
     }
 
-    public Ticket updateTicketDifficulty(Long id,Difficulty difficulty) {
-        Ticket ticket = findTicketById(id);
-        ticket.setDifficulty(difficulty);
-        return ticketDao.save(ticket);
-
-    }
 }
