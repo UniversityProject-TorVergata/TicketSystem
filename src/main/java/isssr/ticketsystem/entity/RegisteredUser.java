@@ -39,43 +39,30 @@ public abstract class RegisteredUser {
 
     @NotNull
     @Column(unique = true)
-    protected String fiscal_code;
+    private String fiscal_code;
 
     @NotNull
-    protected String name;
+    private String name;
 
     @NotNull
-    protected String surname;
-
-    @NotNull
-    @Column(unique = true)
-    protected String email;
+    private String surname;
 
     @NotNull
     @Column(unique = true)
-    protected String username;
+    private String email;
 
     @NotNull
-    protected String password;
+    @Column(unique = true)
+    private String username;
 
     @NotNull
-    protected String address;
+    private String password;
 
-    protected String created_at; // Data di creazione dell'utente.
+    @NotNull
+    private String address;
 
     public RegisteredUser() { }
 
-    public RegisteredUser(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname,
-                          @NotNull String email, @NotNull String username, @NotNull String password, @NotNull String address) {
-        this.fiscal_code = fiscal_code;
-        this.name = name;
-        this.surname = surname;
-        this.email = email;
-        this.username = username;
-        this.password = password;
-        this.created_at = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date());
-        this.address = address;
-    }
 
     public Long getId() {
         return id;
@@ -85,13 +72,7 @@ public abstract class RegisteredUser {
         this.id = id;
     }
 
-    public String getFiscal_code() {
-        return fiscal_code;
-    }
 
-    public void setFiscal_code(String fiscal_code) {
-        this.fiscal_code = fiscal_code;
-    }
 
     public String getName() {
         return name;
@@ -101,21 +82,7 @@ public abstract class RegisteredUser {
         this.name = name;
     }
 
-    public String getSurname() {
-        return surname;
-    }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public String getUsername() {
         return username;
@@ -133,22 +100,6 @@ public abstract class RegisteredUser {
         this.password = password;
     }
 
-    public String getAddress() {
-        return this.address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getCreated_at() {
-        return created_at;
-    }
-
-
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
-    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.

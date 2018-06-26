@@ -14,25 +14,26 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@NoArgsConstructor
-public class TicketComment extends SystemEvent{
+public class TicketComment{
 
 
 
     @Enumerated(EnumType.STRING)
     private Visibility visibility;
 
-    /**
-     *
-     * @param author Autore del commento al ticket.
-     * @param ticket Ticket oggetto del commento.
-     * @param comment Testo del commento.
-     * @param visibility Visibilitò del commento.
-     */
-    public TicketComment(RegisteredUser author, Ticket ticket, String comment, Visibility visibility) {
-        super(author,comment);
-        this.visibility = visibility;
+    @Id
+    @GeneratedValue
+    private Long id;
+
+    @ManyToOne
+    private RegisteredUser eventGenerator;
+
+    private String description;
+
+    private String timestamp;
+
+
+    public TicketComment() {
+
     }
-
-
 }

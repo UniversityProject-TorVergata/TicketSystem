@@ -21,7 +21,6 @@ public class RegisteredUserController {
     @Transactional
     public @NotNull RegisteredUser insertRegisteredUser(@NotNull RegisteredUser registeredUser) {
 
-        registeredUser.setCreated_at(new SimpleDateFormat("dd/MM/yyyy HH:mm:ss").format(new java.util.Date()));
         RegisteredUser createdRegisteredUser = registeredUserDao.save(registeredUser);
         return createdRegisteredUser;
     }

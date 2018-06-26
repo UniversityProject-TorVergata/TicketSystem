@@ -32,24 +32,6 @@ public class TeamMember extends InternalUser {
 
     public TeamMember() { }
 
-    /**
-     *
-     *
-     *
-     * @param fiscal_code
-     * @param name
-     * @param surname
-     * @param email
-     * @param username
-     * @param password
-     * @param address
-     * @param team Team a cui appartiene il Team Member
-     */
-    public TeamMember(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname, @NotNull String email,
-                      @NotNull String username, @NotNull String password, @NotNull String address, @NotNull Team team) {
-        super(fiscal_code, name, surname, email, username, password, address);
-        this.team = team;
-    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
@@ -59,15 +41,9 @@ public class TeamMember extends InternalUser {
     @Override
     public void update(@NotNull RegisteredUser registeredUser) {
         TeamMember updatedData = (TeamMember) registeredUser;
-
-        this.fiscal_code = updatedData.fiscal_code;
-        this.name = updatedData.name;
-        this.surname = updatedData.surname;
-        this.username = updatedData.username;
-        this.email = updatedData.email;
-        this.password = updatedData.password;
+        super.update(registeredUser);
         this.team = updatedData.team; // Assistente riassegnato ad un altro Team.
-        this.address = updatedData.address;
+
     }
 
     public Team getTeam() {

@@ -4,13 +4,9 @@ import isssr.ticketsystem.enumeration.TargetState;
 import isssr.ticketsystem.enumeration.TargetType;
 import lombok.Getter;
 import lombok.Setter;
-
-
-
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
-import java.util.List;
 
 
 /**
@@ -39,8 +35,6 @@ public class Target {
      */
     private String stateMachineName;
 
-    @Transient
-    private String attachedStateMachineXML;
 
     private String name;
     private String description;
@@ -52,59 +46,6 @@ public class Target {
 
     public Target() { }
 
-    public Target(Long id, TargetState targetState, String stateMachineName){
-        this.id = id;
-        this.targetState = targetState;
-        this.stateMachineName = stateMachineName;
-    }
-
-    public Target(String name, String description, double version) {
-        this.name = name;
-        this.description = description;
-        this.version = version;
-        this.targetState = TargetState.ACTIVE;
-    }
-
-    public Target(String name, String description, double version, TargetState targetState){
-        this.name = name;
-        this.description = description;
-        this.version = version;
-        this.targetState = targetState;
-    }
-
-    /**
-     * Costruttore del Target
-     *
-     * @param targetType Enumerazione che rappresenta il tipo di Target (Prodotto o Servizio).
-     * @param targetState Enumerazione che rappresenta il tipo di Stato (RETIRED o ACTIVE).
-     * @param name Il nome del Target.
-     * @param description Breve descrizione del Target.
-     * @param version Versione del Target alla quale si fa riferimento.
-     */
-    public Target(String name, String description, double version, TargetState targetState, TargetType targetType){
-        this.name = name;
-        this.description = description;
-        this.version = version;
-        this.targetState = targetState;
-        this.targetType = targetType;
-    }
-
-    public Target(String name, String description, double version, TargetState targetState, TargetType targetType, List<String> categories){
-        this.name = name;
-        this.description = description;
-        this.version = version;
-        this.targetState = targetState;
-        this.categories = categories;
-        this.targetType = targetType;
-    }
-
-    public String getAttachedStateMachineXML() {
-        return attachedStateMachineXML;
-    }
-
-    public void setAttachedStateMachineXML(String attachedStateMachineXML) {
-        this.attachedStateMachineXML = attachedStateMachineXML;
-    }
 
     public Long getId() {
         return id;
@@ -114,9 +55,6 @@ public class Target {
         this.id = id;
     }
 
-    public TargetState getTargetState() {
-        return targetState;
-    }
 
     public void setTargetState(TargetState targetState) {
         this.targetState = targetState;
@@ -134,13 +72,7 @@ public class Target {
         this.name = name;
     }
 
-    public Collection<String> getCategories() {
-        return categories;
-    }
 
-    public void setCategories(Collection<String> categories) {
-        this.categories = categories;
-    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.

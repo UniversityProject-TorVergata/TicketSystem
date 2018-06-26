@@ -42,21 +42,6 @@ public class Team {
     @OneToOne
     private TeamLeader teamLeader;
 
-    /**
-     *
-     *
-     * @param name
-     * @param problemArea Area di risoluzione a cui si dedica il team
-     * @param teamMemberList lista dei TeamMember
-     * @param teamLeader TeamLedaer del Team
-     */
-    public Team(String name, ProblemArea problemArea, List<TeamMember> teamMemberList, TeamLeader teamLeader) {
-        this.name = name;
-        this.problemArea =problemArea;
-        this.teamMemberList = teamMemberList;
-        this.teamLeader = teamLeader;
-    }
-
     public Team(String name) {
         this.name = name;
 
@@ -83,29 +68,20 @@ public class Team {
         return teamMemberList;
     }
 
-    @JsonProperty
-    public void setTeamMemberList(List<TeamMember> teamMemberList) {
-        this.teamMemberList = teamMemberList;
-    }
+
 
     @JsonIgnore
     public TeamLeader getTeamLeader() {
         return teamLeader;
     }
 
-    @JsonProperty
-    public void setTeamLeader(TeamLeader teamLeader) {
-        this.teamLeader = teamLeader;
-    }
+
 
     public void addTeamMember(TeamMember teamMember) {
         this.teamMemberList.add(teamMember);
     }
 
-    public void removeAssistent(TeamMember teamMember) {
 
-        this.teamMemberList.remove(teamMember);
-    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
@@ -120,9 +96,6 @@ public class Team {
         this.teamLeader = updatedData.teamLeader;
     }
 
-    public void setProblemArea(ProblemArea problemArea) {
-        this.problemArea = problemArea;
-    }
 
 
 

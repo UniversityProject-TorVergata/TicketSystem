@@ -19,10 +19,6 @@ public class Customer extends RegisteredUser {
 
     public Customer() {}
 
-    public Customer(@NotNull String fiscal_code, @NotNull String name, @NotNull String surname,
-                    @NotNull String email, @NotNull String username, @NotNull String password, @NotNull String address) {
-        super(fiscal_code, name, surname, email, username, password, address);
-    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
@@ -32,14 +28,7 @@ public class Customer extends RegisteredUser {
     @Override
     public void update(@NotNull RegisteredUser updatedDataRegisteredUser) {
         Customer updatedData = (Customer) updatedDataRegisteredUser;
-
-        this.fiscal_code = updatedData.fiscal_code;
-        this.name = updatedData.name;
-        this.surname = updatedData.surname;
-        this.username = updatedData.username;
-        this.email = updatedData.email;
-        this.password = updatedData.password;
-        this.address = updatedData.address;
+        super.update(updatedData);
     }
 
 
