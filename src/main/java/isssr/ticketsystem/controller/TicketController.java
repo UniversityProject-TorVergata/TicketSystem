@@ -3,22 +3,13 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.*;
-import isssr.ticketsystem.exception.NotFoundEntityException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import FSM.FSM;
-
-
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
-import java.io.File;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.concurrent.TimeUnit;
+
 
 @Service
 public class TicketController {
@@ -51,16 +42,11 @@ public class TicketController {
     }
 
     @Transactional
-    public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket updatedData) throws NotFoundEntityException {
+    public @NotNull Ticket updateTicket(@NotNull Long id, @NotNull Ticket updatedData) {
 
         Ticket toBeUpdatedTicket = ticketDao.getOne(id);
-
-        if (toBeUpdatedTicket == null)
-            throw new NotFoundEntityException();
-
         toBeUpdatedTicket.updateTicket(updatedData);
         Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
-
         return updatedTicket;
     }
 
@@ -69,13 +55,6 @@ public class TicketController {
     public Ticket findTicketById(@NotNull Long id) {
         Optional<Ticket> optionalTicket = ticketDao.findById(id);
         return optionalTicket.get();
-    }
-
-
-    @Transactional
-    public List<Ticket> getTickets() {
-
-        return ticketDao.findAll();
     }
 
     @Transactional
@@ -153,20 +132,14 @@ public class TicketController {
      *
      * @param ticketID
      * @param teamLeaderID
-     * @throws NotFoundEntityException
+     *
      */
     @Transactional
-    public void assignTicket(Long ticketID, Long teamLeaderID) throws NotFoundEntityException {
+    public void assignTicket(Long ticketID, Long teamLeaderID) {
         Ticket assignedTicket  = this.findTicketById(ticketID);
         TeamLeader teamLeader = (TeamLeader) registeredUserController.findRegisteredUserById(teamLeaderID);
         assignedTicket.setResolverUser(teamLeader);
         ticketDao.save(assignedTicket);
-    }
-
-    @Transactional
-    public List<Ticket> findTicketByTeamLeaderID(Long teamLeaderID) {
-        return ticketDao.findTicketByTeamLeaderID(teamLeaderID);
-
     }
 
     /**

@@ -3,7 +3,6 @@ package isssr.ticketsystem.rest;
 import isssr.ticketsystem.controller.RegisteredUserController;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.SystemRole;
-import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -47,30 +46,15 @@ public class RegisteredUserRestService {
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<RegisteredUser> updateRegisteredUser(@PathVariable Long id, @RequestBody RegisteredUser registeredUser) {
-        RegisteredUser updatedRegisteredUser;
-        try {
-            updatedRegisteredUser = registeredUserController.updateRegisteredUser(id, registeredUser);
-        } catch (NotFoundEntityException e) {
-            return new ResponseEntity<>(registeredUser, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.OK);
+        RegisteredUser updatedRegisteredUser = registeredUserController.updateRegisteredUser(id, registeredUser);
+        if(updatedRegisteredUser != null)
+            return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.NOT_FOUND);
     }
 
 
-    /**
-     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo vengono restituite le info relative all'utente specificato.
-     * @param id Id dell'utente da visualizzare.
-     * @return utente da visualizzare + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.RegisteredUserController
-     */
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<RegisteredUser> findRegisteredUser(@PathVariable Long id) {
-        RegisteredUser registeredUserTrovata = registeredUserController.findRegisteredUserById(id);
-        return new ResponseEntity<>(registeredUserTrovata, registeredUserTrovata == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
-    }
-
-    /**
+     /**
      * Metodo usato per la gestione di una Delete che arriva sull'url specificato. A fronte di
      * una richiesta di questo tipo l'utente specificato viene cancellato dal DB.
      * @param id Id dell'utente che va cancellato dal DB.
@@ -80,23 +64,10 @@ public class RegisteredUserRestService {
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity<Boolean> deleteRegisteredUser(@PathVariable Long id) {
         boolean deletedRegisteredUser = registeredUserController.deleteRegisteredUser(id);
-        return new ResponseEntity<>(deletedRegisteredUser, deletedRegisteredUser ? HttpStatus.OK : HttpStatus.NOT_FOUND);
-    }
-
-    /**
-     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo vengono restuiti tutti gli utenti registrati
-     * presenti nel DB.
-     * @return Utenti registrati presenti nel DB + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.RegisteredUserController
-     */
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<RegisteredUser>> getRegisteredUsers() {
-        List<RegisteredUser> registeredUsers = registeredUserController.getRegisteredUsers();
-        if(registeredUsers !=null)
-            return new ResponseEntity<>(registeredUsers, HttpStatus.OK);
+        if(deletedRegisteredUser)
+            return new ResponseEntity<>(deletedRegisteredUser, HttpStatus.OK);
         else
-            return new ResponseEntity<>(registeredUsers,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deletedRegisteredUser, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -114,20 +85,6 @@ public class RegisteredUserRestService {
         else
             return new ResponseEntity<>(userLogged,HttpStatus.NOT_FOUND);
 
-    }
-
-    /**
-     * Metodo usato per la richiesta della lista dei TeamLeader del sistema
-     *
-     * @return la lista dei TeamLeader del sistema
-     */
-    @RequestMapping(path = "/team_leader", method = RequestMethod.GET)
-    public ResponseEntity<List<TeamLeader>> getListTeamLeader() {
-        List<TeamLeader> listTeamLeader = registeredUserController.getListTeamLeader();
-        if(listTeamLeader != null)
-            return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
     }
 
 
@@ -173,13 +130,27 @@ public class RegisteredUserRestService {
             return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Metodo usato per ottenere un TeamCoordinator estratto a caso dal DB
+     *
+     * @return TeamCoordinator casuale
+     */
     @RequestMapping(path = "team_coordinator", method = RequestMethod.GET)
     public ResponseEntity<TeamCoordinator> getTeamCoordinator(){
         TeamCoordinator teamCoordinator = registeredUserController.getTeamCoordinator();
-        return new ResponseEntity<>(teamCoordinator, teamCoordinator == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        if(teamCoordinator != null)
+            return new ResponseEntity<>(teamCoordinator, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(teamCoordinator, HttpStatus.NOT_FOUND);
 
     }
 
+
+    /**
+     * Metodo che restituisce tutti gli InternalUser in base al loro ruolo.
+     *
+     * @return lista di InternalUser
+     */
     @RequestMapping(path= "getUserByRole/{role}", method = RequestMethod.GET)
     public ResponseEntity<List<? extends InternalUser>> getListByRole(@PathVariable SystemRole role)
     {

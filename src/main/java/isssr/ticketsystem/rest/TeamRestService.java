@@ -2,17 +2,13 @@ package isssr.ticketsystem.rest;
 
 
 import isssr.ticketsystem.controller.TeamController;
-import isssr.ticketsystem.entity.TeamCoordinator;
 import isssr.ticketsystem.entity.TeamLeader;
-import isssr.ticketsystem.enumeration.ProblemArea;
 import isssr.ticketsystem.entity.Team;
 import isssr.ticketsystem.entity.TeamMember;
-import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Collection;
 import java.util.List;
 
@@ -38,9 +34,12 @@ public class TeamRestService {
      * @see isssr.ticketsystem.controller.TeamController
      */
     @RequestMapping(path = "", method = RequestMethod.POST)
-    public ResponseEntity<Team> teamProduct(@RequestBody Team team) {
+    public ResponseEntity<Team> insertTeam(@RequestBody Team team) {
         Team createdTeam = teamController.insertTeam(team);
-        return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
+        if(createdTeam != null)
+            return new ResponseEntity<>(createdTeam, HttpStatus.CREATED);
+        else
+            return new ResponseEntity<>(createdTeam, HttpStatus.NOT_ACCEPTABLE);
     }
 
     /**
@@ -53,26 +52,11 @@ public class TeamRestService {
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Team> updateTeam(@PathVariable Long id, @RequestBody Team team) {
-        Team updatedTeam;
-        try {
-            updatedTeam =  teamController.updateTeam(id, team);
-        } catch (NotFoundEntityException e) {
-            return new ResponseEntity<>(team, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedTeam, HttpStatus.OK);
-    }
-
-    /**
-     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo il team indicato viene restituito.
-     * @param id Id del team le cui info vanno visualizzate.
-     * @return info del team + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.TeamController
-     */
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Team> findTeam(@PathVariable Long id) {
-        Team teamFound = teamController.findTeamById(id);
-        return new ResponseEntity<>(teamFound, teamFound == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        Team updatedTeam = teamController.updateTeam(id, team);
+        if(updatedTeam != null)
+            return new ResponseEntity<>(updatedTeam, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTeam, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -83,9 +67,12 @@ public class TeamRestService {
      * @see isssr.ticketsystem.controller.TeamController
      */
     @RequestMapping(path = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteProduct(@PathVariable Long id) {
+    public ResponseEntity<Boolean> deleteTeamById(@PathVariable Long id) {
         boolean deletedTeam = teamController.deleteTeam(id);
-        return new ResponseEntity<>(deletedTeam, deletedTeam ? HttpStatus.OK : HttpStatus.NOT_FOUND);
+        if(deletedTeam)
+            return new ResponseEntity<>(deletedTeam, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(deletedTeam, HttpStatus.NOT_ACCEPTABLE);
     }
 
     /**
@@ -95,24 +82,27 @@ public class TeamRestService {
      * @see isssr.ticketsystem.controller.TeamController
      */
     @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Team>> getProduct() {
-        List<Team> team = teamController.getTeams();
-        return new ResponseEntity<>(team, HttpStatus.OK);
+    public ResponseEntity<List<Team>> getTeams() {
+        List<Team> teams = teamController.getTeams();
+        if(teams != null)
+            return new ResponseEntity<>(teams, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(teams, HttpStatus.NOT_FOUND);
     }
 
     /**
      * Ricerca di tutti i TeamMember di un Team
      *
-     * @param id ID del team di cui interessano i TeamMember
+     * @param id Id del team di cui interessano i TeamMember
      * @return Lista dei TeamMember del Team
      */
     @RequestMapping(path = "/team_member/{id}", method = RequestMethod.GET)
     public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamId(@PathVariable Long id) {
         Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamId(id);
         if(listTeamMember != null)
-            return new ResponseEntity<>(listTeamMember,HttpStatus.OK);
+            return new ResponseEntity<>(listTeamMember, HttpStatus.OK);
         else
-            return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(listTeamMember, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -125,9 +115,9 @@ public class TeamRestService {
     public ResponseEntity<TeamLeader> getTeamLeaderByTeamId(@PathVariable Long id) {
         TeamLeader teamLeader= teamController.getTeamLeaderByTeamId(id);
         if(teamLeader != null)
-            return new ResponseEntity<>(teamLeader,HttpStatus.OK);
+            return new ResponseEntity<>(teamLeader, HttpStatus.OK);
         else
-            return new ResponseEntity<>(teamLeader,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(teamLeader, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -140,9 +130,9 @@ public class TeamRestService {
     public ResponseEntity<Collection<TeamMember>> getTeamMemberByTeamLeaderId(@PathVariable Long id) {
         Collection<TeamMember> listTeamMember = teamController.getTeamMemberByTeamLeaderId(id);
         if(listTeamMember != null)
-            return new ResponseEntity<>(listTeamMember,HttpStatus.OK);
+            return new ResponseEntity<>(listTeamMember, HttpStatus.OK);
         else
-            return new ResponseEntity<>(listTeamMember,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(listTeamMember, HttpStatus.NOT_FOUND);
     }
 
 
@@ -156,26 +146,10 @@ public class TeamRestService {
     @RequestMapping(path = "/add_team_member/{teamID}/{teamMemberID}", method = RequestMethod.PUT)
     public ResponseEntity<TeamMember> addTeamMember(@PathVariable("teamID") Long teamID, @PathVariable("teamMemberID") Long teamMemberID){
         TeamMember updatedTeamMember = teamController.addTeamMember(teamID,teamMemberID);
-        return new ResponseEntity<>(updatedTeamMember, updatedTeamMember == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
+        if(updatedTeamMember != null)
+            return new ResponseEntity<>(updatedTeamMember, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTeamMember, HttpStatus.NOT_FOUND);
 
     }
-
-    /**
-     * Modifica/Aggiunta di una ProblemArea ad un Team
-     *
-     * @see ProblemArea
-     * @param id  ID del Team da modificare
-     * @param problemArea ProblemArea da inserire
-     * @return L'oggetto Team aggiornato con l'aggiunta/modifica della ProblemArea
-     */
-    @RequestMapping(path = "/problem_area/{id}/{problemArea}", method = RequestMethod.PUT)
-    public ResponseEntity<Team> updateProblemAreaTeam(@PathVariable Long id, @PathVariable ProblemArea problemArea){
-        Team updatedTeam = teamController.updateProblemArea(id, problemArea);
-        return new ResponseEntity<>(updatedTeam, updatedTeam == null ? HttpStatus.NOT_FOUND : HttpStatus.CREATED);
-
-    }
-
-
-
-
 }

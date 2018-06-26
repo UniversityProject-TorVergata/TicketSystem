@@ -3,11 +3,8 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.*;
-import isssr.ticketsystem.enumeration.ProblemArea;
-import isssr.ticketsystem.exception.NotFoundEntityException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.util.Collection;
@@ -53,16 +50,11 @@ public class TeamController {
     }
 
     @Transactional
-    public @NotNull Team updateTeam(@NotNull Long id, @NotNull Team updatedData) throws NotFoundEntityException {
+    public @NotNull Team updateTeam(@NotNull Long id, @NotNull Team updatedData) {
 
         Team toBeUpdatedTeam = teamDao.getOne(id);
-
-        if (toBeUpdatedTeam == null)
-            throw new NotFoundEntityException();
-
         toBeUpdatedTeam.updateTeam(updatedData);
         Team updatedCompany = teamDao.save(toBeUpdatedTeam);
-
         return updatedCompany;
     }
 
@@ -124,19 +116,10 @@ public class TeamController {
 
     }
 
-    public Team updateProblemArea(@NotNull Long team_id, @NotNull ProblemArea problemArea){
-        Team teamToUpdate = teamDao.getOne(team_id);
-        teamToUpdate.setProblemArea(problemArea);
-        teamDao.save(teamToUpdate);
-        return teamToUpdate;
-    }
-
-
     public TeamLeader getTeamLeaderByTeamId(Long id) {
         Team team = teamDao.getOne(id);
-        if(team!=null)
-            return team.getTeamLeader();
-        return null;
+        return team.getTeamLeader();
+
     }
 
 

@@ -1,6 +1,5 @@
 package isssr.ticketsystem.dao;
 
-import isssr.ticketsystem.entity.RegisteredUser;
 import isssr.ticketsystem.entity.Target;
 import isssr.ticketsystem.enumeration.TargetState;
 import org.springframework.data.jpa.repository.JpaRepository;

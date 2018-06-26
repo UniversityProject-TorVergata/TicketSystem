@@ -1,15 +1,10 @@
 package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.RegisteredUserDao;
-import isssr.ticketsystem.dao.TeamDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.SystemRole;
-import isssr.ticketsystem.exception.NotFoundEntityException;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
@@ -32,22 +27,17 @@ public class RegisteredUserController {
     }
 
     @Transactional
-    public @NotNull RegisteredUser updateRegisteredUser(@NotNull Long id, @NotNull RegisteredUser updatedData) throws NotFoundEntityException {
+    public @NotNull RegisteredUser updateRegisteredUser(@NotNull Long id, @NotNull RegisteredUser updatedData) {
 
         Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
         RegisteredUser toBeUpdatedRegisteredUser = foundRegisteredUser.get();
-
-        if (toBeUpdatedRegisteredUser == null)
-            throw new NotFoundEntityException();
-
         toBeUpdatedRegisteredUser.update(updatedData);
         RegisteredUser updatedRegisteredUser = registeredUserDao.save(toBeUpdatedRegisteredUser);
-
         return updatedRegisteredUser;
     }
 
     public RegisteredUser findRegisteredUserById(@NotNull Long id) {
-        // RegisteredUser foundRegisteredUser = registeredUserDao.getOne(id);
+
         Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
         RegisteredUser resultRegisteredUser = foundRegisteredUser.get();
         return resultRegisteredUser;
@@ -89,14 +79,6 @@ public class RegisteredUserController {
         registeredUserDao.deleteById(admin.getId());
         return true;
 
-    }
-
-
-
-
-    public List<RegisteredUser> getRegisteredUsers() {
-
-        return registeredUserDao.findAll();
     }
 
     public RegisteredUser getRegisteredUserByLogin(String username,String password){

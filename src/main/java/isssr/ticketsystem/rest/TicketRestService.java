@@ -1,24 +1,18 @@
 package isssr.ticketsystem.rest;
 
 
-import isssr.ticketsystem.controller.TargetController;
-import isssr.ticketsystem.controller.RegisteredUserController;
+
 import isssr.ticketsystem.controller.TicketController;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.State;
 import isssr.ticketsystem.enumeration.TAG;
-import isssr.ticketsystem.exception.NotFoundEntityException;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.transaction.Transactional;
-import javax.validation.constraints.Pattern;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -33,10 +27,6 @@ public class TicketRestService {
 
     @Autowired
     private TicketController ticketController;
-    @Autowired
-    private RegisteredUserController registeredUserController;
-    @Autowired
-    private TargetController targetController;
 
     /**
      * Metodo usato per la gestione di una POST che arriva sull'url specificato. A fronte di
@@ -48,7 +38,10 @@ public class TicketRestService {
     @RequestMapping(path = "", method = RequestMethod.POST)
     public ResponseEntity<Ticket> insertTicket(@RequestBody Ticket ticket) {
         Ticket createdTicket = ticketController.insertTicket(ticket);
-        return new ResponseEntity<>(createdTicket, HttpStatus.CREATED);
+        if(createdTicket != null)
+            return new ResponseEntity<>(createdTicket, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(createdTicket, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -62,39 +55,30 @@ public class TicketRestService {
      */
     @RequestMapping(path = "{id}", method = RequestMethod.PUT)
     public ResponseEntity<Ticket> updateTicket(@PathVariable Long id, @RequestBody Ticket ticket) {
-        Ticket updatedTicket;
-        try {
-            updatedTicket = ticketController.updateTicket(id, ticket);
-        } catch (NotFoundEntityException e) {
-            return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
-        }
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
-    }
-
-    @RequestMapping(path = "changeDifficulty/{difficulty}/{id}", method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> updateTicketDifficulty(@PathVariable("id") Long id, @PathVariable("difficulty") Difficulty difficulty) {
-        Ticket updatedTicket;
-        updatedTicket = ticketController.updateTicketDifficulty(id, difficulty);
-        if(updatedTicket==null)
-            return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
-        return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+        Ticket updatedTicket = ticketController.updateTicket(id, ticket);
+        if(updatedTicket != null)
+            return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTicket, HttpStatus.NOT_FOUND);
     }
 
 
     /**
-     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo vengono restituite le info relative al ticket desiderato.
-     * @param id Id del ticket da visualizzare.
-     * @return ticket da visualizzare + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.TicketController
+     * Metodo usato per cambiare il campo "difficulty" del Ticket
+     * @param id Id del ticket da aggiornare
+     * @param difficulty Nuova difficoltà del Ticket
+     * @return lista dei TeamMember senza Team
      */
-    @RequestMapping(path = "{id}", method = RequestMethod.GET)
-    public ResponseEntity<Ticket> findTicket(@PathVariable Long id) {
-        Ticket ticketFound = ticketController.findTicketById(id);
-        if(ticketFound!=null)
-            return new ResponseEntity<>(ticketFound,HttpStatus.OK);
-        return new ResponseEntity<>(ticketFound,HttpStatus.NOT_FOUND);
+    @RequestMapping(path = "changeDifficulty/{difficulty}/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> updateTicketDifficulty(@PathVariable("id") Long id, @PathVariable("difficulty") Difficulty difficulty) {
+        Ticket updatedTicket;
+        updatedTicket = ticketController.updateTicketDifficulty(id, difficulty);
+        if(updatedTicket != null)
+            return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTicket, HttpStatus.NOT_FOUND);
     }
+
 
     /**
      * Metodo per spostare il ticket tra gli stati della FSM.
@@ -108,13 +92,13 @@ public class TicketRestService {
     public ResponseEntity<Ticket> changeTicketStateAndResolverUser(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
                                              @PathVariable("internalUserID") Long internalUserID){
         Ticket updatedTicket = ticketController.changeStateAndResolverUser(ticketID,action,internalUserID);
-        if(updatedTicket!=null)
+        if(updatedTicket != null)
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
     }
 
-    /**
+    /**Chi lo usa???!!!???!!11??
      * Metodo per spostare i ticket sulla macchina a stati cambiando il resolveruser,la actual priority e l'actual type
      *
      * @param ticketID
@@ -129,46 +113,12 @@ public class TicketRestService {
                                                                    @PathVariable("internalUserID") Long internalUserID,@PathVariable("priority") Priority priority,
                                                                              @PathVariable("actualType") String actualType  ){
         Ticket updatedTicket = ticketController.changeStateResolverUserPriorityAndType(ticketID,action,internalUserID,priority,actualType);
-        if(updatedTicket!=null)
+        if(updatedTicket != null)
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
         else
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Servizio REST per restituire le informazioni sullo stato attuale del Ticket, che sono:
-     *  - Azioni
-     *  - Ruoli
-     *  - Prossimi stati.
-     *
-     * @param ticketID
-     * @return
-     */
-    @RequestMapping(path = "getStateInformation/{ticketID}", method = RequestMethod.GET)
-    public ResponseEntity<ArrayList<ArrayList<String>>> getStateInformation(@PathVariable("ticketID") Long ticketID) {
-
-        Ticket ticketFound = ticketController.findTicketById(ticketID);
-
-        ArrayList<ArrayList<String>> stateInfo = ticketFound.getStateMachine().getStateInformation(ticketFound.getStateMachine().getCurrentState());
-
-        return new ResponseEntity<>(stateInfo, stateInfo == null ? HttpStatus.NOT_FOUND : HttpStatus.ACCEPTED);
-    }
-
-    /**
-     * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
-     * una richiesta di questo tipo vengono restuiti tutti i ticket registrati
-     * presenti nel DB.
-     * @return Ticket presenti nel DB + esito della richiesta HTTP.
-     * @see isssr.ticketsystem.controller.TicketController
-     */
-    @RequestMapping(path = "", method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> getTickets() {
-        List<Ticket> tickets = ticketController.getTickets();
-        if(tickets !=null)
-            return new ResponseEntity<>(tickets,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
-    }
 
     /**
      * Metodo usato per la gestione di una GET che arriva sull'url specificato. A fronte di
@@ -181,7 +131,7 @@ public class TicketRestService {
     public ResponseEntity<List<Ticket>> getTicketsByOpenerUser(@PathVariable("customerID") Long customerID){
 
         List<Ticket> tickets = ticketController.getTicketByOpenerUser(customerID);
-        if(tickets !=null)
+        if(tickets != null)
             return new ResponseEntity<>(tickets,HttpStatus.OK);
         else
             return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
@@ -199,12 +149,11 @@ public class TicketRestService {
 
 
         List<Ticket> tickets = ticketController.getTicketByResolverUser(teamLeaderID);
-        if(tickets !=null)
+        if(tickets != null)
             return new ResponseEntity<>(tickets,HttpStatus.OK);
         else
             return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
     }
-
 
 
     /**
@@ -218,7 +167,7 @@ public class TicketRestService {
     @RequestMapping(path = "/findTicketByState/{state}",method = RequestMethod.GET)
     public ResponseEntity<List<Ticket>> getTicketByState(@PathVariable("state")State ticketState){
         List<Ticket> tickets = ticketController.getTicketByState(ticketState);
-        if(tickets !=null)
+        if(tickets != null)
            return new ResponseEntity<>(tickets,HttpStatus.OK);
         else
             return new ResponseEntity<>(tickets,HttpStatus.NOT_FOUND);
@@ -233,31 +182,17 @@ public class TicketRestService {
      * @see isssr.ticketsystem.controller.TicketController
      */
     @RequestMapping(path= "/assignTicket/{ticketID}/{teamLeaderID}",method = RequestMethod.PUT)
-    public ResponseEntity<Ticket> assignTicket(@PathVariable("ticketID") Long ticketID,@PathVariable("teamLeaderID") Long teamLeaderID)
-            throws NotFoundEntityException {
-
+    public ResponseEntity<Ticket> assignTicket(@PathVariable("ticketID") Long ticketID,@PathVariable("teamLeaderID") Long teamLeaderID) {
         ticketController.assignTicket(ticketID,teamLeaderID);
         Ticket ticket = ticketController.findTicketById(ticketID);
-        return new ResponseEntity<>(ticket,HttpStatus.OK);
-
-    }
-
-    /**
-     * Questo metodo ricerca i ticket assegnati a un Determinato TeamLeader
-     *
-     * @param teamLeaderID ID del team leader su cui si effettua le ricerca
-     * @return una lista con i ticket assegnati al TeamLeader ricercato.
-     */
-    @RequestMapping(path = "/findTicketByTeamLeader/{teamLeaderID}",method = RequestMethod.GET)
-    public ResponseEntity<List<Ticket>> findTicketByTeamLeaderID(@PathVariable("teamLeaderID") Long teamLeaderID){
-        List<Ticket> ticketList = ticketController.findTicketByTeamLeaderID(teamLeaderID);
-        if(ticketList !=null)
-            return new ResponseEntity<>(ticketList,HttpStatus.OK);
+        if(ticket != null)
+            return new ResponseEntity<>(ticket, HttpStatus.OK);
         else
-            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(ticket, HttpStatus.NOT_FOUND);
 
     }
 
+    //TODO Da cancellarle se nessuno le utilizza
     /**
      * Ricerca "Esclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
      * Esclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
@@ -269,12 +204,13 @@ public class TicketRestService {
     @RequestMapping(path = "/searchTicketExclusive",method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> searchTicketExclusive(@RequestBody SearchBean searchBean){
         List<Ticket> ticketList = ticketController.searchTicketExclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        if(ticketList !=null)
+        if(ticketList != null)
             return new ResponseEntity<>(ticketList,HttpStatus.OK);
         else
             return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
     }
 
+    //TODO Da cancellarle se nessuno le utilizza
     /**
      * Ricerca "Inclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
      * Inclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
@@ -286,7 +222,7 @@ public class TicketRestService {
     @RequestMapping(path = "/searchTicketInclusive",method = RequestMethod.POST)
     public ResponseEntity<List<Ticket>> searchTicketInclusive(@RequestBody SearchBean searchBean){
         List<Ticket> ticketList = ticketController.searchTicketInclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        if(ticketList !=null)
+        if(ticketList != null)
             return new ResponseEntity<>(ticketList,HttpStatus.OK);
         else
             return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
@@ -303,9 +239,10 @@ public class TicketRestService {
     @RequestMapping(path= "/insertComment/{ticketID}",method = RequestMethod.POST)
     public ResponseEntity<Ticket> insertComment(@PathVariable("ticketID") Long ticketID,@RequestBody TicketComment ticketComment){
         Ticket commentedTicket = ticketController.insertComment(ticketID,ticketComment);
-        if(commentedTicket!=null)
+        if(commentedTicket != null)
             return new ResponseEntity<>(commentedTicket,HttpStatus.OK);
-        else return new ResponseEntity<>(commentedTicket,HttpStatus.NOT_FOUND);
+        else
+            return new ResponseEntity<>(commentedTicket,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -321,6 +258,8 @@ public class TicketRestService {
      * }
      *
      */
+
+    //TODO Da cancellarle se nessuno le utilizza
     @NoArgsConstructor
     public static class SearchBean {
 
