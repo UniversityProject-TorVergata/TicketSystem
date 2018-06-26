@@ -8,6 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import FSM.FSM;
 
 
 import javax.transaction.Transactional;
@@ -41,7 +42,8 @@ public class TicketController {
         ticket.setCurrentState(currentState);
         ticket.setTTL(currentState.getTTL());
         ticket.setStateCounter(System.currentTimeMillis());
-
+        FSM stateMachine = ticket.getStateMachine();
+        ticket.setStateInformation(stateMachine.getStateInformation(currentState.toString()));
         ticket.setResolverUser(registeredUserController.getTeamCoordinator());
 
         Ticket createdTicket = ticketDao.save(ticket);
@@ -280,6 +282,8 @@ public class TicketController {
         ticket.setCurrentState(state);
         ticket.setTTL(state.getTTL());
         ticket.setStateCounter(System.currentTimeMillis());
+        FSM stateMachine = ticket.getStateMachine();
+        ticket.setStateInformation(stateMachine.getStateInformation(state.toString()));
         return ticketDao.save(ticket);
     }
 
