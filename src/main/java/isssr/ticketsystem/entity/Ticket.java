@@ -10,6 +10,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Cascade;
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -103,6 +104,14 @@ public class Ticket {
 
     private int TTL;
 
+    /**
+     * Informazioni sullo stato attuale del Ticket:
+     *  - Azioni.
+     *  - Ruoli.
+     *  - Stati successivi.
+     */
+    ArrayList<ArrayList<String>> stateInformation;
+
 
     public Long getId() {
         return id;
@@ -152,8 +161,6 @@ public class Ticket {
     public void setStateCounter(long stateCounter) {
         this.stateCounter = stateCounter;
     }
-
-
 
     public String getActualType() {
         return actualType;
@@ -281,6 +288,14 @@ public class Ticket {
 
     public void setTTL(int TTL) {
         this.TTL = TTL;
+    }
+
+    public ArrayList<ArrayList<String>> getStateInformation() {
+        return this.stateInformation;
+    }
+
+    public void setStateInformation(ArrayList<ArrayList<String>> stateInformation) {
+        this.stateInformation = stateInformation;
     }
 
     //Costruttore usato per la CRUD utente.
