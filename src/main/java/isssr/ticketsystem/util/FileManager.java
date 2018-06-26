@@ -1,10 +1,10 @@
 package isssr.ticketsystem.util;
 
 import org.apache.tomcat.util.codec.binary.Base64;
-import sun.rmi.runtime.Log;
+
 
 import java.io.FileOutputStream;
-import java.util.logging.Level;
+
 
 public class FileManager {
 

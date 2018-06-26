@@ -33,7 +33,7 @@ public class TicketController {
 
         String stateMachineFileName = ticket.getTarget().getStateMachineName();
 
-        String relativePath = "./src/main/java/isssr/ticketsystem/state_machine/xml_files/";
+        String relativePath = "./src/main/resources/state_machine/xml_files/";
 
         ticket.createStateMachine( relativePath + stateMachineFileName + ".xml");
 

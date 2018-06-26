@@ -1,7 +1,7 @@
 package isssr.ticketsystem.entity;
 
-import isssr.ticketsystem.state_machine.Action.FSMAction;
-import isssr.ticketsystem.state_machine.FSM.FSM;
+import Action.FSMAction;
+import FSM.FSM;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import isssr.ticketsystem.enumeration.*;
 import lombok.Getter;
@@ -98,6 +98,7 @@ public class Ticket {
     /**
      * Stato Corrente del Ticket.
      */
+    @Enumerated(EnumType.STRING)
     private State currentState;
 
     private int TTL;
