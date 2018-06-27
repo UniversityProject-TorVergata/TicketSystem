@@ -36,4 +36,44 @@ public class TicketComment{
     public TicketComment() {
 
     }
+
+    public Visibility getVisibility() {
+        return visibility;
+    }
+
+    public void setVisibility(Visibility visibility) {
+        this.visibility = visibility;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public RegisteredUser getEventGenerator() {
+        return eventGenerator;
+    }
+
+    public void setEventGenerator(RegisteredUser eventGenerator) {
+        this.eventGenerator = eventGenerator;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(String timestamp) {
+        this.timestamp = timestamp;
+    }
 }

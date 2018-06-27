@@ -72,7 +72,45 @@ public class Target {
         this.name = name;
     }
 
+    public TargetState getTargetState() {
+        return targetState;
+    }
 
+    public TargetType getTargetType() {
+        return targetType;
+    }
+
+    public void setTargetType(TargetType targetType) {
+        this.targetType = targetType;
+    }
+
+    public void setStateMachineName(String stateMachineName) {
+        this.stateMachineName = stateMachineName;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getVersion() {
+        return version;
+    }
+
+    public void setVersion(double version) {
+        this.version = version;
+    }
+
+    public Collection<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Collection<String> categories) {
+        this.categories = categories;
+    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.

@@ -76,6 +76,19 @@ public class Team {
     }
 
 
+    public void setProblemArea(ProblemArea problemArea) {
+        this.problemArea = problemArea;
+    }
+
+    @JsonProperty
+    public void setTeamMemberList(List<TeamMember> teamMemberList) {
+        this.teamMemberList = teamMemberList;
+    }
+
+    @JsonProperty
+    public void setTeamLeader(TeamLeader teamLeader) {
+        this.teamLeader = teamLeader;
+    }
 
     public void addTeamMember(TeamMember teamMember) {
         this.teamMemberList.add(teamMember);

@@ -44,4 +44,7 @@ public class StateMachine {
         return base64StateMachine;
     }
 
+    public void setBase64StateMachine(String base64StateMachine) {
+        this.base64StateMachine = base64StateMachine;
+    }
 }

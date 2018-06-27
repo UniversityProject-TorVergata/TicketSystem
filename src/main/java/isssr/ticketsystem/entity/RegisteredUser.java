@@ -100,6 +100,37 @@ public abstract class RegisteredUser {
         this.password = password;
     }
 
+    public String getFiscal_code() {
+        return fiscal_code;
+    }
+
+    public void setFiscal_code(String fiscal_code) {
+        this.fiscal_code = fiscal_code;
+    }
+
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     /**
      * Metodo usato per aggiornare l'entità con dati ricevuti dal FE.
