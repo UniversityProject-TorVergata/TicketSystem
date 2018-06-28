@@ -8,6 +8,7 @@ import javax.persistence.*;
  *
  */
 @Entity
+@SuppressWarnings("unused")
 public class StateMachine {
 
     @Id

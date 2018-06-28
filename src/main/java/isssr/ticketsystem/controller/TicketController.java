@@ -272,8 +272,11 @@ public class TicketController {
     public Ticket changeStateAndResolverUser(Long ticketID, String action, Long internalUserID) {
 
         Ticket ticket = findTicketById(ticketID);
-        RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
-        ticket.setResolverUser((InternalUser) registeredUser);
+        if(internalUserID != 0 ) {
+            RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
+            ticket.setResolverUser((InternalUser) registeredUser);
+        }
+        else ticket.setResolverUser(null);
         ticketDao.save(ticket);
 
         return changeState(ticketID, action);

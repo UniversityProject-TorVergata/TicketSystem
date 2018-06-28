@@ -80,7 +80,7 @@ public class Ticket {
 
     @ElementCollection(targetClass = TAG.class)
     @Enumerated(EnumType.STRING)
-    List<TAG> tags;
+    private List<TAG> tags;
 
     /**
      * Macchina a stati per ciascun Ticket che definisce il suo workflow.
@@ -105,121 +105,7 @@ public class Ticket {
      */
     private ArrayList<ArrayList<String>> stateInformation;
 
-    public String getTimestamp() {
-        return timestamp;
-    }
 
-    public void setTimestamp(String timestamp) {
-        this.timestamp = timestamp;
-    }
-
-    public long getStateCounter() {
-        return stateCounter;
-    }
-
-    public String getPresumedType() {
-        return presumedType;
-    }
-
-    public void setPresumedType(String presumedType) {
-        this.presumedType = presumedType;
-    }
-
-    public String getActualType() {
-        return actualType;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAttachedFile() {
-        return attachedFile;
-    }
-
-    public void setAttachedFile(String attachedFile) {
-        this.attachedFile = attachedFile;
-    }
-
-    public String getMediaType() {
-        return mediaType;
-    }
-
-    public void setMediaType(String mediaType) {
-        this.mediaType = mediaType;
-    }
-
-    public InternalUser getResolverUser() {
-        return resolverUser;
-    }
-
-    public RegisteredUser getOpenerUser() {
-        return openerUser;
-    }
-
-    public void setOpenerUser(RegisteredUser openerUser) {
-        this.openerUser = openerUser;
-    }
-
-    public Priority getCustomerPriority() {
-        return customerPriority;
-    }
-
-    public void setCustomerPriority(Priority customerPriority) {
-        this.customerPriority = customerPriority;
-    }
-
-    public Priority getActualPriority() {
-        return actualPriority;
-    }
-
-    public Visibility getVisibility() {
-        return visibility;
-    }
-
-    public void setVisibility(Visibility visibility) {
-        this.visibility = visibility;
-    }
-
-    public Difficulty getDifficulty() {
-        return difficulty;
-    }
-
-    public void setTicketComments(List<TicketComment> ticketComments) {
-        this.ticketComments = ticketComments;
-    }
-
-    public void setTags(List<TAG> tags) {
-        this.tags = tags;
-    }
-
-    public void setStateMachine(FSM stateMachine) {
-        this.stateMachine = stateMachine;
-    }
-
-    public State getCurrentState() {
-        return currentState;
-    }
-
-    public int getTTL() {
-        return TTL;
-    }
-
-    public ArrayList<ArrayList<String>> getStateInformation() {
-        return stateInformation;
-    }
 
     public Long getId() {
         return id;

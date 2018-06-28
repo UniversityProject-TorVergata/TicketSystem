@@ -18,6 +18,7 @@ import java.util.Collection;
 @Table(name = "target")
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class Target {
 
     @Id

@@ -8,7 +8,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.text.SimpleDateFormat;
 
 
 /**
@@ -27,6 +26,7 @@ import java.text.SimpleDateFormat;
 
         @JsonSubTypes.Type(value = InternalUser.class, name = "InternalUser") }
 )
+@SuppressWarnings("unused")
 public abstract class RegisteredUser {
 
     /**

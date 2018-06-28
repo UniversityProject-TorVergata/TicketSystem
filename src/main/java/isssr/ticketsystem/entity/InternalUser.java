@@ -35,7 +35,7 @@ public abstract class InternalUser extends RegisteredUser {
      */
 
 
-
+    @SuppressWarnings("WeakerAccess")
     public InternalUser() {
 
     }

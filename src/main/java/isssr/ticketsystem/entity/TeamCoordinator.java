@@ -23,6 +23,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "team_coordinator")
 @Getter
 @Setter
+@SuppressWarnings("unused")
 public class TeamCoordinator extends InternalUser {
     /*
     Il Team Coordinator gestisce tutti i prodotti nel sistema
