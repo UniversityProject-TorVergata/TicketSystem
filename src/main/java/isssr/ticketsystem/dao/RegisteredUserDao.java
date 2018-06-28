@@ -51,4 +51,7 @@ public interface RegisteredUserDao extends JpaRepository<RegisteredUser, Long> {
 
     @Query("select a from Admin a")
     List<Admin> getAdmins();
+
+    @Query("select tm from TeamMember tm")
+    List<TeamMember> getTeamMembers();
 }

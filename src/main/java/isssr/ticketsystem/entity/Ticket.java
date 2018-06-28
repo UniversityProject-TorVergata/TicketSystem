@@ -31,6 +31,7 @@ public class Ticket {
     private Long id;
 
 
+    private boolean customerState;
 
     private String timestamp;
 
@@ -165,6 +166,13 @@ public class Ticket {
         this.TTL = TTL;
     }
 
+    public boolean isCustomerState() {
+         return this.customerState;
+    }
+
+    public void setCustomerState(boolean customerState) {
+        this.customerState = customerState;
+    }
 
     public void setStateInformation(ArrayList<ArrayList<String>> stateInformation) {
         this.stateInformation = stateInformation;
@@ -226,5 +234,9 @@ public class Ticket {
         catch (Exception e){
             System.out.println("Error\n" + e);
         }
+    }
+
+    public InternalUser getResolverUser() {
+        return resolverUser;
     }
 }

@@ -90,7 +90,7 @@ public class TicketRestService {
      */
     @RequestMapping(path = "/changeState/{ticketID}/{action}/{internalUserID}",method = RequestMethod.POST)
     public ResponseEntity<Ticket> changeTicketStateAndResolverUser(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
-                                             @PathVariable("internalUserID") Long internalUserID){
+                                             @PathVariable("internalUserID") String internalUserID){
         Ticket updatedTicket = ticketController.changeStateAndResolverUser(ticketID,action,internalUserID);
         if(updatedTicket != null)
             return new ResponseEntity<>(updatedTicket,HttpStatus.OK);

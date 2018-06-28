@@ -3,6 +3,8 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.TicketDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.*;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import FSM.FSM;
@@ -36,7 +38,7 @@ public class TicketController {
         FSM stateMachine = ticket.getStateMachine();
         ticket.setStateInformation(stateMachine.getStateInformation(currentState.toString()));
         ticket.setResolverUser(registeredUserController.getTeamCoordinator());
-
+        ticket.setCustomerState(false);
         Ticket createdTicket = ticketDao.save(ticket);
         return createdTicket;
     }
@@ -269,14 +271,66 @@ public class TicketController {
      * @return
      */
     @Transactional
-    public Ticket changeStateAndResolverUser(Long ticketID, String action, Long internalUserID) {
-
+    public Ticket changeStateAndResolverUser(Long ticketID, String action, String internalUserID) {
+        Log logger = LogFactory.getLog(getClass());
         Ticket ticket = findTicketById(ticketID);
-        if(internalUserID != 0 ) {
-            RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
-            ticket.setResolverUser((InternalUser) registeredUser);
+        RegisteredUser registeredUser = null;
+        RegisteredUser exResolverUser = ticket.getResolverUser();
+        ticket.setCustomerState(false);
+        if(internalUserID.equals(SystemRole.TeamLeader.toString())){
+            logger.error("Cerco un TeamLeader");
+            if(!exResolverUser.getClass().equals(TeamLeader.class)){
+                logger.error("ExResolverUser non era TeamLeader");
+                if(exResolverUser.getClass().equals(TeamMember.class)){
+                    logger.error("ExResolverUser era un TeamMember cerco il suo TeamLeader");
+                    TeamMember exTeamMember = (TeamMember) exResolverUser;
+                    registeredUser = exTeamMember.getTeam().getTeamLeader();
+                    logger.error("TeamLeaderTrovato : "+registeredUser);
+                }
+                if(exResolverUser.getClass().equals(TeamCoordinator.class)){
+                    logger.error("Ex resolver user è TeamCoordinator estraggo TeamLeader casuale");
+                    registeredUser = registeredUserController.getRandomTeamLeader();
+                    logger.error("TeamLeader estratto : " + registeredUser);
+
+                }
+            }
+            else {
+                logger.error("ExResolverUser era un TeamLader " + exResolverUser);
+                registeredUser = exResolverUser;
+            }
         }
-        else ticket.setResolverUser(null);
+        else if(internalUserID.equals(SystemRole.TeamMember.toString())){
+            if(!exResolverUser.getClass().equals(TeamMember.class)){
+                if(exResolverUser.getClass().equals(TeamCoordinator.class)){
+                    registeredUser = registeredUserController.getRandomTeamMember();
+
+                }
+                if(exResolverUser.getClass().equals(TeamLeader.class)){
+                    registeredUser = exResolverUser;
+
+                }
+            }
+            else registeredUser = exResolverUser;
+        }
+        else if(internalUserID.equals(SystemRole.TeamCoordinator.toString())){
+            if(!exResolverUser.getClass().equals(TeamCoordinator.class)){
+                registeredUser = registeredUserController.getTeamCoordinator();
+            }
+            else registeredUser = exResolverUser;
+        }
+        else {
+            Long iUserID = Long.parseLong(internalUserID);
+            if(iUserID != 0 ) {
+
+                registeredUser = registeredUserController.findRegisteredUserById(iUserID);
+                ticket.setResolverUser((InternalUser) registeredUser);
+            }
+            else {
+                ticket.setCustomerState(true);
+                registeredUser = exResolverUser;
+            }
+        }
+        ticket.setResolverUser((InternalUser) registeredUser);
         ticketDao.save(ticket);
 
         return changeState(ticketID, action);
