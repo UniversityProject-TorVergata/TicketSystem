@@ -1,8 +1,9 @@
 package isssr.ticketsystem.controller;
 
+
 import Action.FSMAction;
+import FSM.*;
 import States.FSMState;
-import FSM.FSM;
 import isssr.ticketsystem.dao.StateMachineDao;
 import isssr.ticketsystem.entity.StateMachine;
 import isssr.ticketsystem.enumeration.State;
@@ -178,6 +179,73 @@ public class StateMachineController {
     }
 
 
+    public List<String> getActualStates(String stateMachineName, String role) {
+        FSM stateMachine = null;
+        String SMPath = "./src/main/resources/state_machine/xml_files/"+stateMachineName+".xml";
+        try {
+            stateMachine = new FSM(SMPath, new FSMAction() {
+                @Override
+                public boolean action(String curState, String message, String nextState, Object args) {
+                    System.out.println(curState + ":" + message + " : " + nextState);
 
+                    // Here we can implement our login of how we wish to handle
+                    // an action
 
+                    return true;
+                }
+            });
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        List<FSMState> fsmStateList = stateMachine.getAllStates();
+        ArrayList<String> outPutList = new ArrayList<>();
+        for(FSMState fsmState:fsmStateList){
+            ArrayList<ArrayList<String>> state_info = stateMachine.getStateInformation(fsmState.getCurrentState());
+            ArrayList<String> roleList = state_info.get(1);
+            ArrayList<String> stateList = state_info.get(2);
+            for(String roleStr : roleList){
+                if(roleStr.equals(role)){
+                    int index = roleList.indexOf(roleStr);
+                    if(!outPutList.contains(stateList.get(index)))
+                        outPutList.add(stateList.get(index));
+                }
+                if(role.equals(SystemRole.TeamLeader.toString()) && roleStr.equals(SystemRole.TeamMember.toString())){
+                    int index = roleList.indexOf(roleStr);
+                    if(!outPutList.contains(stateList.get(index)))
+                        outPutList.add(stateList.get(index));
+                }
+            }
+        }
+        return  outPutList;
+    }
+
+    public ArrayList<ArrayList<String>> getNextStates(String stateMachineName, String currentState) {
+        FSM stateMachine = null;
+        String SMPath = "./src/main/resources/state_machine/xml_files/"+stateMachineName+".xml";
+        try {
+            stateMachine = new FSM(SMPath, new FSMAction() {
+                @Override
+                public boolean action(String curState, String message, String nextState, Object args) {
+                    System.out.println(curState + ":" + message + " : " + nextState);
+
+                    // Here we can implement our login of how we wish to handle
+                    // an action
+
+                    return true;
+                }
+            });
+        } catch (ParserConfigurationException | SAXException | IOException e) {
+            e.printStackTrace();
+        }
+        List<FSMState> fsmStateList = stateMachine.getAllStates();
+        ArrayList<ArrayList<String>> outPutList = new ArrayList<>();
+        for(FSMState fsmState:fsmStateList){
+            if(fsmState.getCurrentState().equals(currentState)) {
+                ArrayList<ArrayList<String>> state_info = stateMachine.getStateInformation(fsmState.getCurrentState());
+                outPutList.addAll(state_info);
+                break;
+            }
+        }
+        return  outPutList;
+    }
 }

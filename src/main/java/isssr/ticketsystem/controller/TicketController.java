@@ -349,4 +349,18 @@ public class TicketController {
         return changeState(ticketID, action);
     }
 
+    public Ticket updateTicketPriority(Long id, Priority priority) {
+
+        Ticket ticket = findTicketById(id);
+        ticket.setActualPriority(priority);
+
+        return ticketDao.save(ticket);
+    }
+
+    public Ticket updateTicketPriorityAndActualType(Long id, Priority priority, String actualType) {
+        Ticket ticket = findTicketById(id);
+        ticket.setActualPriority(priority);
+        ticket.setActualType(actualType);
+        return ticketDao.save(ticket);
+    }
 }

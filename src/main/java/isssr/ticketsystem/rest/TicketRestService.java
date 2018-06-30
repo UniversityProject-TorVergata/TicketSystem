@@ -79,6 +79,37 @@ public class TicketRestService {
             return new ResponseEntity<>(updatedTicket, HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Metodo usato per cambiare il campo "difficulty" del Ticket
+     * @param id Id del ticket da aggiornare
+     * @param priority Nuova difficoltà del Ticket
+     * @return lista dei TeamMember senza Team
+     */
+    @RequestMapping(path = "changePriority/{priority}/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> updateTicketPriority(@PathVariable("id") Long id, @PathVariable("priority") Priority priority) {
+        Ticket updatedTicket;
+        updatedTicket = ticketController.updateTicketPriority(id, priority);
+        if(updatedTicket != null)
+            return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTicket, HttpStatus.NOT_FOUND);
+    }
+
+    /**
+     * Metodo usato per cambiare il campo "difficulty" del Ticket
+     * @param id Id del ticket da aggiornare
+     * @param priority Nuova difficoltà del Ticket
+     * @return lista dei TeamMember senza Team
+     */
+    @RequestMapping(path = "changePriorityAndType/{priority}/{actualType}/{id}", method = RequestMethod.PUT)
+    public ResponseEntity<Ticket> updateTicketPriorityAndActualType(@PathVariable("id") Long id, @PathVariable("priority") Priority priority,@PathVariable("actualType") String actualType) {
+        Ticket updatedTicket;
+        updatedTicket = ticketController.updateTicketPriorityAndActualType(id, priority,actualType);
+        if(updatedTicket != null)
+            return new ResponseEntity<>(updatedTicket, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(updatedTicket, HttpStatus.NOT_FOUND);
+    }
 
     /**
      * Metodo per spostare il ticket tra gli stati della FSM.

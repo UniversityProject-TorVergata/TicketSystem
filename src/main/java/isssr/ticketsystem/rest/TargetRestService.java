@@ -2,12 +2,15 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.entity.Target;
+import isssr.ticketsystem.enumeration.State;
+import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.enumeration.TargetState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -99,7 +102,7 @@ public class TargetRestService {
         if(targetList !=null)
             return new ResponseEntity<>(targetList, HttpStatus.OK);
         else
-            return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -116,4 +119,24 @@ public class TargetRestService {
         else
             return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
     }
+
+    @RequestMapping(path = "getActualStates/{targetID}/{systemRole}")
+    public ResponseEntity<List<String>> getActualStates(@PathVariable("targetID") Long targetID, @PathVariable("systemRole")
+                                                     String role){
+        List<String> states = targetController.getActualStates(targetID,role);
+        if(states.size()!=0)
+            return  new ResponseEntity<>(states,HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @RequestMapping(path = "getNextStates/{targetID}/{currentState}")
+    public ResponseEntity<ArrayList<ArrayList<String>>> getNextStates(@PathVariable("targetID") Long targetID, @PathVariable("currentState")
+            String currentState){
+        ArrayList<ArrayList<String>> states = targetController.getNextStates(targetID,currentState);
+        if(states.size()!=0)
+            return  new ResponseEntity<>(states,HttpStatus.OK);
+        else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+
 }

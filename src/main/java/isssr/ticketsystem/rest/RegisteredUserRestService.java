@@ -163,6 +163,22 @@ public class RegisteredUserRestService {
     }
 
     /**
+     * Metodo che restituisce tutti gli InternalUser in base al loro ruolo.
+     *
+     * @return lista di InternalUser
+     */
+    @RequestMapping(path= "getEmployedUserByRole/{role}", method = RequestMethod.GET)
+    public ResponseEntity<List<? extends InternalUser>> getEmployedUserByRole(@PathVariable SystemRole role)
+    {
+        List<? extends InternalUser> listInternalUser = registeredUserController.getEmployedUserByRole(role);
+        if(listInternalUser!= null)
+            return new ResponseEntity<>(listInternalUser, HttpStatus.OK);
+        else
+            return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
+
+    }
+
+    /**
      * Questa classe interna è usata per passare i parametri della chiamata Rest /login che "autentica" un Utente
      * che invia username e password.
      * Corrisponde ad un JSON del tipo :

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,7 +98,13 @@ public class RegisteredUserController {
     public List<TeamMember> getListFreeTeamMember()
     {
         List<TeamMember> listFreeTeamMember = registeredUserDao.getListFreeTeamMember();
-        return listFreeTeamMember;
+        List<TeamMember> outputList = new ArrayList<>(listFreeTeamMember);
+        for(TeamMember tm : listFreeTeamMember){
+            if(tm.getClass().equals(TeamLeader.class)){
+                outputList.remove(tm);
+            }
+        }
+        return outputList;
     }
 
     public TeamCoordinator getTeamCoordinator()
@@ -164,5 +171,23 @@ public class RegisteredUserController {
                 return getListTeamCoordinator();
         }
         return null;
+    }
+
+    public List<? extends InternalUser> getEmployedUserByRole(SystemRole role) {
+        switch (role)
+        {
+            case TeamLeader:
+                return getListEmployedTeamLeader();
+            case TeamMember:
+                return getListEmployedTeamMember();
+            case TeamCoordinator:
+                return getListTeamCoordinator();
+        }
+        return null;
+    }
+
+    private List<? extends InternalUser> getListEmployedTeamMember() {
+        List<TeamMember> foundListTeamMember = registeredUserDao.getListEmployedTeamMember();
+        return foundListTeamMember;
     }
 }
