@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
  *
  */
 @JsonFormat(shape = JsonFormat.Shape.STRING)
+@SuppressWarnings("unused")
 public enum Priority {
     LOW,
     AVERAGE,

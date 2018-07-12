@@ -16,11 +16,15 @@ import java.util.*;
 @Service
 public class TicketController {
 
-    @Autowired
-    private TicketDao ticketDao;
+    private final TicketDao ticketDao;
+
+    private final RegisteredUserController registeredUserController;
 
     @Autowired
-    private RegisteredUserController registeredUserController;
+    public TicketController(TicketDao ticketDao, RegisteredUserController registeredUserController) {
+        this.ticketDao = ticketDao;
+        this.registeredUserController = registeredUserController;
+    }
 
     @Transactional
     public @NotNull Ticket insertTicket(@NotNull Ticket ticket) {
@@ -32,6 +36,8 @@ public class TicketController {
         ticket.createStateMachine( relativePath + stateMachineFileName + ".xml");
 
         State currentState = State.getEnum(ticket.getStateMachine().getCurrentState());
+        if(currentState==null)
+            return null;
         ticket.setCurrentState(currentState);
         ticket.setTTL(currentState.getTTL());
         ticket.setStateCounter(System.currentTimeMillis());
@@ -39,8 +45,7 @@ public class TicketController {
         ticket.setStateInformation(stateMachine.getStateInformation(currentState.toString()));
         ticket.setResolverUser(registeredUserController.getTeamCoordinator());
         ticket.setCustomerState(false);
-        Ticket createdTicket = ticketDao.save(ticket);
-        return createdTicket;
+        return ticketDao.save(ticket);
     }
 
     @Transactional
@@ -48,15 +53,15 @@ public class TicketController {
 
         Ticket toBeUpdatedTicket = ticketDao.getOne(id);
         toBeUpdatedTicket.updateTicket(updatedData);
-        Ticket updatedTicket = ticketDao.save(toBeUpdatedTicket);
-        return updatedTicket;
+        return ticketDao.save(toBeUpdatedTicket);
+
     }
 
 
     @Transactional
     public Ticket findTicketById(@NotNull Long id) {
         Optional<Ticket> optionalTicket = ticketDao.findById(id);
-        return optionalTicket.get();
+        return optionalTicket.orElse(null);
     }
 
     @Transactional
@@ -78,62 +83,13 @@ public class TicketController {
     }
 
 
-    /**
-     * Metodo "interno" depura una Lista di Ticket eliminando quelli che non contengono tutti i Tag passati in argomento.
-     *
-     * @param tickets
-     * @param tags TAG su cui filtrare i ticket.
-     * @return
-     */
-    private List<Ticket> searchTicketTagExclusive(List<Ticket> tickets ,List<TAG> tags){
-        List<Ticket>  outputList = new ArrayList<>();
-        outputList.addAll(tickets);
-        for(Ticket t : tickets){
-            List<TAG> tTag = t.getTags();
-            for(TAG tag : tags){
-                if(tTag.contains(tag))
-                    continue;
-                else
-                    outputList.remove(t);
-            }
-        }
-        return outputList;
 
-    }
-
-    /**
-     * Metodo interno che depura una lista di Ticket eliminando quelli che non contengono almeno uno dei Tag passati in argomento.
-     *
-     * @param tickets
-     * @param tags TAG su cui filtrare i Ticket.
-     * @return
-     */
-    private List<Ticket> searchTicketTagInclusive(List<Ticket> tickets ,List<TAG> tags){
-        List<Ticket>  outputList = new ArrayList<>();
-        outputList.addAll(tickets);
-
-        for(Ticket t : tickets){
-            boolean find = false;
-            List<TAG> tTag = t.getTags();
-            for(TAG tag : tags) {
-                if (tTag.contains(tag))
-                    find = true;
-                    break;
-
-
-            }
-            if(find == false)
-                outputList.remove(t);
-        }
-        return outputList;
-
-    }
 
     /**
      * Assegna un Ticket a un TeamLeader
      *
-     * @param ticketID
-     * @param teamLeaderID
+     * @param ticketID l'id del ticket da assegnare
+     * @param teamLeaderID l'id del team leader a cui assegnare il ticket.
      *
      */
     @Transactional
@@ -144,81 +100,14 @@ public class TicketController {
         ticketDao.save(assignedTicket);
     }
 
-    /**
-     * Ricerca "ESCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
-     * Esclusiva : Il ticket deve contenere almeno tutti i Tag in argomento.
-     *
-     * @param category
-     * @param tags
-     * @param targetID
-     * @return
-     */
-    @Transactional
-    public List<Ticket> searchTicketExclusive(String category, List<TAG> tags, Long targetID) {
 
-        if(tags == null){
-            //Ricerca Prodotto,Categoria
-            return ticketDao.getTicketByCategoryAndTarget(category,targetID);
-        }
-        else if(category == null){
-            //Ricerca Prodotto,TAG
-           List<Ticket> ticketList = findTicketByTarget(targetID);
-           return searchTicketTagExclusive(ticketList,tags);
-        }
-        else {
-            //Ricerca Prodotto,TAG,Categoria
-            List<Ticket> ticketList = ticketDao.getTicketByCategoryAndTarget(category,targetID);
-
-            return  searchTicketTagExclusive(ticketList,tags);
-        }
-    }
-
-    /**
-     * Ricerca "INCLUSIVA" di un Ticket dati un Target,una Categoria e una lista di TAG.
-     * Inclusiva : Il ticket deve contenere almeno uno dei Tag in argomento.
-     *
-     * @param category
-     * @param tags
-     * @param targetID
-     * @return
-     */
-    @Transactional
-    public List<Ticket> searchTicketInclusive(String category, List<TAG> tags, Long targetID) {
-
-        if(tags == null){
-            //Ricerca Prodotto,Categoria
-            return ticketDao.getTicketByCategoryAndTarget(category,targetID);
-        }
-        else if(category == null){
-            //Ricerca Prodotto,TAG
-            List<Ticket> ticketList = findTicketByTarget(targetID);
-            return searchTicketTagInclusive(ticketList,tags);
-        }
-        else {
-            //Ricerca Prodotto,TAG,Categoria
-            List<Ticket> ticketList = ticketDao.getTicketByCategoryAndTarget(category,targetID);
-
-            return  searchTicketTagInclusive(ticketList,tags);
-        }
-    }
-
-    /**
-     * Ricerca i Ticket relativi ad un determinato target.
-     *
-     * @param targetID ID del target di cui cercare i ticket.
-     * @return La lista di ticket collegati al target in argomento.
-     */
-    @Transactional
-    public List<Ticket> findTicketByTarget(Long targetID){
-        return ticketDao.getTicketByTarget(targetID);
-    }
 
     /**
      * Metodo per inserire un commento in un ticket
      *
      * @param ticketID ID del ticket da commentare
      * @param ticketComment commento da allegare al ticket
-     * @return
+     * @return il ticket con allegato il commento
      */
     @Transactional
     public Ticket insertComment(Long ticketID, TicketComment ticketComment) {
@@ -244,9 +133,9 @@ public class TicketController {
      * Metodo per cambiare lo stato di un ticket.
      *
      *
-     * @param ticketID
+     * @param ticketID id del ticket da modificare
      * @param action String che identifica l'azione da intraprendere come configurato nell file XML.
-     * @return
+     * @return il ticket modificato
      */
     @Transactional
     public Ticket changeState(Long ticketID, String action){
@@ -254,6 +143,8 @@ public class TicketController {
         Ticket ticket = findTicketById(ticketID);
         ticket.getStateMachine().ProcessFSM(action);
         State state = State.getEnum(ticket.getStateMachine().getCurrentState());
+        if(state==null)
+            return null;
         ticket.setCurrentState(state);
         ticket.setTTL(state.getTTL());
         ticket.setStateCounter(System.currentTimeMillis());
@@ -265,10 +156,10 @@ public class TicketController {
     /**
      * Metodo per cambiare lo stato di un ticket e il Resolver User del Ticket.
      *
-     *
-     * @param ticketID
+     * @param internalUserID id dell'internal user da cambiare
+     * @param ticketID id del ticket da assegnare
      * @param action String che identifica l'azione da intraprendere come configurato nell file XML.
-     * @return
+     * @return il Ticket aggiornato con lo stato e il resolver user modificati
      */
     @Transactional
     public Ticket changeStateAndResolverUser(Long ticketID, String action, String internalUserID) {
@@ -336,18 +227,7 @@ public class TicketController {
         return changeState(ticketID, action);
     }
 
-    @Transactional
-    public Ticket changeStateResolverUserPriorityAndType(Long ticketID, String action, Long internalUserID, Priority priority, String actualType) {
 
-        Ticket ticket = findTicketById(ticketID);
-        RegisteredUser registeredUser = registeredUserController.findRegisteredUserById(internalUserID);
-        ticket.setResolverUser((InternalUser) registeredUser);
-        ticket.setActualPriority(priority);
-        ticket.setActualType(actualType);
-        ticketDao.save(ticket);
-
-        return changeState(ticketID, action);
-    }
 
     public Ticket updateTicketPriority(Long id, Priority priority) {
 

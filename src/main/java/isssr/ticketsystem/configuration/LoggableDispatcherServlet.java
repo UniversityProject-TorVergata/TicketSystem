@@ -17,7 +17,7 @@ import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.util.Date;
 
-
+@SuppressWarnings("all")
 @Configuration
 public class LoggableDispatcherServlet extends DispatcherServlet {
 

@@ -2,7 +2,6 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.StateMachineController;
 import isssr.ticketsystem.entity.StateMachine;
-import isssr.ticketsystem.enumeration.State;
 import isssr.ticketsystem.util.FileManager;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,10 +12,15 @@ import java.util.Collection;
 
 @RestController
 @RequestMapping(path="state_machine")
+@SuppressWarnings("ConstantConditions")
 public class StateMachineRestService {
 
+    private final StateMachineController stateMachineController;
+
     @Autowired
-    private StateMachineController stateMachineController;
+    public StateMachineRestService(StateMachineController stateMachineController) {
+        this.stateMachineController = stateMachineController;
+    }
 
     /**
      * Metodo che restituisce tutti i nome della varie FSM.
@@ -35,7 +39,7 @@ public class StateMachineRestService {
      * Metodo per inserire una nuova FSM nel DB. Nel corpo della FSM bisogna inserire:
      * - il nome della stessa
      * - una stringa in base 64 che rappresenta il file XML della FSM
-     *
+     * @param stateMachine la state machine da salvare
      * @return FSM creata
      */
     @RequestMapping(value="",method = RequestMethod.POST )
@@ -66,6 +70,7 @@ public class StateMachineRestService {
      * Classe usata per inviare come risposta una stringa in base64 rappresentante una macchina a stati di default.
      *
      */
+    @SuppressWarnings("unused")
     public static class Template {
 
         private String templateBase64;
@@ -95,6 +100,7 @@ public class StateMachineRestService {
      * Classe usata per restituire il messaggio di errore o successo a seguito dell'inserimento di una macchina a stati.
      *
      */
+    @SuppressWarnings("unused")
     public static class FSMResponse {
         private String response;
 
@@ -102,7 +108,7 @@ public class StateMachineRestService {
 
         }
 
-        public FSMResponse(String response) {
+        FSMResponse(String response) {
             this.response = response;
         }
 

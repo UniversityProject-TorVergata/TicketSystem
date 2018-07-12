@@ -17,38 +17,72 @@ import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.*;
 
 @Service
 public class StateMachineController {
 
+    private final StateMachineDao stateMachineDao;
+
     @Autowired
-    private StateMachineDao stateMachineDao;
+    public StateMachineController(StateMachineDao stateMachineDao) {
+        this.stateMachineDao = stateMachineDao;
+    }
 
     public Collection<StateMachine> getStateMachines(){
         return stateMachineDao.findAll();
     }
 
     public String saveStateMachine(StateMachine stateMachine){
-        if(stateMachine.getBase64StateMachine()!=null) {
-            String savedStateMachine = stateMachine.getBase64StateMachine();
-            String relativePath = "./src/main/resources/state_machine/xml_files/";
-            FileManager.convertStringToFile(savedStateMachine, stateMachine.getName(), relativePath);
-            //Se la macchina a stati inserita non è valida restituisco errore.
-            String result = stateMachineValidation(relativePath +
-                    stateMachine.getName() + ".xml");
-            if(result!=null)
-                return result;
+        if(stateMachine.getBase64StateMachine()==null)
+            return "MISSING XML FILE";
+        String savedStateMachine = stateMachine.getBase64StateMachine();
+        String relativePath = "./src/main/resources/state_machine/xml_files/";
+        FileManager.convertStringToFile(savedStateMachine, stateMachine.getName(), relativePath);
+        //Se la macchina a stati inserita non è valida restituisco errore.
+        String result = stateMachineValidation(relativePath +
+                stateMachine.getName() + ".xml");
+        if(result!=null) {
+            Path path = Paths.get(relativePath+stateMachine.getName() + ".xml");
+            try {
+                Files.delete(path);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return result;
         }
-        if(stateMachineDao.save(stateMachine)!=null)
-            return null;
-        return "ERROR SAVING STATE MACHINE";
+
+        try{
+            stateMachineDao.save(stateMachine);
+        }catch (Exception e){
+            return "ERROR SAVING STATE MACHINE";
+        }
+        return null;
+
 
     }
 
+    /**
+     * Verifica che la macchina a stati rispetti i vincoli
+     * <ul>
+     *     <li>Tutti i ruoli facciano parte dell'insieme dei ruoli del sistema</li>
+     *     <li>Tutti gli stati facciano parte dell'insieme degli stati del sistema</li>
+     *     <li>Il primo stato sia Dispatching/Validation</li>
+     *     <li>Sia presente lo stato EXECUTION</li>
+     *     <li>L'ultimo stato sia CLOSED</li>
+     *     <li>La macchina a stati sia connessa</li>
+     * </ul>
+     *
+     * @param SMPath path in cui è salvata la macchina a stati.
+     * @return una stringa con l'errore oppure null
+     */
+    @SuppressWarnings("unchecked")
     private String stateMachineValidation(String SMPath){
         Log logger = LogFactory.getLog(getClass());
-        FSM stateMachine = null;
+        FSM stateMachine ;
         try {
             stateMachine = new FSM(SMPath, new FSMAction() {
                 @Override
@@ -75,8 +109,7 @@ public class StateMachineController {
             return "INVALID START STATE : " + startState;
         }
 
-
-        List<FSMState> states = stateMachine.getAllStates();
+        List<FSMState> states =  stateMachine.getAllStates();
         //Controllo che Ruoli e Stati siano quelli del sistema
         boolean execution = false;
         for(FSMState state : states){
@@ -116,7 +149,7 @@ public class StateMachineController {
     private boolean controlStates(String stateName){
         Log logger = LogFactory.getLog(getClass());
         //Controllo sui nomi degli stati.
-        if(!State.validateState(stateName)) {
+        if(State.validateState(stateName)) {
             logger.error("Invalid STATE : "+stateName);
             return false;
         }
@@ -135,6 +168,14 @@ public class StateMachineController {
         return true;
     }
 
+    /**
+     * Verifica se la macchina a stati è connessa.
+     * Cioe' se ogni stati e' raggiungibile dal primo.
+     *
+     * @param stateMachine la state machine da controllare
+     * @return true se è connessa false altrimenti
+     */
+    @SuppressWarnings("unchecked")
     private boolean controlFSMConnection(FSM stateMachine){
         Log logger = LogFactory.getLog(getClass());
         List<FSMState> states = stateMachine.getAllStates();
@@ -160,7 +201,7 @@ public class StateMachineController {
             //Con valore true;
             for(String nextState : nextStates){
                 //Se un next state non è tra gli stati del sistema
-                if(!State.validateState(nextState)) {
+                if(State.validateState(nextState)) {
                     logger.error("INVALID NEXT STATE : "+nextState);
                     return false;
                 }
@@ -169,8 +210,7 @@ public class StateMachineController {
                     logger.error("NOT PRESENT NEXT STATE : "+nextState);
                     return false;
                 }
-                if(connectionMap.containsKey(nextState))
-                    connectionMap.remove(nextState);
+                connectionMap.remove(nextState);
                 connectionMap.put(nextState,true);
             }
 
@@ -188,7 +228,7 @@ public class StateMachineController {
 
     }
 
-
+    @SuppressWarnings("all")
     public List<String> getActualStates(String stateMachineName, String role) {
         FSM stateMachine = null;
         String SMPath = "./src/main/resources/state_machine/xml_files/"+stateMachineName+".xml";
@@ -229,6 +269,7 @@ public class StateMachineController {
         return  outPutList;
     }
 
+    @SuppressWarnings("all")
     public ArrayList<ArrayList<String>> getNextStates(String stateMachineName, String currentState) {
         FSM stateMachine = null;
         String SMPath = "./src/main/resources/state_machine/xml_files/"+stateMachineName+".xml";

@@ -19,11 +19,16 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/team")
+@SuppressWarnings("ConstantConditions")
 public class TeamRestService {
 
 
+    private final TeamController teamController;
+
     @Autowired
-    private TeamController teamController;
+    public TeamRestService(TeamController teamController) {
+        this.teamController = teamController;
+    }
 
 
     /**

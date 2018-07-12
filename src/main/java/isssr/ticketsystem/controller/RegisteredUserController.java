@@ -16,32 +16,39 @@ import java.util.Optional;
 @Service
 public class RegisteredUserController {
 
+    private final RegisteredUserDao registeredUserDao;
+
     @Autowired
-    private RegisteredUserDao registeredUserDao;
+    public RegisteredUserController(RegisteredUserDao registeredUserDao) {
+        this.registeredUserDao = registeredUserDao;
+    }
 
 
     @Transactional
     public @NotNull RegisteredUser insertRegisteredUser(@NotNull RegisteredUser registeredUser) {
 
-        RegisteredUser createdRegisteredUser = registeredUserDao.save(registeredUser);
-        return createdRegisteredUser;
+        return registeredUserDao.save(registeredUser);
+
     }
 
     @Transactional
     public @NotNull RegisteredUser updateRegisteredUser(@NotNull Long id, @NotNull RegisteredUser updatedData) {
 
         Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
-        RegisteredUser toBeUpdatedRegisteredUser = foundRegisteredUser.get();
-        toBeUpdatedRegisteredUser.update(updatedData);
-        RegisteredUser updatedRegisteredUser = registeredUserDao.save(toBeUpdatedRegisteredUser);
-        return updatedRegisteredUser;
+        RegisteredUser toBeUpdatedRegisteredUser;
+        if(foundRegisteredUser.isPresent()) {
+            toBeUpdatedRegisteredUser = foundRegisteredUser.get();
+            toBeUpdatedRegisteredUser.update(updatedData);
+            return registeredUserDao.save(toBeUpdatedRegisteredUser);
+        }
+        return null;
     }
 
-    public RegisteredUser findRegisteredUserById(@NotNull Long id) {
+    RegisteredUser findRegisteredUserById(@NotNull Long id) {
 
         Optional<RegisteredUser> foundRegisteredUser = registeredUserDao.findById(id);
-        RegisteredUser resultRegisteredUser = foundRegisteredUser.get();
-        return resultRegisteredUser;
+        return foundRegisteredUser.orElse(null);
+
     }
 
     public boolean deleteRegisteredUser(@NotNull Long id) {
@@ -63,7 +70,7 @@ public class RegisteredUserController {
 
 
 
-    public boolean deleteTeamCoordinator(TeamCoordinator teamCoordinator){
+    private boolean deleteTeamCoordinator(TeamCoordinator teamCoordinator){
         List<TeamCoordinator> teamCoordinators = registeredUserDao.getTeamCoordinators();
         if(teamCoordinators.size()<2){
             return false;
@@ -72,7 +79,7 @@ public class RegisteredUserController {
         return true;
     }
 
-    public boolean deleteAdmin(Admin admin){
+    private boolean deleteAdmin(Admin admin){
         List<Admin> admins = registeredUserDao.getAdmins();
         if(admins.size()<2){
             return false;
@@ -84,15 +91,13 @@ public class RegisteredUserController {
 
     public RegisteredUser getRegisteredUserByLogin(String username,String password){
 
-        RegisteredUser foundRegisteredUser = registeredUserDao.getUserByLogin(username,password);
-        return foundRegisteredUser;
+        return registeredUserDao.getUserByLogin(username,password);
 
     }
 
-    public List<TeamLeader> getListTeamLeader() {
+    private List<TeamLeader> getListTeamLeader() {
 
-        List<TeamLeader> foundListTeamLeader = registeredUserDao.getListTeamLeader();
-        return foundListTeamLeader;
+       return registeredUserDao.getListTeamLeader();
     }
 
     public List<TeamMember> getListFreeTeamMember()
@@ -116,7 +121,7 @@ public class RegisteredUserController {
         return teamCoordinators.get(selectedTeamCoordinator);
     }
 
-    public TeamMember getRandomTeamMember(){
+   TeamMember getRandomTeamMember(){
         Log logger = LogFactory.getLog(getClass());
         List<TeamMember> teamMembers = registeredUserDao.getTeamMembers();
         if(teamMembers.size()==1) {
@@ -128,7 +133,7 @@ public class RegisteredUserController {
         return teamMembers.get(selectedTeamMember);
     }
 
-    public TeamLeader getRandomTeamLeader(){
+    TeamLeader getRandomTeamLeader(){
         List<TeamLeader> teamLeaders = registeredUserDao.getListTeamLeader();
         if(teamLeaders.size()==1)
             return teamLeaders.get(0);
@@ -138,25 +143,24 @@ public class RegisteredUserController {
 
 
     public List<TeamLeader> getListEmployedTeamLeader() {
-        List<TeamLeader> foundListTeamLeader = registeredUserDao.getListEmployedTeamLeader();
-        return foundListTeamLeader;
+        return registeredUserDao.getListEmployedTeamLeader();
+
     }
 
     public List<TeamLeader> getListFreeEmployedTeamLeader() {
-        List<TeamLeader> foundListTeamLeader = registeredUserDao.getListFreeTeamLeader();
-        return foundListTeamLeader;
+        return registeredUserDao.getListFreeTeamLeader();
+
     }
 
-    public List<TeamCoordinator> getListTeamCoordinator()
+    private List<TeamCoordinator> getListTeamCoordinator()
     {
-        List<TeamCoordinator> listTeamCoordinator = registeredUserDao.getTeamCoordinators();
-        return listTeamCoordinator;
+        return registeredUserDao.getTeamCoordinators();
     }
 
-    public List<TeamMember> getListTeamMember()
+    private List<TeamMember> getListTeamMember()
     {
-        List<TeamMember> listTeamMember = registeredUserDao.getAllTeamMember();
-        return listTeamMember;
+        return registeredUserDao.getAllTeamMember();
+
     }
 
     public List<? extends InternalUser> getListByRole (SystemRole role)
@@ -187,7 +191,7 @@ public class RegisteredUserController {
     }
 
     private List<? extends InternalUser> getListEmployedTeamMember() {
-        List<TeamMember> foundListTeamMember = registeredUserDao.getListEmployedTeamMember();
-        return foundListTeamMember;
+        return registeredUserDao.getListEmployedTeamMember();
+
     }
 }

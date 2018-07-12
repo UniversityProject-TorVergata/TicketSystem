@@ -2,7 +2,6 @@ package isssr.ticketsystem.enumeration;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import java.util.EnumSet;
 
 @JsonFormat(shape = JsonFormat.Shape.STRING)
 public enum State {
@@ -19,7 +18,7 @@ public enum State {
     //Misurto in Giorni.
     private int TTL;
 
-    private State(int TTL){
+    State(int TTL){
         this.TTL = TTL;
     }
 
@@ -38,13 +37,14 @@ public enum State {
 
     }
 
+
     public static boolean validateState(String stateStr){
 
         for(State state : State.values()){
             if(stateStr.equals(state.toString()))
-                return true;
+                return false;
         }
-        return false;
+        return true;
 
     }
 }

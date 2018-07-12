@@ -23,6 +23,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
+@SuppressWarnings({"FieldCanBeLocal","unused"})
 public class Ticket {
 
 
@@ -104,6 +105,7 @@ public class Ticket {
      *  - Ruoli.
      *  - Stati successivi.
      */
+
     private ArrayList<ArrayList<String>> stateInformation;
 
 

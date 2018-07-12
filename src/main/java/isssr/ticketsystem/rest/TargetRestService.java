@@ -2,8 +2,6 @@ package isssr.ticketsystem.rest;
 
 import isssr.ticketsystem.controller.TargetController;
 import isssr.ticketsystem.entity.Target;
-import isssr.ticketsystem.enumeration.State;
-import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.enumeration.TargetState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,10 +18,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "target")
+@SuppressWarnings("ConstantConditions")
 public class TargetRestService {
 
+    private final TargetController targetController;
+
     @Autowired
-    private TargetController targetController;
+    public TargetRestService(TargetController targetController) {
+        this.targetController = targetController;
+    }
 
     /**
      * Metodo usato per la gestione di una POST che arriva sull'url specificato. A fronte di

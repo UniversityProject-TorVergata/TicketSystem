@@ -2,8 +2,6 @@ package isssr.ticketsystem.controller;
 
 import isssr.ticketsystem.dao.TargetDao;
 import isssr.ticketsystem.entity.Target;
-import isssr.ticketsystem.enumeration.State;
-import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.enumeration.TargetState;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,8 +26,7 @@ public class TargetController {
 
     @Transactional
     public @NotNull Target insertTarget(@NotNull Target target) {
-        Target createdTarget = targetDao.save(target);
-        return createdTarget;
+        return targetDao.save(target);
     }
 
     @Transactional
@@ -37,8 +34,7 @@ public class TargetController {
 
         Target toBeUpdatedTarget = targetDao.getOne(id);
         toBeUpdatedTarget.updateTarget(updatedData);
-        Target updatedTarget = targetDao.save(toBeUpdatedTarget);
-        return updatedTarget;
+        return targetDao.save(toBeUpdatedTarget);
     }
 
     @Transactional
@@ -51,8 +47,7 @@ public class TargetController {
 
         Target toBeUpdatedTarget = targetDao.getOne(id);
         toBeUpdatedTarget.setTargetState(targetState);
-        Target updatedTarget = targetDao.save(toBeUpdatedTarget);
-        return updatedTarget;
+        return targetDao.save(toBeUpdatedTarget);
     }
 
     @Transactional

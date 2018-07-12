@@ -14,10 +14,14 @@ import java.util.Optional;
 @Service
 public class TeamController {
 
+    private final TeamDao teamDao;
+    private final RegisteredUserDao registeredUserDao;
+
     @Autowired
-    private TeamDao teamDao;
-    @Autowired
-    private RegisteredUserDao registeredUserDao;
+    public TeamController(TeamDao teamDao, RegisteredUserDao registeredUserDao) {
+        this.teamDao = teamDao;
+        this.registeredUserDao = registeredUserDao;
+    }
 
     @Transactional
     public @NotNull Team insertTeam(@NotNull Team team) {
@@ -45,8 +49,7 @@ public class TeamController {
             }
         }
 
-        Team createdTeam = teamDao.save(team);
-        return createdTeam;
+        return teamDao.save(team);
     }
 
     @Transactional
@@ -54,14 +57,12 @@ public class TeamController {
 
         Team toBeUpdatedTeam = teamDao.getOne(id);
         toBeUpdatedTeam.updateTeam(updatedData);
-        Team updatedCompany = teamDao.save(toBeUpdatedTeam);
-        return updatedCompany;
+        return teamDao.save(toBeUpdatedTeam);
     }
-
+/*
     public Team findTeamById(@NotNull Long id) {
-        Team foundTeam = teamDao.getOne(id);
-        return foundTeam;
-    }
+        return teamDao.getOne(id);
+    }*/
 
     public boolean deleteTeam(@NotNull Long id) {
         Optional<Team> optionalTeam = teamDao.findById(id);
@@ -86,14 +87,14 @@ public class TeamController {
 
     public Collection<TeamMember> getTeamMemberByTeamId(@NotNull Long id){
 
-        Collection<TeamMember> foundListTeamMember = teamDao.getTeamMemberByTeamId(id);
-        return foundListTeamMember;
+        return teamDao.getTeamMemberByTeamId(id);
+
     }
 
     public Collection<TeamMember> getTeamMemberByTeamLeaderId(@NotNull Long id){
 
-        Collection<TeamMember> foundListTeamMember = teamDao.getTeamMemberByTeamLeaderId(id);
-        return foundListTeamMember;
+        return teamDao.getTeamMemberByTeamLeaderId(id);
+
     }
 
     public TeamMember addTeamMember(@NotNull Long teamID, Long teamMemberID){

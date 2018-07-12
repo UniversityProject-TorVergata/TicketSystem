@@ -7,8 +7,6 @@ import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.Difficulty;
 import isssr.ticketsystem.enumeration.Priority;
 import isssr.ticketsystem.enumeration.State;
-import isssr.ticketsystem.enumeration.TAG;
-import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,10 +21,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "ticket")
+@SuppressWarnings("ConstantConditions")
 public class TicketRestService {
 
+    private final TicketController ticketController;
+
     @Autowired
-    private TicketController ticketController;
+    public TicketRestService(TicketController ticketController) {
+        this.ticketController = ticketController;
+    }
 
     /**
      * Metodo usato per la gestione di una POST che arriva sull'url specificato. A fronte di
@@ -96,9 +99,11 @@ public class TicketRestService {
     }
 
     /**
-     * Metodo usato per cambiare il campo "difficulty" del Ticket
+     * Metodo usato per cambiare priority e tipo di un ticket
+     *
      * @param id Id del ticket da aggiornare
      * @param priority Nuova difficoltà del Ticket
+     * @param actualType tipo "actual" del ticket
      * @return lista dei TeamMember senza Team
      */
     @RequestMapping(path = "changePriorityAndType/{priority}/{actualType}/{id}", method = RequestMethod.PUT)
@@ -129,26 +134,7 @@ public class TicketRestService {
             return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
     }
 
-    /**Chi lo usa???!!!???!!11??
-     * Metodo per spostare i ticket sulla macchina a stati cambiando il resolveruser,la actual priority e l'actual type
-     *
-     * @param ticketID
-     * @param action
-     * @param internalUserID
-     * @param priority
-     * @param actualType
-     * @return
-     */
-    @RequestMapping(path = "/changeState/{ticketID}/{action}/{internalUserID}/{priority}/{actualType}",method = RequestMethod.POST)
-    public ResponseEntity<Ticket> changeTicketStateResolverUserPriorityAndType(@PathVariable("ticketID") Long ticketID, @PathVariable("action") String action,
-                                                                   @PathVariable("internalUserID") Long internalUserID,@PathVariable("priority") Priority priority,
-                                                                             @PathVariable("actualType") String actualType  ){
-        Ticket updatedTicket = ticketController.changeStateResolverUserPriorityAndType(ticketID,action,internalUserID,priority,actualType);
-        if(updatedTicket != null)
-            return new ResponseEntity<>(updatedTicket,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(updatedTicket,HttpStatus.NOT_FOUND);
-    }
+
 
 
     /**
@@ -223,41 +209,9 @@ public class TicketRestService {
 
     }
 
-    //TODO Da cancellarle se nessuno le utilizza
-    /**
-     * Ricerca "Esclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
-     * Esclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
-     * almeno tutti i tag in Argomento.
-     *
-     * @param searchBean Un oggetto che contiene i parametri category,targetID e tags.
-     * @return Lista di Ticket trovati applicando i criteri indicati.
-     */
-    @RequestMapping(path = "/searchTicketExclusive",method = RequestMethod.POST)
-    public ResponseEntity<List<Ticket>> searchTicketExclusive(@RequestBody SearchBean searchBean){
-        List<Ticket> ticketList = ticketController.searchTicketExclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        if(ticketList != null)
-            return new ResponseEntity<>(ticketList,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
-    }
 
-    //TODO Da cancellarle se nessuno le utilizza
-    /**
-     * Ricerca "Inclusiva" di Ticket dati il Target e/o la Categoria e/o una lista di TAG.
-     * Inclusiva significa che se indicata la lista di TAG i Ticket restituiti dovranno contenere
-     * almeno uno dei  tag in Argomento.
-     *
-     * @param searchBean Un oggetto che contiene i parametri category,targetID e tags.
-     * @return Lista di Ticket trovati applicando i criteri indicati.
-     */
-    @RequestMapping(path = "/searchTicketInclusive",method = RequestMethod.POST)
-    public ResponseEntity<List<Ticket>> searchTicketInclusive(@RequestBody SearchBean searchBean){
-        List<Ticket> ticketList = ticketController.searchTicketInclusive(searchBean.getCategory(),searchBean.getTags(),searchBean.getTargetID());
-        if(ticketList != null)
-            return new ResponseEntity<>(ticketList,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(ticketList,HttpStatus.NOT_FOUND);
-    }
+
+
 
     /**
      * Servizio REST per l'inserimento di un commento in ticket.
@@ -265,7 +219,7 @@ public class TicketRestService {
      *
      * @param ticketID ID del ticket da commentare
      * @param ticketComment commento da allegare al ticket.
-     * @return
+     * @return il ticket con allegato il commento.
      */
     @RequestMapping(path= "/insertComment/{ticketID}",method = RequestMethod.POST)
     public ResponseEntity<Ticket> insertComment(@PathVariable("ticketID") Long ticketID,@RequestBody TicketComment ticketComment){
@@ -276,68 +230,6 @@ public class TicketRestService {
             return new ResponseEntity<>(commentedTicket,HttpStatus.NOT_FOUND);
     }
 
-    /**
-     * Questa classe interna è usata per passare i parametri delle chiamate rest /searchTicketExclusive ,/searchTicketInclusive
-     * che filtrano i ticket attraverso tag,targetID e category.
-     *
-     * Corrisponde ad un JSON del tipo :
-     *
-     * {
-     *     "tags" : ["tag1","tag2","tag3"],
-     *     "targetID" : 148,
-     *     "category" : "query"
-     * }
-     *
-     */
 
-    //TODO Da cancellarle se nessuno le utilizza
-    @NoArgsConstructor
-    public static class SearchBean {
-
-        private List<TAG> tags;
-        private Long targetID;
-        private String category;
-
-
-        public SearchBean(List<TAG> tags, Long targetID, String category) {
-            this.tags = tags;
-            this.targetID = targetID;
-            this.category = category;
-        }
-
-        public SearchBean(List<TAG> tags, Long targetID) {
-            this.tags = tags;
-            this.targetID = targetID;
-        }
-
-        public SearchBean(Long targetID, String category) {
-            this.targetID = targetID;
-            this.category = category;
-        }
-
-        public List<TAG> getTags() {
-            return tags;
-        }
-
-        public void setTags(List<TAG> tags) {
-            this.tags = tags;
-        }
-
-        public Long getTargetID() {
-            return targetID;
-        }
-
-        public void setTargetID(Long targetID) {
-            this.targetID = targetID;
-        }
-
-        public String getCategory() {
-            return category;
-        }
-
-        public void setCategory(String category) {
-            this.category = category;
-        }
-    }
 }
 

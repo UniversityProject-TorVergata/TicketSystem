@@ -14,13 +14,17 @@ import java.util.List;
  * Questa classe gestisce le richieste HTTP che giungono sul path specificato ("registered_user")
  * attraverso i metodi definiti nella classe RegisteredUserController.
  */
-
+@SuppressWarnings("ConstantConditions")
 @RestController
 @RequestMapping(path = "registered_user")
 public class RegisteredUserRestService {
 
+    private final RegisteredUserController registeredUserController;
+
     @Autowired
-    private RegisteredUserController registeredUserController;
+    public RegisteredUserRestService(RegisteredUserController registeredUserController) {
+        this.registeredUserController = registeredUserController;
+    }
 
     /**
      * Metodo usato per la gestione di una POST che arriva sull'url specificato. A fronte di
@@ -49,8 +53,7 @@ public class RegisteredUserRestService {
         RegisteredUser updatedRegisteredUser = registeredUserController.updateRegisteredUser(id, registeredUser);
         if(updatedRegisteredUser != null)
             return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(updatedRegisteredUser, HttpStatus.NOT_FOUND);
     }
 
 
@@ -67,7 +70,7 @@ public class RegisteredUserRestService {
         if(deletedRegisteredUser)
             return new ResponseEntity<>(deletedRegisteredUser, HttpStatus.OK);
         else
-            return new ResponseEntity<>(deletedRegisteredUser, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(deletedRegisteredUser,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -82,8 +85,7 @@ public class RegisteredUserRestService {
         RegisteredUser userLogged = registeredUserController.getRegisteredUserByLogin(loginBean.getUsername(),loginBean.getPassword());
         if(userLogged != null)
             return new ResponseEntity<>(userLogged,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(userLogged,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(userLogged,HttpStatus.NOT_FOUND);
 
     }
 
@@ -98,8 +100,7 @@ public class RegisteredUserRestService {
         List<TeamLeader> listTeamLeader = registeredUserController.getListEmployedTeamLeader();
         if(listTeamLeader != null)
             return new ResponseEntity<>(listTeamLeader,HttpStatus.OK);
-        else
-            return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listTeamLeader,HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -126,8 +127,7 @@ public class RegisteredUserRestService {
         List<TeamMember> listFreeTeamMember = registeredUserController.getListFreeTeamMember();
         if(listFreeTeamMember != null)
             return new ResponseEntity<>(listFreeTeamMember, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listFreeTeamMember, HttpStatus.NOT_FOUND);
     }
 
     /**
@@ -140,8 +140,7 @@ public class RegisteredUserRestService {
         TeamCoordinator teamCoordinator = registeredUserController.getTeamCoordinator();
         if(teamCoordinator != null)
             return new ResponseEntity<>(teamCoordinator, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(teamCoordinator, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(teamCoordinator, HttpStatus.NOT_FOUND);
 
     }
 
@@ -149,6 +148,7 @@ public class RegisteredUserRestService {
     /**
      * Metodo che restituisce tutti gli InternalUser in base al loro ruolo.
      *
+     * @param role ruolo del sistema da cercare.
      * @return lista di InternalUser
      */
     @RequestMapping(path= "getUserByRole/{role}", method = RequestMethod.GET)
@@ -157,14 +157,14 @@ public class RegisteredUserRestService {
         List<? extends InternalUser> listInternalUser = registeredUserController.getListByRole(role);
         if(listInternalUser!= null)
             return new ResponseEntity<>(listInternalUser, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
 
     }
 
     /**
-     * Metodo che restituisce tutti gli InternalUser in base al loro ruolo.
+     * Metodo che restituisce tutti gli InternalUser impiegati in base al loro ruolo.
      *
+     * @param role ruolo da cercare nel sistema
      * @return lista di InternalUser
      */
     @RequestMapping(path= "getEmployedUserByRole/{role}", method = RequestMethod.GET)
@@ -173,8 +173,7 @@ public class RegisteredUserRestService {
         List<? extends InternalUser> listInternalUser = registeredUserController.getEmployedUserByRole(role);
         if(listInternalUser!= null)
             return new ResponseEntity<>(listInternalUser, HttpStatus.OK);
-        else
-            return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(listInternalUser, HttpStatus.NOT_FOUND);
 
     }
 
@@ -188,14 +187,15 @@ public class RegisteredUserRestService {
      * }
      *
      */
+    @SuppressWarnings("unused")
     public static class LoginBean {
 
         private String username;
         private String password;
 
-        public LoginBean(){};
+        LoginBean(){}
 
-        public String getUsername() {
+        String getUsername() {
             return username;
         }
 
@@ -203,7 +203,7 @@ public class RegisteredUserRestService {
             this.username = username;
         }
 
-        public String getPassword() {
+        String getPassword() {
             return password;
         }
 
