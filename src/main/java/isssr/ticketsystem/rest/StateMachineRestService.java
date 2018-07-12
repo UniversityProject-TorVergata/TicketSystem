@@ -59,7 +59,6 @@ public class StateMachineRestService {
     @RequestMapping(value = "/downloadTemplate",method = RequestMethod.GET)
     public ResponseEntity<Template> getStateMachineTemplate(){
         String encode64xml = FileManager.encodeFile("./src/main/resources/state_machine/xml_files/StateMachine_01.xml");
-        System.err.println(encode64xml);
         Template tmp = new Template(encode64xml);
         if(encode64xml!=null)
             return new ResponseEntity<>(tmp,HttpStatus.OK);

@@ -3,8 +3,6 @@ package isssr.ticketsystem.controller;
 import isssr.ticketsystem.dao.RegisteredUserDao;
 import isssr.ticketsystem.entity.*;
 import isssr.ticketsystem.enumeration.SystemRole;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
@@ -122,14 +120,14 @@ public class RegisteredUserController {
     }
 
    TeamMember getRandomTeamMember(){
-        Log logger = LogFactory.getLog(getClass());
+
         List<TeamMember> teamMembers = registeredUserDao.getTeamMembers();
         if(teamMembers.size()==1) {
-            logger.error("Solo un teamMember");
+
             return teamMembers.get(0);
         }
         int selectedTeamMember = (int)(Math.random()*teamMembers.size());
-        logger.error("Estratto teamMember : " + selectedTeamMember);
+
         return teamMembers.get(selectedTeamMember);
     }
 

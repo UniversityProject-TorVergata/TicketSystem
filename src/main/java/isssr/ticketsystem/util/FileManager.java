@@ -6,7 +6,6 @@ import org.apache.tomcat.util.codec.binary.Base64;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 
 public class FileManager {
@@ -31,7 +30,7 @@ public class FileManager {
             fileOutFile.flush();
             fileOutFile.close();
         } catch (Exception e) {
-            System.err.println("ERRORE");
+
             e.printStackTrace();
         }
     }
@@ -46,7 +45,7 @@ public class FileManager {
 
         File file = new File(path);
         Path filelocation = file.toPath();
-        System.out.println("ESISTE " + file.exists());
+
 
         try {
             byte[] data = Files.readAllBytes(filelocation);
@@ -65,7 +64,7 @@ public class FileManager {
      * @param fileDataString stringa da decodificare
      * @return array di byte della stringa decodificata.
      */
-    public static byte[] decodeFile(String fileDataString) {
+    private static byte[] decodeFile(String fileDataString) {
         return Base64.decodeBase64(fileDataString.getBytes());
     }
 

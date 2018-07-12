@@ -9,8 +9,6 @@ import isssr.ticketsystem.entity.StateMachine;
 import isssr.ticketsystem.enumeration.State;
 import isssr.ticketsystem.enumeration.SystemRole;
 import isssr.ticketsystem.util.FileManager;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.xml.sax.SAXException;
@@ -81,7 +79,6 @@ public class StateMachineController {
      */
     @SuppressWarnings("unchecked")
     private String stateMachineValidation(String SMPath){
-        Log logger = LogFactory.getLog(getClass());
         FSM stateMachine ;
         try {
             stateMachine = new FSM(SMPath, new FSMAction() {
@@ -97,7 +94,7 @@ public class StateMachineController {
             });
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
-            logger.error("Invalid XML");
+
             return "INVALID XML";
         }
 
@@ -105,7 +102,7 @@ public class StateMachineController {
         String startState = stateMachine.getCurrentState();
         if(!(startState.equals(State.VALIDATION.toString()) ||
                 startState.equals(State.DISPATCHING.toString()))){
-            logger.error("INVALID DEPARTURE STATE : "+startState);
+
             return "INVALID START STATE : " + startState;
         }
 
@@ -116,8 +113,7 @@ public class StateMachineController {
             if(state.getCurrentState().equals(State.EXECUTION.toString())){
                 execution = true;
             }
-
-            if(!controlStates(state.getCurrentState()))
+            if(!State.validateState(state.getCurrentState()))
                 return "NOT ADMITTED STATE : " + state.getCurrentState();
             ArrayList<ArrayList<String>> state_info = stateMachine.getStateInformation(state.getCurrentState());
             ArrayList<String> roles = state_info.get(1);
@@ -128,7 +124,7 @@ public class StateMachineController {
             //Controllo che sia CLOSED altrimenti restistuisco false
             if(state_info.get(2).size()==0){
                 if(!state.getCurrentState().equals(State.CLOSED.toString())) {
-                    logger.error("Invalid FINAL STATE "+state.getCurrentState());
+
                     return "INVALID FINAL STATE : " + state.getCurrentState();
                 }
             }
@@ -146,22 +142,11 @@ public class StateMachineController {
 
     }
 
-    private boolean controlStates(String stateName){
-        Log logger = LogFactory.getLog(getClass());
-        //Controllo sui nomi degli stati.
-        if(State.validateState(stateName)) {
-            logger.error("Invalid STATE : "+stateName);
-            return false;
-        }
-        return true;
-
-    }
-
     private boolean controlRoles(ArrayList<String> roles){
-        Log logger = LogFactory.getLog(getClass());
+
         for(String role : roles){
             if(!SystemRole.validateRole(role)) {
-                logger.error("Invalid ROLE : "+role);
+
                 return false;
             }
         }
@@ -177,7 +162,7 @@ public class StateMachineController {
      */
     @SuppressWarnings("unchecked")
     private boolean controlFSMConnection(FSM stateMachine){
-        Log logger = LogFactory.getLog(getClass());
+
         List<FSMState> states = stateMachine.getAllStates();
         ArrayList<String> statesString = new ArrayList<>();
         for(FSMState state : states){
@@ -201,13 +186,13 @@ public class StateMachineController {
             //Con valore true;
             for(String nextState : nextStates){
                 //Se un next state non è tra gli stati del sistema
-                if(State.validateState(nextState)) {
-                    logger.error("INVALID NEXT STATE : "+nextState);
+                if(!State.validateState(nextState)) {
+
                     return false;
                 }
                 //Se un next state è negli stati del sistema ma non è presente nell FSM corrente
                 if(!statesString.contains(nextState)) {
-                    logger.error("NOT PRESENT NEXT STATE : "+nextState);
+
                     return false;
                 }
                 connectionMap.remove(nextState);
@@ -220,7 +205,7 @@ public class StateMachineController {
         //Ovvero sia raggiungbile in caso contrario restituisco false
         for(Map.Entry<String,Boolean> entry : connectionMap.entrySet()){
             if(!entry.getValue()) {
-                logger.error("State Machine not connected at : "+entry.getKey());
+
                 return false;
             }
         }

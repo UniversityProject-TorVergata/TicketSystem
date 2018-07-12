@@ -42,9 +42,9 @@ public enum State {
 
         for(State state : State.values()){
             if(stateStr.equals(state.toString()))
-                return false;
+                return true;
         }
-        return true;
+        return false;
 
     }
 }
