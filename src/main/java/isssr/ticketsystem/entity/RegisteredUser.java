@@ -29,12 +29,10 @@ import javax.validation.constraints.NotNull;
 @SuppressWarnings("unused")
 public abstract class RegisteredUser {
 
-    /**
-     * Attributes defined as database's columns.
-     */
+
 
     @Id
-    @GeneratedValue // Autoincrement
+    @GeneratedValue
     private Long id;
 
     @NotNull

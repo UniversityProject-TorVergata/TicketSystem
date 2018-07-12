@@ -29,21 +29,24 @@ public class StateMachineController {
         return stateMachineDao.findAll();
     }
 
-    public StateMachine saveStateMachine(StateMachine stateMachine){
+    public String saveStateMachine(StateMachine stateMachine){
         if(stateMachine.getBase64StateMachine()!=null) {
             String savedStateMachine = stateMachine.getBase64StateMachine();
             String relativePath = "./src/main/resources/state_machine/xml_files/";
             FileManager.convertStringToFile(savedStateMachine, stateMachine.getName(), relativePath);
             //Se la macchina a stati inserita non è valida restituisco errore.
-            if (!stateMachineValidation(relativePath +
-                    stateMachine.getName() + ".xml"))
-                return null;
+            String result = stateMachineValidation(relativePath +
+                    stateMachine.getName() + ".xml");
+            if(result!=null)
+                return result;
         }
-        return stateMachineDao.save(stateMachine);
+        if(stateMachineDao.save(stateMachine)!=null)
+            return null;
+        return "ERROR SAVING STATE MACHINE";
 
     }
 
-    private boolean stateMachineValidation(String SMPath){
+    private String stateMachineValidation(String SMPath){
         Log logger = LogFactory.getLog(getClass());
         FSM stateMachine = null;
         try {
@@ -61,7 +64,7 @@ public class StateMachineController {
         } catch (ParserConfigurationException | SAXException | IOException e) {
             e.printStackTrace();
             logger.error("Invalid XML");
-            return false;
+            return "INVALID XML";
         }
 
         //Controllo che il primo stato sia validation o dispatching.
@@ -69,37 +72,44 @@ public class StateMachineController {
         if(!(startState.equals(State.VALIDATION.toString()) ||
                 startState.equals(State.DISPATCHING.toString()))){
             logger.error("INVALID DEPARTURE STATE : "+startState);
-            return false;
+            return "INVALID START STATE : " + startState;
         }
 
 
         List<FSMState> states = stateMachine.getAllStates();
         //Controllo che Ruoli e Stati siano quelli del sistema
+        boolean execution = false;
         for(FSMState state : states){
+            if(state.getCurrentState().equals(State.EXECUTION.toString())){
+                execution = true;
+            }
 
             if(!controlStates(state.getCurrentState()))
-                return false;
+                return "NOT ADMITTED STATE : " + state.getCurrentState();
             ArrayList<ArrayList<String>> state_info = stateMachine.getStateInformation(state.getCurrentState());
             ArrayList<String> roles = state_info.get(1);
             if(!controlRoles(roles))
-                return false;
+                return "NOT ADIMETTED ROLES : " + roles;
 
             //se la lista dei prossimi stati è nulla sto analizzando l'ultimo stato
             //Controllo che sia CLOSED altrimenti restistuisco false
             if(state_info.get(2).size()==0){
                 if(!state.getCurrentState().equals(State.CLOSED.toString())) {
                     logger.error("Invalid FINAL STATE "+state.getCurrentState());
-                    return false;
+                    return "INVALID FINAL STATE : " + state.getCurrentState();
                 }
             }
 
         }
 
+        if(!execution)
+            return "NOT EXECUTION STATE IN THE STATE MACHINE";
+
         //Infine controllo che la macchina a stati non sia spezzata
         if(!controlFSMConnection(stateMachine))
-            return false;
+            return "NOT CONNECTED STATE MACHINE";
 
-        return true;
+        return null;
 
     }
 

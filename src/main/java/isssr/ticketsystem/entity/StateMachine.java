@@ -21,8 +21,19 @@ public class StateMachine {
     @Transient
     private String base64StateMachine;
 
+    @Lob
+    private String base64Diagram;
+
     public StateMachine(){
 
+    }
+
+    public String getBase64Diagram() {
+        return base64Diagram;
+    }
+
+    public void setBase64Diagram(String base64Diagram) {
+        this.base64Diagram = base64Diagram;
     }
 
     public Long getId() {
