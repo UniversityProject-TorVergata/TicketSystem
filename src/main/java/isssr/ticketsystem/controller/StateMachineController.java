@@ -35,18 +35,22 @@ public class StateMachineController {
     }
 
     public String saveStateMachine(StateMachine stateMachine){
-        if(stateMachine.getBase64StateMachine()==null)
+
+        if(stateMachine.getBase64StateMachine() == null)
             return "MISSING XML FILE";
+
         String savedStateMachine = stateMachine.getBase64StateMachine();
         String relativePath = "./src/main/resources/state_machine/xml_files/";
+        // Creazione del File XML della FSM:
         FileManager.convertStringToFile(savedStateMachine, stateMachine.getName(), relativePath);
-        //Se la macchina a stati inserita non è valida restituisco errore.
-        String result = stateMachineValidation(relativePath +
-                stateMachine.getName() + ".xml");
+
+        // Se la macchina a stati inserita non è valida restituisco una Stringa di errore, altrimenti null.
+        String result = stateMachineValidation(relativePath + stateMachine.getName() + ".xml");
+
         if(result!=null) {
             Path path = Paths.get(relativePath+stateMachine.getName() + ".xml");
             try {
-                Files.delete(path);
+                Files.delete(path); // Cancellazione del file XML di una FSM non valida.
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -54,13 +58,13 @@ public class StateMachineController {
         }
 
         try{
-            stateMachineDao.save(stateMachine);
-        }catch (Exception e){
+            stateMachineDao.save(stateMachine); // Salvataggio della FSM nel DB.
+        }
+        catch (Exception e){
             return "ERROR SAVING STATE MACHINE";
         }
-        return null;
 
-
+        return null; // Il file XML della FSM è valido.
     }
 
     /**
@@ -138,8 +142,7 @@ public class StateMachineController {
         if(!controlFSMConnection(stateMachine))
             return "NOT CONNECTED STATE MACHINE";
 
-        return null;
-
+        return null; // La FSM è valida.
     }
 
     private boolean controlRoles(ArrayList<String> roles){
