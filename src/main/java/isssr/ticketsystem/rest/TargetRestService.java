@@ -123,6 +123,13 @@ public class TargetRestService {
             return new ResponseEntity<>(targetList,HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Dato un Target trova la sua SM e calcola quali sono gli stati gestiti da un determinato SystemRole
+     *
+     * @param targetID ID del target di cui occorre gestire la SM
+     * @param role Ruolo del sistema di cui si desiderano gli stati Gestiti
+     * @return La lista degli stati Gestiti da role per la SM del target con id targetID
+     */
     @RequestMapping(path = "getActualStates/{targetID}/{systemRole}")
     public ResponseEntity<List<String>> getActualStates(@PathVariable("targetID") Long targetID, @PathVariable("systemRole")
                                                      String role){
@@ -132,6 +139,13 @@ public class TargetRestService {
         else return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+    /**
+     * Dato un Target trova la sua SM e calcola quali sono  gli stati successivi a partire da uno stato corrente currentState
+     *
+     * @param targetID ID del target di cui gestire la SM
+     * @param currentState Stato corrente di cui trovare i successivi
+     * @return La lista degli stati successivi a currentState per la SM del target con id targetID
+     */
     @RequestMapping(path = "getNextStates/{targetID}/{currentState}")
     public ResponseEntity<ArrayList<ArrayList<String>>> getNextStates(@PathVariable("targetID") Long targetID, @PathVariable("currentState")
             String currentState){
