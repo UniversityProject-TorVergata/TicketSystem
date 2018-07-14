@@ -89,10 +89,6 @@ public class StateMachineController {
                 @Override
                 public boolean action(String curState, String message, String nextState, Object args) {
                     System.out.println(curState + ":" + message + " : " + nextState);
-
-                    // Here we can implement our login of how we wish to handle
-                    // an action
-
                     return true;
                 }
             });
@@ -225,10 +221,6 @@ public class StateMachineController {
                 @Override
                 public boolean action(String curState, String message, String nextState, Object args) {
                     System.out.println(curState + ":" + message + " : " + nextState);
-
-                    // Here we can implement our login of how we wish to handle
-                    // an action
-
                     return true;
                 }
             });
@@ -266,10 +258,6 @@ public class StateMachineController {
                 @Override
                 public boolean action(String curState, String message, String nextState, Object args) {
                     System.out.println(curState + ":" + message + " : " + nextState);
-
-                    // Here we can implement our login of how we wish to handle
-                    // an action
-
                     return true;
                 }
             });
