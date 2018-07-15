@@ -27,18 +27,3 @@ utilizzando l'url http://localhost:8200/ticketsystem e aggiungendo i path specif
 * [Back-End (questo)](https://github.com/UniversityProject-TorVergata/TicketSystem.git)
 * [Front-End](https://github.com/UniversityProject-TorVergata/Ticketsystem-FE.git)
 
-### Sviluppato nell'ambito del corso di Ingegneria dei Sistemi Software e dei Servizi di Rete (ISSSR) da ###
-
-* Simone Minasola
-* Alessio Di Luzio
-* Alessio Nazio
-* Angela De Lorenzo
-* Emiliano Fiorentini
-* Stefano Iafrate
-* Andrea Pera
-
-### Con il contributo e le indicazioni dei docenti ###
-
-* Giovanni Cantone
-* Manuel Mastrofini
-* Simone Corrieri 
