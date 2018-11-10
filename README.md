@@ -18,7 +18,7 @@ nel file properties in "src/main/resources/application.properties"
 * Navigando nel menù File-->Project Structure-->Module aggiungere la dipendenza alla libreria FSMlibraryJar.jar presente in
 "src/main/resources/lib"
 * Questo Back-End è pensato per essere utilizzato in combinazione con  un server di Front-End appositamente creato e integrato
-* E' possibile interagire con le funzionalità del server inviando i dati in formato JSON usando applicazioni rest come Postman , e Advanced Rest Service
+* E' possibile interagire con le funzionalità del server inviando i dati in formato JSON usando applicazioni rest come Postman e Advanced Rest Service
 utilizzando l'url http://localhost:8200/ticketsystem e aggiungendo i path specificati dai servizi rest definiti in 
 "src/main/java/isssr/ticketsystem/rest"
 
